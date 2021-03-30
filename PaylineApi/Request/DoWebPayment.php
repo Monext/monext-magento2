@@ -178,6 +178,27 @@ class DoWebPayment extends AbstractRequest
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action');
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
+        $this->addSoftDescriptor($data);
+    }
+
+    /**
+     * Fill with the recommendation below:
+     * -MerchantName
+     * -Transaction date (string 6: YYMMDD)
+     * -Order/ reference
+     * -Buyer / customerId
+     */
+    protected function addSoftDescriptor(&$data)
+    {
+
+        //TODO : Set merchant name
+        $merchantName = "MERCHANTNAME";
+        $customer = $this->cart->getCustomer();
+        $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
+        $data['payment']['softDescriptor'] = $merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey;
+
+        //TODO : clear string only alphanum
+
     }
 
     protected function prepareOrderData(&$data)

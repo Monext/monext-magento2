@@ -175,4 +175,15 @@ class Data extends AbstractHelper
         $amount = ($amount < 0) ? 0 : $amount;
         return $amount;
     }
+
+    public function isActionAvailableForContract($action, array $contracts)
+    {
+
+        return true;
+
+        var_dump($action, $contracts);
+
+        exit;
+        return false;
+    }
 }
