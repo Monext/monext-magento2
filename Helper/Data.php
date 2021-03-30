@@ -39,11 +39,6 @@ class Data extends AbstractHelper
         $this->serialize = $serialize;
     }
 
-    public function encodeString($string)
-    {
-        return iconv('UTF-8', "ASCII//TRANSLIT", $string);
-    }
-
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
     {
         // "field": "purchase.delivery.recipient.phone_number"
@@ -175,4 +170,6 @@ class Data extends AbstractHelper
         $amount = ($amount < 0) ? 0 : $amount;
         return $amount;
     }
+
+
 }
