@@ -10,6 +10,7 @@ define(
         'Monext_Payline/js/action/save-checkout-payment-information-facade',
         'Monext_Payline/js/lib/Uri',
         'Monext_Payline/js/widget-api',
+        'Magento_Customer/js/customer-data',
     ],
     function (
         $,
@@ -21,7 +22,8 @@ define(
         redirect,
         saveCheckoutPaymentInformationFacadeAction,
         Uri,
-        WidgetApi
+        WidgetApi,
+        customerData
     ) {
         'use strict';
 
@@ -82,6 +84,7 @@ define(
             },
 
             afterPlaceOrder: function () {
+                customerData.invalidate(['cart']);
                 if (this.getMethodConfigData('integrationType') === 'redirect') {
                     redirect('payline/webpayment/redirecttopaymentgateway');
                 }

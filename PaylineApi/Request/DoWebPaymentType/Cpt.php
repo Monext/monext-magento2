@@ -38,9 +38,11 @@ class Cpt extends AbstractDoWebPaymentType
         if ($this->cart->getQuote()->getCustomerId()) {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
             $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
+            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
         } else {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
             $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
+            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
         }
         $data['notificationURL'] = $this->urlBuilder->getUrl('payline/webpayment/notifyfrompaymentgateway');
     }
