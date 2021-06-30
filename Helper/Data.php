@@ -87,7 +87,8 @@ class Data extends AbstractHelper
 
     public function isWalletEnabled($paymentMethod)
     {
-        return $this->scopeConfig->getValue('payment/'.$paymentMethod.'/wallet_enabled');
+        return $this->scopeConfig->getValue('payment/'.$paymentMethod.'/wallet_enabled',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     public function mapMagentoAmountToPaylineAmount($magentoAmount)
@@ -107,7 +108,8 @@ class Data extends AbstractHelper
         }
 
         $path = 'payment/' . $order->getPayment()->getMethod() . '/order_status_' . $status;
-        if ($configurableStatus = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
+        if ($configurableStatus = $this->scopeConfig->getValue($path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
             $status = $configurableStatus;
         }
         return $status;
@@ -166,7 +168,7 @@ class Data extends AbstractHelper
 
     public function getNxMinimumAmountCart($store = null)
     {
-        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, 'stores', $store);
+        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store);
         $amount = ($amount < 0) ? 0 : $amount;
         return $amount;
     }

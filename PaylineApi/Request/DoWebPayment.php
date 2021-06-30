@@ -160,7 +160,8 @@ class DoWebPayment extends AbstractRequest
             $this->prepareBillingAddressData($data);
             $this->prepareShippingAddressData($data);
 
-            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE);
+            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
             $this->doWebPaymentTypeFactory->create($this->payment)->getData($data);
             $this->data = $data;
