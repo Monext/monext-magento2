@@ -149,9 +149,12 @@ class CartManagement
                 }
             }
 
-            $product->setPaylineCategoryMapping(
-                $categoryCandidate->getPaylineCategoryMapping() ? $categoryCandidate->getPaylineCategoryMapping() : $categoryCandidate->getName()
-            );
+            if($categoryCandidate) {
+                $product->setPaylineCategoryMapping(
+                    $categoryCandidate->getPaylineCategoryMapping() ? $categoryCandidate->getPaylineCategoryMapping() : $categoryCandidate->getName()
+                );
+            }
+
         }
 
         return $productCollection;
