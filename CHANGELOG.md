@@ -1,7 +1,7 @@
 # 1.2.11
 Released on 2021-06-30
 - Fix multi store configuration
-- Fix arror on product without category
+- Fix error on product without category
 
 # 1.2.10
 Released on 2021-03-30
