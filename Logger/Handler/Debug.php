@@ -38,7 +38,7 @@ class Debug extends Base
         $fileName = null
     ) {
         $this->scopeConfig = $scopeConfig;
-        if ($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG)) {
+        if ($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
             $this->loggerType = Logger::DEBUG;
         }
 

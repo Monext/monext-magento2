@@ -35,7 +35,8 @@ class Nx extends AbstractDoWebPaymentType
     }
 
     protected function addBillingCycle(&$data) {
-        $billingCycle = $this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/billing_cycle');
+        $billingCycle = $this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/billing_cycle',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['recurring']['billingCycle'] = $billingCycle;
     }
 
@@ -45,7 +46,8 @@ class Nx extends AbstractDoWebPaymentType
      */
     protected function addRecurringAmount(&$data)
     {
-        $billingOccurrences = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/billing_occurrences');
+        $billingOccurrences = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/billing_occurrences',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if($billingOccurrences === 0) {
             throw new \Exception('Config error : Billing occurrences can not be zero');
         }
@@ -62,9 +64,11 @@ class Nx extends AbstractDoWebPaymentType
 
     protected function addCostRecurringPayment(&$data)
     {
-        $costType = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/cost_type');
+        $costType = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/cost_type',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if ($firstAmount = $data['recurring']['firstAmount'] && $costType !== Constants::COST_TYPE_NO_CHARGES) {
-            $costAmount = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/cost_amount');
+            $costAmount = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/cost_amount',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
             if($costAmount > 0) {
                 $costAmount = $this->paylineHelper->mapMagentoAmountToPaylineAmount($costAmount);
                 switch ($costType) {

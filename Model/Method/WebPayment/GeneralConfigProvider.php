@@ -10,7 +10,8 @@ class GeneralConfigProvider extends AbstractMethodConfigProvider
     public function getConfig()
     {
         $config = array();
-        $config['payline']['general']['environment'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT);
+        $config['payline']['general']['environment'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $config['payline']['general']['contracts'] = [];
 
         $contractCollection = $this->contractManagement->getUsedContracts();

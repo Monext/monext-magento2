@@ -160,7 +160,8 @@ class DoWebPayment extends AbstractRequest
             $this->prepareBillingAddressData($data);
             $this->prepareShippingAddressData($data);
 
-            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE);
+            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
             $this->doWebPaymentTypeFactory->create($this->payment)->getData($data);
             $this->data = $data;
@@ -176,7 +177,8 @@ class DoWebPayment extends AbstractRequest
 
         $data['payment']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
-        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action');
+        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
     }
 
