@@ -177,7 +177,8 @@ class DoWebPayment extends AbstractRequest
 
         $data['payment']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
-        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action');
+        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
     }
 

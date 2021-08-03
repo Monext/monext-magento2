@@ -123,7 +123,8 @@ class Data extends AbstractHelper
     public function getDeliverySetting() {
         if(is_null($this->delivery)) {
             $this->delivery = [];
-            $addressConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DELIVERY);
+            $addressConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DELIVERY,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
             if ($addressConfigSerialized) {
                 try {
                     $this->delivery = $this->serialize->unserialize($addressConfigSerialized);
@@ -138,7 +139,8 @@ class Data extends AbstractHelper
     public function getPrefixSetting() {
         if(is_null($this->prefix)) {
             $this->prefix = [];
-            $prefixConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_PREFIX);
+            $prefixConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_PREFIX,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
             if ($prefixConfigSerialized) {
                 try {
                     $this->prefix = $this->serialize->unserialize($prefixConfigSerialized);
