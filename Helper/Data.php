@@ -39,11 +39,6 @@ class Data extends AbstractHelper
         $this->serialize = $serialize;
     }
 
-    public function encodeString($string)
-    {
-        return iconv('UTF-8', "ASCII//TRANSLIT", $string);
-    }
-
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
     {
         // "field": "purchase.delivery.recipient.phone_number"
@@ -92,7 +87,8 @@ class Data extends AbstractHelper
 
     public function isWalletEnabled($paymentMethod)
     {
-        return $this->scopeConfig->getValue('payment/'.$paymentMethod.'/wallet_enabled');
+        return $this->scopeConfig->getValue('payment/'.$paymentMethod.'/wallet_enabled',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     public function mapMagentoAmountToPaylineAmount($magentoAmount)
@@ -112,7 +108,8 @@ class Data extends AbstractHelper
         }
 
         $path = 'payment/' . $order->getPayment()->getMethod() . '/order_status_' . $status;
-        if ($configurableStatus = $this->scopeConfig->getValue($path, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
+        if ($configurableStatus = $this->scopeConfig->getValue($path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
             $status = $configurableStatus;
         }
         return $status;
@@ -126,7 +123,8 @@ class Data extends AbstractHelper
     public function getDeliverySetting() {
         if(is_null($this->delivery)) {
             $this->delivery = [];
-            $addressConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DELIVERY);
+            $addressConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DELIVERY,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
             if ($addressConfigSerialized) {
                 try {
                     $this->delivery = $this->serialize->unserialize($addressConfigSerialized);
@@ -141,7 +139,8 @@ class Data extends AbstractHelper
     public function getPrefixSetting() {
         if(is_null($this->prefix)) {
             $this->prefix = [];
-            $prefixConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_PREFIX);
+            $prefixConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_PREFIX,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
             if ($prefixConfigSerialized) {
                 try {
                     $this->prefix = $this->serialize->unserialize($prefixConfigSerialized);
@@ -171,7 +170,7 @@ class Data extends AbstractHelper
 
     public function getNxMinimumAmountCart($store = null)
     {
-        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, 'stores', $store);
+        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store);
         $amount = ($amount < 0) ? 0 : $amount;
         return $amount;
     }
@@ -179,11 +178,9 @@ class Data extends AbstractHelper
     public function isActionAvailableForContract($action, array $contracts)
     {
 
+        //TODO: Variabiliser sur liste predefinie
         return true;
-
-        var_dump($action, $contracts);
-
-        exit;
-        return false;
     }
+
+
 }

@@ -14,7 +14,8 @@ class Cpt extends AbstractDoWebPaymentType
      */
     public function getData(&$data)
     {
-        $integrationType = $this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/integration_type');
+        $integrationType = $this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/integration_type',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if ($integrationType == PaylineApiConstants::INTEGRATION_TYPE_REDIRECT) {
             $paymentAdditionalInformation = $this->getPayment()->getAdditionalInformation();
             $data['payment']['contractNumber'] = $paymentAdditionalInformation['contract_number'];
@@ -38,9 +39,11 @@ class Cpt extends AbstractDoWebPaymentType
         if ($this->cart->getQuote()->getCustomerId()) {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
             $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
+            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
         } else {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
             $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
+            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
         }
         $data['notificationURL'] = $this->urlBuilder->getUrl('payline/webpayment/notifyfrompaymentgateway');
     }

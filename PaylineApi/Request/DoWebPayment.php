@@ -160,7 +160,8 @@ class DoWebPayment extends AbstractRequest
             $this->prepareBillingAddressData($data);
             $this->prepareShippingAddressData($data);
 
-            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE);
+            $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
             $this->doWebPaymentTypeFactory->create($this->payment)->getData($data);
             $this->data = $data;
@@ -176,7 +177,8 @@ class DoWebPayment extends AbstractRequest
 
         $data['payment']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
-        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action');
+        $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
         $this->addSoftDescriptor($data);
     }
@@ -200,6 +202,9 @@ class DoWebPayment extends AbstractRequest
         //TODO : clear string only alphanum
 
     }
+
+
+
 
     protected function prepareOrderData(&$data)
     {
@@ -293,14 +298,14 @@ class DoWebPayment extends AbstractRequest
                 $tmpData = $this->billingAddress->$getter();
             }
             $data['buyer']['title'] =  $this->getCustomerTitle($this->billingAddress->getPrefix());
-            $data['buyer'][$dataIdx] = $this->helperData->encodeString($tmpData);
+            $data['buyer'][$dataIdx] = $tmpData;
 
             if ($dataIdx == 'email') {
                 if (!$this->helperData->isEmailValid($tmpData)) {
                     unset($data['buyer']['email']);
                 }
 
-                $data['buyer']['customerId'] = $this->helperData->encodeString($tmpData);
+                $data['buyer']['customerId'] = $tmpData;
             }
         }
 
@@ -320,12 +325,12 @@ class DoWebPayment extends AbstractRequest
     protected function prepareBillingAddressData(&$data)
     {
         $data['billingAddress']['title'] = $this->getCustomerTitle($this->billingAddress->getPrefix());
-        $data['billingAddress']['firstName'] = $this->helperData->encodeString(substr($this->billingAddress->getFirstname(), 0, 100));
-        $data['billingAddress']['lastName'] = $this->helperData->encodeString(substr($this->billingAddress->getLastname(), 0, 100));
-        $data['billingAddress']['cityName'] = $this->helperData->encodeString(substr($this->billingAddress->getCity(), 0, 40));
+        $data['billingAddress']['firstName'] = $this->cleanAndSubstr($this->billingAddress->getFirstname(), 0, 100);
+        $data['billingAddress']['lastName'] = $this->cleanAndSubstr($this->billingAddress->getLastname(), 0, 100);
+        $data['billingAddress']['cityName'] = $this->cleanAndSubstr($this->billingAddress->getCity(), 0, 40);
         $data['billingAddress']['zipCode'] = substr($this->billingAddress->getPostcode(), 0, 12);
         $data['billingAddress']['country'] = $this->billingAddress->getCountry();
-        $data['billingAddress']['state'] = $this->helperData->encodeString($this->billingAddress->getRegion());
+        $data['billingAddress']['state'] = $this->billingAddress->getRegion();
 
         $billingPhone = $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone());
         if ($billingPhone) {
@@ -335,7 +340,7 @@ class DoWebPayment extends AbstractRequest
         $streetData = $this->billingAddress->getStreet();
         for ($i = 0; $i <= 1; $i++) {
             if (isset($streetData[$i])) {
-                $data['billingAddress']['street' . ($i + 1)] = $this->helperData->encodeString(substr($streetData[$i], 0, 100));
+                $data['billingAddress']['street' . ($i + 1)] = $this->cleanAndSubstr($streetData[$i], 0, 100);
             }
         }
 
@@ -344,7 +349,7 @@ class DoWebPayment extends AbstractRequest
             $this->billingAddress->getLastname(),
             $this->billingAddress->getPrefix()
         );
-        $data['billingAddress']['name'] = $this->helperData->encodeString(substr($name, 0, 100));
+        $data['billingAddress']['name'] = $this->cleanAndSubstr($name, 0, 100);
     }
 
     protected function prepareShippingAddressData(&$data)
@@ -352,12 +357,12 @@ class DoWebPayment extends AbstractRequest
         if (!$this->cart->getIsVirtual() && isset($this->shippingAddress)) {
 
             $data['shippingAddress']['title'] = $this->getCustomerTitle($this->shippingAddress->getPrefix());
-            $data['shippingAddress']['firstName'] = $this->helperData->encodeString(substr($this->shippingAddress->getFirstname(), 0, 100));
-            $data['shippingAddress']['lastName'] = $this->helperData->encodeString(substr($this->shippingAddress->getLastname(), 0, 100));
-            $data['shippingAddress']['cityName'] = $this->helperData->encodeString(substr($this->shippingAddress->getCity(), 0, 40));
+            $data['shippingAddress']['firstName'] = $this->cleanAndSubstr($this->shippingAddress->getFirstname(), 0, 100);
+            $data['shippingAddress']['lastName'] = $this->cleanAndSubstr($this->shippingAddress->getLastname(), 0, 100);
+            $data['shippingAddress']['cityName'] = $this->cleanAndSubstr($this->shippingAddress->getCity(), 0, 40);
             $data['shippingAddress']['zipCode'] = substr($this->shippingAddress->getPostcode(), 0, 12);
             $data['shippingAddress']['country'] = $this->shippingAddress->getCountry();
-            $data['shippingAddress']['state'] = $this->helperData->encodeString($this->shippingAddress->getRegion());
+            $data['shippingAddress']['state'] = $this->shippingAddress->getRegion();
 
             $shippingPhone = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone());
             if ($shippingPhone) {
@@ -367,7 +372,7 @@ class DoWebPayment extends AbstractRequest
             $streetData = $this->shippingAddress->getStreet();
             for ($i = 0; $i <= 1; $i++) {
                 if (isset($streetData[$i])) {
-                    $data['shippingAddress']['street' . ($i + 1)] = $this->helperData->encodeString(substr($streetData[$i], 0, 100));
+                    $data['shippingAddress']['street' . ($i + 1)] = $this->cleanAndSubstr($streetData[$i], 0, 100);
                 }
             }
 
@@ -376,7 +381,7 @@ class DoWebPayment extends AbstractRequest
                 $this->shippingAddress->getLastname(),
                 $this->shippingAddress->getPrefix()
             );
-            $data['shippingAddress']['name'] = $this->helperData->encodeString(substr($name, 0, 100));
+            $data['shippingAddress']['name'] = $this->cleanAndSubstr($name, 0, 100);
         }
     }
 
@@ -394,4 +399,25 @@ class DoWebPayment extends AbstractRequest
 
         return $title;
     }
+
+    /**
+     * @param $string
+     * @param $offset
+     * @param null $length
+     * @return false|string
+     */
+    protected function cleanAndSubstr($string , $offset , $length = null)
+    {
+        //$cleanString = iconv('UTF-8', "ASCII//TRANSLIT", $string);
+
+        $cleanString = str_replace(array("\r", "\n", "\t"), array('', '', ''), $string);
+        if (function_exists('mb_substr')) {
+            $cleanString = mb_substr($cleanString, $offset, $length, 'UTF-8');
+        } else {
+            $cleanString = substr($cleanString, $offset, $length);
+        }
+
+        return $cleanString;
+    }
+
 }

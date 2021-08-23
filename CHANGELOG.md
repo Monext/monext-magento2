@@ -1,3 +1,15 @@
+# 1.2.11
+Released on 2021-06-30
+- Fix multi store configuration
+- Fix error on product without category
+
+# 1.2.10
+Released on 2021-03-30
+- Add csp_whitelist.xml
+- Empty mini cart after payment
+- Remove ascci encoding and substr
+- Increase Payline version API from 16 to 21 
+
 # 1.2.9
 Released on 2020-10-31
 - Add NX payment
