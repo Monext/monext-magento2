@@ -16,7 +16,7 @@ class DoRefund extends AbstractRequest
      * @var HelperCurrency
      */
     protected $helperCurrency;
-    
+
     /**
      * @var PaymentInterface
      */
@@ -52,30 +52,31 @@ class DoRefund extends AbstractRequest
         $this->paymentData = $paymentData;
         return $this;
     }
-    
+
     public function setOrder(OrderInterface $order)
     {
         $this->order = $order;
         return $this;
     }
-    
+
     public function setPayment($payment)
     {
         $this->payment = $payment;
         return $this;
     }
-          
+
     public function getData()
     {
         $data = array();
-        
+
         // PAYMENT
         $data['payment'] = $this->paymentData;
         $data['payment']['action'] = PaylineApiConstants::PAYMENT_ACTION_REFUND;
-        
+
         $paymentMethod = $this->payment->getMethod();
         $paymentAdditionalInformation = $this->payment->getAdditionalInformation();
-        $integrationType = $this->scopeConfig->getValue('payment/'.$paymentMethod.'/integration_type');
+        $integrationType = $this->scopeConfig->getValue('payment/'.$paymentMethod.'/integration_type',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if ($integrationType == PaylineApiConstants::INTEGRATION_TYPE_REDIRECT) {
             $data['payment']['contractNumber'] = $paymentAdditionalInformation['contract_number'];
         } elseif ($integrationType == PaylineApiConstants::INTEGRATION_TYPE_WIDGET) {
@@ -85,23 +86,23 @@ class DoRefund extends AbstractRequest
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
         // currency
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->order->getOrderCurrencyCode());
-        
+
         // Transaction ID
         $data['transactionID'] = $data['payment']['transactionID'];
         unset($data['payment']['transactionID']);
         // Same for comment
         $data['comment'] = $data['payment']['comment'];
         unset($data['payment']['comment']);
-        
+
         // PRIVATE DATA LIST
         $data['privateDataList'] = array();
-        
+
         // SEQUENCE NUMBER
         $data['sequenceNumber'] = '';
-        
+
         // MEDIA
         $data['media'] = '';
-        
+
         return $data;
     }
 }

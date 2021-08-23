@@ -13,17 +13,17 @@ class Wallet extends Template
      * @var WalletManagement
      */
     protected $walletManagement;
-    
+
     /**
      * @var CurrentCustomerHelper
      */
     protected $currentCustomerHelper;
-    
+
     /**
      * @var array
      */
     protected $manageWebWalletResponse;
-    
+
     public function __construct(
         Template\Context $context,
         CurrentCustomerHelper $currentCustomerHelper,
@@ -66,7 +66,8 @@ class Wallet extends Template
     {
         return [
             'token' => $this->manageWebWalletResponse['token'],
-            'environment' => $this->_scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT),
+            'environment' => $this->_scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
         ];
     }
 

@@ -322,13 +322,16 @@ class Client
         //if(!isset($this->paylineSDK)) {
             // TODO Handle Proxy
             $paylineSdkParams = array(
-                'merchant_id' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID),
-                'access_key' => $this->encryptor->decrypt($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY)),
+                'merchant_id' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID,
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+                'access_key' => $this->encryptor->decrypt($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY,
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE)),
                 'proxy_host' => null,
                 'proxy_port' => null,
                 'proxy_login' => null,
                 'proxy_password' => null,
-                'environment' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT),
+                'environment' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
                 'pathLog' => BP . '/var/log/payline_sdk/',
                 'logLevel' => LoggerConstants::INFO,
             );
