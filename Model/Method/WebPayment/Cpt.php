@@ -47,4 +47,23 @@ class Cpt extends AbstractMethod
 
         return $this;
     }
+
+    /**
+     * Check refund availability.
+     *
+     * @return bool
+     */
+    public function canRefund()
+    {
+        /** @var \Magento\Sales\Model\Order\Payment $payment */
+        $payment = $this->getInfoInstance();
+        $contractNumber = $payment->getAdditionalInformation('contract_number');
+        $nonRefundContracts = $this->contractManagement->getNonRefundContracts();
+        foreach ($nonRefundContracts as $contract) {
+            if($contract->getNumber() == $contractNumber) {
+                return false;
+            }
+        }
+        return parent::canRefund();
+    }
 }

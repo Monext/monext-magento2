@@ -1,45 +1,27 @@
 <?php
 
-
 namespace Monext\Payline\Model\System\Config\Backend;
 
 use \Monext\Payline\Helper\Constants;
-use Monext\Payline\Helper\Data as HelperData;
 
-class Contract extends \Magento\Framework\App\Config\Value
+class Contract extends AbstractValue
 {
-    /**
-     * @var HelperData
-     */
-    private $helperData;
+    function getActionValue()
+    {
+        return $this->getDataByPath(Constants::CONFIG_PATH_RAW_PAYLINE_CPT_ACTION);
+    }
 
-    public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        HelperData $helperData,
-        array $data = []
-    ) {
-        $this->helperData = $helperData;
-        parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
+    function getContractsValue()
+    {
+        return $this->getValue();
     }
 
     public function beforeSave()
     {
-        //var_dump(__METHOD__);
+        //TODO: Check wallet activation for EQUENS
 
-        $contracts = $this->getValue();
-        $action = $this->getFieldsetDataValue(Constants::CONFIG_PATH_PAYLINE_CPT_ACTION);
-        $action = $this->getFieldsetDataValue('payment/payline/payline_solutions/payline_cpt/payment_action');
-        $contracts = [];
+        //TODO: Check same card_type with widget integration
 
-        if (!$this->helperData->isActionAvailableForContract($action, $contracts)) {
-            $msg = __('Invalid action for selected contracts %s %s', [$action, $contracts]);
-            throw new \Magento\Framework\Exception\LocalizedException($msg);
-        }
         return parent::beforeSave();
     }
 }

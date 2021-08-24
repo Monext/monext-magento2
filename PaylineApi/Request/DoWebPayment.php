@@ -180,7 +180,9 @@ class DoWebPayment extends AbstractRequest
         $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
+
         $this->addSoftDescriptor($data);
+
     }
 
     /**
@@ -192,15 +194,13 @@ class DoWebPayment extends AbstractRequest
      */
     protected function addSoftDescriptor(&$data)
     {
+        $merchantName = $this->helperData->getMerchantName();
 
-        //TODO : Set merchant name
-        $merchantName = "MERCHANTNAME";
         $customer = $this->cart->getCustomer();
         $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
-        $data['payment']['softDescriptor'] = $merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey;
-
-        //TODO : clear string only alphanum
-
+        $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey, 0, 64);
+        //$data['payment']['softDescriptor'] = 'MERCHANTNAME212108240000050481';
+        //$data['payment']['softDescriptor'] = 'MaCarteCadeau210129513345';
     }
 
 

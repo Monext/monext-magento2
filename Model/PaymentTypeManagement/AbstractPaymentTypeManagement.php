@@ -57,6 +57,11 @@ abstract class AbstractPaymentTypeManagement
 
         $payment->setTransactionId($transactionData['id']);
 
+        //In widget mode or with NX payment there is no contract_number
+        if(!$payment->getAdditionalInformation('contract_number') && $response->getContractNumber()) {
+            $payment->setAdditionalInformation('contract_number', $response->getContractNumber());
+        }
+
         // TODO Add controls to avoid double authorization/capture
         if ($paymentData['action'] == PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION) {
             $payment->setIsTransactionClosed(false);

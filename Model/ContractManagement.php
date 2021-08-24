@@ -9,6 +9,7 @@ use Monext\Payline\Model\ContractFactory;
 use Monext\Payline\Model\ResourceModel\Contract\Collection as ContractCollection;
 use Monext\Payline\Model\ResourceModel\Contract\CollectionFactory as ContractCollectionFactory;
 use Monext\Payline\PaylineApi\Client as PaylineApiClient;
+use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Request\GetMerchantSettingsFactory as RequestGetMerchantSettingsFactory;
 
 class ContractManagement
@@ -47,6 +48,8 @@ class ContractManagement
      * @var ContractCollection
      */
     protected $usedContracts;
+
+    protected $forbiddenContractsByAction = [];
 
     public function __construct(
         CacheInterface $cache,
@@ -116,11 +119,50 @@ class ContractManagement
         return $this->usedContracts;
     }
 
+    /**
+     * @param $action
+     * @return false|mixed|ContractCollection
+     */
+    public function getForbiddenContractsForAction($action)
+    {
+        if(!isset($this->forbiddenContractsByAction[$action])) {
+            $forbiddenCardType = [];
+            switch ($action) {
+                case PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION:
+                    $forbiddenCardType = PaylineApiConstants::CONTRACT_CARD_TYPE_AUTHORIZATION_FORBIDDEN;
+                    break;
+                case PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION_CAPTURE:
+                    $forbiddenCardType = PaylineApiConstants::CONTRACT_CARD_TYPE_AUTHORIZATION_CAPTURE_FORBIDDEN;
+                    break;
+            }
+
+            if($forbiddenCardType) {
+                $contractCollection = $this->contractCollectionFactory->create();
+                $contractCollection->addFieldToFilter('card_type', ['in' => $forbiddenCardType]);
+                $this->forbiddenContractsByAction[$action] = $contractCollection;
+            } else {
+                $this->forbiddenContractsByAction[$action] = false;
+            }
+        }
+
+
+        return $this->forbiddenContractsByAction[$action];
+    }
+
+
+
+    public function getNonRefundContracts() {
+        $contractCollection = $this->contractCollectionFactory->create();
+        $contractCollection->addFieldToFilter('card_type', ['in' => PaylineApiConstants::CONTRACT_CARD_TYPE_REFUND_FORBIDDEN]);
+
+        return $contractCollection;
+    }
+
 
     /**
      * @deprecated
      *
-     * DO not used but for test to avoid error
+     * DO not used but only for test to avoid error
      *
      *     [result] => Array
     (

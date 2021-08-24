@@ -25,7 +25,6 @@ class Nx extends AbstractPaymentTypeManagement
     {
         $payment->setAdditionalInformation('payment_cycling', $response->getBillingRecords(['date', 'amount', 'rank']));
         $payment->setAdditionalInformation('payment_record_id', $response->getPaymentRecordId());
-        $payment->setAdditionalInformation('contract_number', $response->getContractNumber());
         parent::handlePaymentSuccess($response, $payment);
     }
 }
