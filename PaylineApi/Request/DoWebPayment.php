@@ -199,18 +199,14 @@ class DoWebPayment extends AbstractRequest
         $customer = $this->cart->getCustomer();
         $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
         $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey, 0, 64);
-        //$data['payment']['softDescriptor'] = 'MERCHANTNAME212108240000050481';
-        //$data['payment']['softDescriptor'] = 'MaCarteCadeau210129513345';
     }
-
 
 
 
     protected function prepareOrderData(&$data)
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
-        //Todo: Set final country
-        $data['order']['country'] = 'FR';
+        $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
         $data['order']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['order']['date'] = $this->formatDateTime($this->cart->getCreatedAt());
