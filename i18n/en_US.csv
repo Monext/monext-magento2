@@ -5,3 +5,6 @@
 "payline_production","Production"
 "There was an error processing your order. Please contact us or try again later.","There was an error processing your order. Please contact us or try again later."
 "Click here if you are not redirected within 10 seconds...","Click here if you are not redirected within 10 seconds..."
+"Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
+"Transaction already exists for this order","Transaction already exists for this order"
+"Cannot retrieve valid customer cart.","Cannot retrieve valid customer cart."
