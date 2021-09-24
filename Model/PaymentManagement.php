@@ -377,6 +377,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $this->paylineCartManagement->placeOrderByToken($token);
             $order = $this->paylineOrderManagement->getOrderByToken($token);
         }
+
         // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT
         $this->paylineOrderManagement->checkOrderPaymentFromPayline($order);
 
@@ -405,6 +406,15 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected function synchronizePaymentWithPaymentGateway(OrderPayment $payment, $token)
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
+
+        if($payment->getLastTransId()) {
+            $message = __('Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+            $payment->getOrder()->addStatusHistoryComment($message);
+            $payment->getOrder()->save();
+            throw new \Exception('Transaction already exists for this order');
+        }
+
+
         $payment->setData('payline_response', $response);
         $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
         if ($response->isSuccess()) {
