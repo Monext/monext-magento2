@@ -167,6 +167,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      */
     protected $transactionManager;
 
+    protected $gwpdResponseByToken = [];
+
+
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartTotalRepositoryInterface $cartTotalRepository,
@@ -316,11 +319,15 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
     protected function callPaylineApiGetWebPaymentDetails($token)
     {
-        $request = $this->requestGetWebPaymentDetailsFactory->create();
-        $request
-            ->setToken($token);
 
-        return $this->paylineApiClient->callGetWebPaymentDetails($request);
+        if(!isset($this->gwpdResponseByToken[$token])) {
+            $request = $this->requestGetWebPaymentDetailsFactory->create();
+            $request->setToken($token);
+
+            $this->gwpdResponseByToken[$token] = $this->paylineApiClient->callGetWebPaymentDetails($request);
+        }
+
+        return $this->gwpdResponseByToken[$token];
     }
 
     protected function callPaylineApiDoCapture(
@@ -372,14 +379,26 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
     public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false)
     {
-        $order = $this->paylineOrderManagement->getOrderByToken($token);
 
+        // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT BEFORE DOING ANYTHING
+        $quote = $this->paylineCartManagement->getCartByToken($token);
+        if($quote && $quote->getId()) {
+            $this->paylineOrderManagement->checkQuotePaymentFromPayline($quote);
+            $response = $this->callPaylineApiGetWebPaymentDetails($token);
+            $transactionData = $response->getTransactionData();
+            // IN CASE THERE IS NO TRANSACTION NO NEED TO CREATE AN ORDER
+            if(empty($transactionData) || empty($transactionData['id'])) {
+                throw new \Exception('Payment is not finalized.');
+            }
+        } else {
+            throw new \Exception('Cannot retrieve valid customer cart.');
+        }
+
+        $order = $this->paylineOrderManagement->getOrderByToken($token);
         if (!$order->getId()) {
             $this->paylineCartManagement->placeOrderByToken($token);
             $order = $this->paylineOrderManagement->getOrderByToken($token);
         }
-        // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT
-        $this->paylineOrderManagement->checkOrderPaymentFromPayline($order);
 
         $logData = [
             'token' => $token,
@@ -406,6 +425,13 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected function synchronizePaymentWithPaymentGateway(OrderPayment $payment, $token)
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
+        if($payment->getLastTransId()) {
+            $message = __('Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+            $payment->getOrder()->addStatusHistoryComment($message);
+            $payment->getOrder()->save();
+            throw new \Exception('Transaction already exists for this order');
+        }
+
         $payment->setData('payline_response', $response);
         $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
         if ($response->isSuccess()) {
@@ -414,7 +440,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             }
         } elseif ( $response->isWaitingAcceptance() ) {
             if ($paymentTypeManagement->validate($response, $payment)) {
-                    $this->handlePaymentWaitingAcceptance($payment, $message);
+                    // TODO: Need to asssociate a transaction
+                    //$this->handlePaymentWaitingAcceptance($payment, $message);
+                    $this->handlePaymentWaitingAcceptanceFacade($response, $payment);
             }
         } else {
             $this->flagPaymentAsInError($payment, $response);
@@ -466,6 +494,23 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $message ?? $payment->getData('payline_error_message')
         );
     }
+
+    protected function handlePaymentWaitingAcceptanceFacade(
+        ResponseGetWebPaymentDetails $response,
+        OrderPayment $payment
+    )
+    {
+        $message = $response->getResultCode() . ' : ' . $response->getShortErrorMessage();
+        $this->handlePaymentWaitingAcceptance($payment, $message);
+// TODO: Need to asssociate a transaction
+//        $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
+//        $paymentTypeManagement->handlePaymentWaitingAcceptance($response, $payment);
+//        $this->walletManagement->handleWalletReturnFromPaymentGateway($response, $payment);
+//        $this->paylineOrderManagement->sendNewOrderEmail($payment->getOrder());
+
+        return $this;
+    }
+
 
     protected function handlePaymentAbandoned(OrderPayment $payment, $message = null)
     {

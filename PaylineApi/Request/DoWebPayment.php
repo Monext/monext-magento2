@@ -180,16 +180,33 @@ class DoWebPayment extends AbstractRequest
         $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
+
+        $this->addSoftDescriptor($data);
+
     }
 
+    /**
+     * Fill with the recommendation below:
+     * -MerchantName
+     * -Transaction date (string 6: YYMMDD)
+     * -Order/ reference
+     * -Buyer / customerId
+     */
+    protected function addSoftDescriptor(&$data)
+    {
+        $merchantName = $this->helperData->getMerchantName();
+
+        $customer = $this->cart->getCustomer();
+        $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
+        $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey, 0, 64);
+    }
 
 
 
     protected function prepareOrderData(&$data)
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
-        //Todo: Set final country
-        $data['order']['country'] = 'FR';
+        $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
         $data['order']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['order']['date'] = $this->formatDateTime($this->cart->getCreatedAt());

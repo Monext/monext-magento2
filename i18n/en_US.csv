@@ -17,3 +17,6 @@
 "The return codes of the LCLF module related to Payline anti-fraud rules.","The return codes of the LCLF module related to Payline anti-fraud rules."
 "Default message","Default message"
 "This message can happen when Payline server cannot be reached.","This message can happen when Payline server cannot be reached."
+"Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
+"Transaction already exists for this order","Transaction already exists for this order"
+"Cannot retrieve valid customer cart.","Cannot retrieve valid customer cart."

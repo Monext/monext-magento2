@@ -38,12 +38,10 @@ class Cpt extends AbstractDoWebPaymentType
     {
         if ($this->cart->getQuote()->getCustomerId()) {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
-            $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwidget');
-            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
+            $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
         } else {
             $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
-            $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestreturnfromwidget');
-            //$data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfromwidget');
+            $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/guestcancelfromwidget');
         }
         $data['notificationURL'] = $this->urlBuilder->getUrl('payline/webpayment/notifyfrompaymentgateway');
     }
@@ -51,7 +49,7 @@ class Cpt extends AbstractDoWebPaymentType
     protected function prepareRedirectUrls(&$data)
     {
         $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfrompaymentgateway');
-        $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfrompaymentgateway');
+        $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/cancelfrompaymentgateway');
         $data['notificationURL'] = $this->urlBuilder->getUrl('payline/webpayment/notifyfrompaymentgateway');
     }
 }

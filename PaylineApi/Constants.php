@@ -5,7 +5,7 @@ namespace Monext\Payline\PaylineApi;
 class Constants
 {
     // @see : https://docs.payline.com/display/DT/Historique+de+version+de+l%27API
-    const LASTEST_API_VERSION = 21;
+    const LASTEST_API_VERSION = 16;
 
     // @see : https://docs.payline.com/display/DT/Codes+-+Mode
     const PAYMENT_MODE_CPT = 'CPT';
@@ -51,4 +51,12 @@ class Constants
     const PAYMENT_CONTRACT_CARD_TYPE_4XONEY = '4XONEY';
     const PAYMENT_CONTRACT_CARD_TYPE_3XONEY_SF = '3XONEY_SF';
     const PAYMENT_CONTRACT_CARD_TYPE_4XONEY_SF = '4XONEY_SF';
+
+
+    const CONTRACT_CARD_TYPE_AUTHORIZATION_FORBIDDEN = array('EQUENS');
+
+    const CONTRACT_CARD_TYPE_AUTHORIZATION_CAPTURE_FORBIDDEN = array();
+
+    const CONTRACT_CARD_TYPE_REFUND_FORBIDDEN = array('EQUENS');
+
 }

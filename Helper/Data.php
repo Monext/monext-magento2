@@ -2,7 +2,6 @@
 
 namespace Monext\Payline\Helper;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Math\Random as MathRandom;
@@ -117,6 +116,11 @@ class Data extends AbstractHelper
         return $status;
     }
 
+    public function isPaymentQuoteFromPayline(\Magento\Quote\Model\Quote\Payment $payment)
+    {
+        return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
+    }
+
     public function isPaymentFromPayline(\Magento\Sales\Model\Order\Payment $payment)
     {
         return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
@@ -177,6 +181,22 @@ class Data extends AbstractHelper
         return $amount;
     }
 
+
+    /**
+     * @return string
+     */
+    public function getMerchantName()
+    {
+        $merchantName = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+        if(empty($merchantName)) {
+            $merchantName = $this->scopeConfig->getValue(\Magento\Store\Model\Information::XML_PATH_STORE_INFO_NAME,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        }
+
+        return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName)) ?? 'UNDEFINEDMERCHANTNAME';
+    }
 
     /**
      * @param ResponseGetWebPaymentDetails $response

@@ -37,6 +37,11 @@
                         <source_model>Monext\Payline\Model\System\Config\Source\Language</source_model>
                         <config_path>payline/general/language</config_path>
                     </field>
+                    <field id="merchant_name" translate="label" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Name</label>
+                        <config_path>payline/general/merchant_name</config_path>
+                        <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
+                    </field>
                     <field id="debug" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Debug</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -114,6 +119,7 @@
                         <label>Contracts</label>
                         <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Contract</frontend_model>
                         <source_model>Monext\Payline\Model\System\Config\Source\Contract</source_model>
+                        <backend_model>Monext\Payline\Model\System\Config\Backend\Contract</backend_model>
                         <config_path>payline/general/contracts</config_path>
                     </field>
                 </group>
@@ -150,6 +156,7 @@
                             <label>Payment Action</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\PaymentAction</source_model>
                             <config_path>payment/payline_web_payment_cpt/payment_action</config_path>
+                            <backend_model>Monext\Payline\Model\System\Config\Backend\Action</backend_model>
                         </field>
                         <field id="wallet_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Wallet</label>
