@@ -76,6 +76,36 @@
                             <field id="proxy_enabled">1</field>
                         </depends>
                     </field>
+                    <group id="user_error_message" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
+                        <label>User Error Messages</label>
+                        <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
+                        <attribute type="expanded">0</attribute>
+                        <field id="type1" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Payline Back (01)</label>
+                            <config_path>payline/general/user_error_message_type1</config_path>
+                            <comment><![CDATA[Return codes linked to the return of the bank processing.]]></comment>
+                        </field>
+                        <field id="type2" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Payline Front (02)</label>
+                            <config_path>payline/general/user_error_message_type2</config_path>
+                            <comment><![CDATA[Return codes linked to the return of Payline processing.]]></comment>
+                        </field>
+                        <field id="type3" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>3DSecure (03)</label>
+                            <config_path>payline/general/user_error_message_type3</config_path>
+                            <comment><![CDATA[The return codes of the 3DS module related to authentication and 3DSecure processing.]]></comment>
+                        </field>
+                        <field id="type4" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>LCLF (04)</label>
+                            <config_path>payline/general/user_error_message_type4</config_path>
+                            <comment><![CDATA[The return codes of the LCLF module related to Payline anti-fraud rules.]]></comment>
+                        </field>
+                        <field id="default" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Default message</label>
+                            <config_path>payline/general/user_error_message_default</config_path>
+                            <comment><![CDATA[This message can happen when Payline server cannot be reached.]]></comment>
+                        </field>
+                    </group>
                 </group>
                 <group id="payline_contracts" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
                     <label>Payline Contracts</label>

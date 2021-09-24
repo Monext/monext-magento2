@@ -10,6 +10,7 @@ use Magento\Framework\Data\Collection;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Checkout\Api\PaymentInformationManagementInterface as CheckoutPaymentInformationManagementInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\BillingAddressManagementInterface as QuoteBillingAddressManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
@@ -396,7 +397,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
                 $this->paylineCartManagement->restoreCartFromOrder($order);
             }
 
-            throw new \Exception(__($order->getPayment()->getData('payline_response')->getLongErrorMessage() ?? $order->getPayment()->getData('payline_error_message') ?: 'Payment is in error.'));
+            throw new LocalizedException(__($order->getPayment()->getData('payline_user_message') ?? $order->getPayment()->getData('payline_response')->getLongErrorMessage() ?: 'Payment is in error.'));
         }
 
         return $this;
@@ -411,24 +412,19 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             if ($paymentTypeManagement->validate($response, $payment)) {
                 $this->handlePaymentSuccessFacade($response, $payment);
             }
-        } else {
-            $message = $response->getResultCode() . ' : ' . $response->getShortErrorMessage();
-
-            if ($response->isWaitingAcceptance()) {
-                if ($paymentTypeManagement->validate($response, $payment)) {
+        } elseif ( $response->isWaitingAcceptance() ) {
+            if ($paymentTypeManagement->validate($response, $payment)) {
                     $this->handlePaymentWaitingAcceptance($payment, $message);
-                }
-            } elseif ($response->isCanceled()) {
-                $this->flagPaymentAsInError($payment, $message);
+            }
+        } else {
+            $this->flagPaymentAsInError($payment, $response);
+            if ($response->isCanceled()) {
                 $paymentTypeManagement->handlePaymentCanceled($payment);
             } elseif ($response->isAbandoned()) {
-                $this->flagPaymentAsInError($payment, $message);
                 $this->handlePaymentAbandoned($payment);
             } elseif ($response->isFraud()) {
-                $this->flagPaymentAsInError($payment, $message);
                 $this->handlePaymentFraud($payment);
             } else {
-                $this->flagPaymentAsInError($payment, $message);
                 $this->handlePaymentRefused($payment);
             }
         }
@@ -719,11 +715,25 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+    /**
+     * @param OrderPayment $payment
+     * @param ResponseGetWebPaymentDetails|null $response
+     * @return OrderPayment
+     */
     protected function flagPaymentAsInError(OrderPayment $payment, $message = null)
     {
+        $message = null;
+        $response = null;
+        if(!$message) {
+            $response = $payment->getData('payline_response');
+            $message = $response->getResultCode() . ' : ' . $response->getShortErrorMessage();
+        }
+
 
         $payment->setData('payline_in_error', true);
         $payment->setData('payline_error_message', $message);
+        $payment->setData('payline_user_message', $response ? $this->helperData->getUserMessageForCode($response) : $message);
+
         return $payment;
     }
 }
