@@ -48,14 +48,29 @@ abstract class AbstractPaymentTypeManagement
         );
     }
 
-    public function handlePaymentSuccess(
+
+
+    protected function handlePaymentData(
         ResponseGetWebPaymentDetails $response,
         OrderPayment $payment
     ) {
         $transactionData = $response->getTransactionData();
-        $paymentData = $response->getPaymentData();
-
         $payment->setTransactionId($transactionData['id']);
+
+        //In widget mode or with NX payment there is no contract_number
+        if(!$payment->getAdditionalInformation('contract_number') && $response->getContractNumber()) {
+            $payment->setAdditionalInformation('contract_number', $response->getContractNumber());
+        }
+
+    }
+
+    public function handlePaymentSuccess(
+        ResponseGetWebPaymentDetails $response,
+        OrderPayment $payment
+    ) {
+        $this->handlePaymentData($response, $payment);
+
+        $paymentData = $response->getPaymentData();
 
         // TODO Add controls to avoid double authorization/capture
         if ($paymentData['action'] == PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION) {
@@ -65,5 +80,12 @@ abstract class AbstractPaymentTypeManagement
             $payment->getMethodInstance()->setSkipCapture(true);
             $payment->capture();
         }
+    }
+
+    // TODO: Need to asssociate a transaction
+    public function handlePaymentWaitingAcceptance(ResponseGetWebPaymentDetails $response,
+                                                   OrderPayment $payment)
+    {
+        //$this->handlePaymentData($response, $payment);
     }
 }

@@ -41,3 +41,4 @@
 "Invalid contract","Contrat de paiement non valide"
 "Payline card type logo url does not exists.","Le logo pour le type de paiement n'existe pas"
 "ERROR for order ; payment gateway amount %1 does not match order amount %2.","ERREUR pour la commande; le montant de la passerelle de paiement de %1 ne correspond pas au montant de la commande de %2."
+"Cannot save configuration, payment action "%1" is not compatible with contract "%2"","Sauvegarde impossible, l'action de paiement "%1" n'est pas compatible avec le paiement "%2""

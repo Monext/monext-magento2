@@ -1,6 +1,6 @@
 # 1.2.12
-Released on 2021-09-24
-
+Released on 2021-08-01
+- Add EQUENS payment
 
 # 1.2.11
 Released on 2021-06-30
