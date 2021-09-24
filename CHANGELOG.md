@@ -1,3 +1,7 @@
+# 1.2.12
+Released on 2021-09-24
+
+
 # 1.2.11
 Released on 2021-06-30
 - Fix multi store configuration
