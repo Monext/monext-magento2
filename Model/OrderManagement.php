@@ -85,6 +85,26 @@ class OrderManagement
         return $this->orderFactory->create()->load($orderIncrementId, 'increment_id');
     }
 
+    /**
+     * @param \Magento\Quote\Model\Quote $quote
+     * @return $this
+     * @throws \Exception
+     */
+    public function checkQuotePaymentFromPayline(\Magento\Quote\Model\Quote $quote)
+    {
+        if (!$this->helperData->isPaymentQuoteFromPayline($quote->getPayment())) {
+            throw new \Exception('Invalid Payment Method');
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @param Order $order
+     * @return $this
+     * @throws \Exception
+     */
     public function checkOrderPaymentFromPayline(\Magento\Sales\Model\Order $order)
     {
         if (!$this->helperData->isPaymentFromPayline($order->getPayment())) {
@@ -93,6 +113,9 @@ class OrderManagement
 
         return $this;
     }
+
+
+
 
     public function sendNewOrderEmail(\Magento\Sales\Model\Order $order)
     {

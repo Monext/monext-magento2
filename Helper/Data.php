@@ -115,6 +115,11 @@ class Data extends AbstractHelper
         return $status;
     }
 
+    public function isPaymentQuoteFromPayline(\Magento\Quote\Model\Quote\Payment $payment)
+    {
+        return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
+    }
+
     public function isPaymentFromPayline(\Magento\Sales\Model\Order\Payment $payment)
     {
         return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);

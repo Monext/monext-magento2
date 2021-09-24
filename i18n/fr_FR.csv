@@ -43,3 +43,4 @@
 "ERROR for order ; payment gateway amount %1 does not match order amount %2.","ERREUR pour la commande; le montant de la passerelle de paiement de %1 ne correspond pas au montant de la commande de %2."
 "Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
 "Transaction already exists for this order","Une transaction existe déja pour cette commande"
+"Cannot retrieve valid customer cart.","Pas de panier correspondant pour ce paiement."

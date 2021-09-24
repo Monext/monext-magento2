@@ -48,6 +48,8 @@ class CartManagement
      */
     protected $categoryCollectionFactory;
 
+    protected $cartByToken = [];
+
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartManagementInterface $cartManagement,
@@ -101,11 +103,18 @@ class CartManagement
         return $this;
     }
 
+    /**
+     * @param $token
+     * @return \Magento\Quote\Model\Quote
+     */
     public function getCartByToken($token)
     {
-        $orderIncrementId = $this->orderIncrementIdTokenFactory->create()->getOrderIncrementIdByToken($token);
-        // TODO Use QuoteRepository instead of quote::load
-        return $this->quoteFactory->create()->load($orderIncrementId, 'reserved_order_id');
+        if(!isset($this->cartByToken[$token])) {
+            $orderIncrementId = $this->orderIncrementIdTokenFactory->create()->getOrderIncrementIdByToken($token);
+            // TODO Use QuoteRepository instead of quote::load
+            $this->cartByToken[$token] = $this->quoteFactory->create()->load($orderIncrementId, 'reserved_order_id');
+        }
+        return $this->cartByToken[$token];
     }
 
     public function getProductCollectionFromCart($cartId)
