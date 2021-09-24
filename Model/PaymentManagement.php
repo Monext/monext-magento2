@@ -442,7 +442,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
             if ($response->isWaitingAcceptance()) {
                 if ($paymentTypeManagement->validate($response, $payment)) {
-                    $this->handlePaymentWaitingAcceptance($payment, $message);
+                    // TODO: Need to asssociate a transaction
+                    //$this->handlePaymentWaitingAcceptance($payment, $message);
+                    $this->handlePaymentWaitingAcceptanceFacade($response, $payment);
                 }
             } elseif ($response->isCanceled()) {
                 $this->flagPaymentAsInError($payment, $message);
@@ -496,6 +498,23 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $message ?? $payment->getData('payline_error_message')
         );
     }
+
+    protected function handlePaymentWaitingAcceptanceFacade(
+        ResponseGetWebPaymentDetails $response,
+        OrderPayment $payment
+    )
+    {
+        $message = $response->getResultCode() . ' : ' . $response->getShortErrorMessage();
+        $this->handlePaymentWaitingAcceptance($payment, $message);
+// TODO: Need to asssociate a transaction
+//        $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
+//        $paymentTypeManagement->handlePaymentWaitingAcceptance($response, $payment);
+//        $this->walletManagement->handleWalletReturnFromPaymentGateway($response, $payment);
+//        $this->paylineOrderManagement->sendNewOrderEmail($payment->getOrder());
+
+        return $this;
+    }
+
 
     protected function handlePaymentAbandoned(OrderPayment $payment, $message = null)
     {

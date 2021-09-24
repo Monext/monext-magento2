@@ -35,7 +35,11 @@ class Contract implements OptionSourceInterface
 
         $result = array();
         // TODO Use a contract repository for this
+        /** @var \Monext\Payline\Model\ResourceModel\Contract\Collection $contractCollection */
         $contractCollection = $this->contractCollectionFactory->create();
+        $contractCollection->setOrder('point_of_sell_label')
+            ->setOrder('label')
+            ->setOrder('card_type');
 
         foreach ($contractCollection as $contract) {
             $result[] = [

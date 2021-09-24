@@ -1,3 +1,7 @@
+# 1.2.12
+Released on 2021-08-01
+- Add EQUENS payment
+
 # 1.2.11
 Released on 2021-06-30
 - Fix multi store configuration
