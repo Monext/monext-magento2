@@ -29,6 +29,11 @@ class Constants
 
 
 
+    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
+    const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
+
+
+
     //Const CPT
     const CONFIG_PATH_PAYLINE_CPT_ACTION = 'payment/'.self::WEB_PAYMENT_CPT.'/payment_action';
 
@@ -59,10 +64,6 @@ class Constants
     const COST_TYPE_PERCENT = 2;
 
     const ORDER_STATUS_PAYLINE_PENDING_ONEY  = 'pending_oney';
-
-
-
-
 
     const PAYLINE_API_USED_BY_PREFIX = 'Magento';
 
