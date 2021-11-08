@@ -337,7 +337,7 @@ class Client
             );
 
 
-            $this->logger->log(LoggerConstants::DEBUG, print_r($paylineSdkParams, true));
+            $this->logger->log(LoggerConstants::DEBUG, $this->stringifyArrayWithOffuscation($paylineSdkParams));
 
             $this->paylineSDK = $this->paylineSDKFactory->create($paylineSdkParams);
             $currentModule = $this->moduleList->getOne(HelperConstants::MODULE_NAME);
@@ -345,7 +345,6 @@ class Client
                 $this->productMetadata->getVersion() . ' - '
                 .' v'.$currentModule['setup_version']);
         //}
-
 
             return $this;
     }
@@ -361,8 +360,8 @@ class Client
         $logLevel =  $response->isSuccess() ? LoggerConstants::DEBUG : LoggerConstants::ERROR;
         $this->logger->log($logLevel,
             get_class($request),
-            ['Request'=> print_r($request->getData(), true),
-                'Response'=> print_r($response->getData(), true)]);
+            ['Request'=> $this->stringifyArrayWithOffuscation($request->getData()),
+                'Response'=> $this->stringifyArrayWithOffuscation($response->getData())]);
 
     }
 
@@ -376,5 +375,23 @@ class Client
             $this->paylineSDK->addPrivateData($privateDataItem);
         }
         return $this;
+    }
+
+
+    /**
+     * @param $arrayToPrint
+     * @param string[] $encryptKeys
+     * @return bool|string
+     */
+    protected function stringifyArrayWithOffuscation($arrayToPrint, $encryptKeys = ['access_key'])
+    {
+        foreach ($encryptKeys as $key) {
+            if(isset($arrayToPrint[$key])) {
+                $arrayToPrint[$key] = preg_replace('/^(.{4}).{'.(strlen($arrayToPrint[$key]) - 6).'}(.*)$/', '$1'.str_repeat("x", strlen($arrayToPrint[$key])-6).'$2', $arrayToPrint[$key]);
+            }
+
+        }
+
+        return print_r($arrayToPrint, true);
     }
 }

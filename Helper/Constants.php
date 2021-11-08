@@ -14,6 +14,7 @@ class Constants
 
     const CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT = 'payline/general/environment';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID = 'payline/general/merchant_id';
+    const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME = 'payline/general/merchant_name';
     const CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY = 'payline/general/access_key';
     const CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE = 'payline/general/language';
     const CONFIG_PATH_PAYLINE_GENERAL_DEBUG = 'payline/general/debug';
@@ -26,8 +27,26 @@ class Constants
     const CONFIG_PATH_PAYLINE_DEFAULT_DELIVERY_EXPECTED_DELAY = 'payline/common_default/delivery_expected_delay';
     const CONFIG_PATH_PAYLINE_DEFAULT_PREFIX = 'payline/common_default/prefix';
 
+
+
+    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
+    const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
+
+
+
+    //Const CPT
+    const CONFIG_PATH_PAYLINE_CPT_ACTION = 'payment/'.self::WEB_PAYMENT_CPT.'/payment_action';
+
+
     //Const NX
     const CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT = 'payment/'.self::WEB_PAYMENT_NX.'/active_amount_min';
+
+
+
+    //Raw path for system backend model
+    const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';
+    const CONFIG_PATH_RAW_PAYLINE_CPT_ACTION        = 'groups/payline/groups/payline_solutions/groups/payline_cpt/fields/payment_action/value';
+
 
     const ORDER_STATUS_PAYLINE_PENDING = 'payline_pending';
     const ORDER_STATUS_PAYLINE_WAITING_CAPTURE = 'payline_waiting_capture';

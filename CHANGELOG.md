@@ -1,3 +1,10 @@
+# 1.2.12
+Released on 2021-08-01
+- Add EQUENS payment
+- Add configuration to manager technical errors
+- Prevent multiple transaction for one order
+- Prevent cancelled order creation when no Payline transaction
+
 # 1.2.11
 Released on 2021-06-30
 - Fix multi store configuration

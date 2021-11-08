@@ -37,6 +37,11 @@
                         <source_model>Monext\Payline\Model\System\Config\Source\Language</source_model>
                         <config_path>payline/general/language</config_path>
                     </field>
+                    <field id="merchant_name" translate="label" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Name</label>
+                        <config_path>payline/general/merchant_name</config_path>
+                        <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
+                    </field>
                     <field id="debug" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Debug</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -76,6 +81,36 @@
                             <field id="proxy_enabled">1</field>
                         </depends>
                     </field>
+                    <group id="user_error_message" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
+                        <label>User Error Messages</label>
+                        <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
+                        <attribute type="expanded">0</attribute>
+                        <field id="type1" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Payline Back (01)</label>
+                            <config_path>payline/general/user_error_message_type1</config_path>
+                            <comment><![CDATA[Return codes linked to the return of the bank processing.]]></comment>
+                        </field>
+                        <field id="type2" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Payline Front (02)</label>
+                            <config_path>payline/general/user_error_message_type2</config_path>
+                            <comment><![CDATA[Return codes linked to the return of Payline processing.]]></comment>
+                        </field>
+                        <field id="type3" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>3DSecure (03)</label>
+                            <config_path>payline/general/user_error_message_type3</config_path>
+                            <comment><![CDATA[The return codes of the 3DS module related to authentication and 3DSecure processing.]]></comment>
+                        </field>
+                        <field id="type4" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>LCLF (04)</label>
+                            <config_path>payline/general/user_error_message_type4</config_path>
+                            <comment><![CDATA[The return codes of the LCLF module related to Payline anti-fraud rules.]]></comment>
+                        </field>
+                        <field id="default" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Default message</label>
+                            <config_path>payline/general/user_error_message_default</config_path>
+                            <comment><![CDATA[This message can happen when Payline server cannot be reached.]]></comment>
+                        </field>
+                    </group>
                 </group>
                 <group id="payline_contracts" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
                     <label>Payline Contracts</label>
@@ -84,6 +119,7 @@
                         <label>Contracts</label>
                         <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Contract</frontend_model>
                         <source_model>Monext\Payline\Model\System\Config\Source\Contract</source_model>
+                        <backend_model>Monext\Payline\Model\System\Config\Backend\Contract</backend_model>
                         <config_path>payline/general/contracts</config_path>
                     </field>
                 </group>
@@ -120,6 +156,7 @@
                             <label>Payment Action</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\PaymentAction</source_model>
                             <config_path>payment/payline_web_payment_cpt/payment_action</config_path>
+                            <backend_model>Monext\Payline\Model\System\Config\Backend\Action</backend_model>
                         </field>
                         <field id="wallet_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Wallet</label>
