@@ -7,6 +7,8 @@ Released on 2022-01-24
   - To disable failover mechanism
   - Default category setting
 - Fix log path for SDK
+- Fix fr_FR translations
+- Fix Payline version API to 21 (revert from 1.2.12)
 
 # 1.2.12
 Released on 2021-08-01
