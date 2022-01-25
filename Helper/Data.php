@@ -215,4 +215,37 @@ class Data extends AbstractHelper
         return !empty($errorMessage) ? $errorMessage : $response->getLongErrorMessage();
     }
 
+
+    public function getDefaultCategories() {
+        return array(
+            array( 'value' => '1', 'name' => __('Computer (hardware and software)')),
+            array( 'value' => '2', 'name' => __('Electronics - TV - Hifi')),
+            array( 'value' => '3', 'name' => __('Phone')),
+            array( 'value' => '4', 'name' => __('Home appliance')),
+            array( 'value' => '5', 'name' => __('Habitat and garden')),
+            array( 'value' => '6', 'name' => __('Fashion Clothing')),
+            array( 'value' => '7', 'name' => __('Beauty product')),
+            array( 'value' => '8', 'name' => __('Jewelry')),
+            array( 'value' => '9', 'name' => __('Sport')),
+            array( 'value' => '10', 'name' => __('Hobbies')),
+            array( 'value' => '11', 'name' => __('Automobiles / motorcycles')),
+            array( 'value' => '12', 'name' => __('furnishing')),
+            array( 'value' => '13', 'name' => __('children')),
+            array( 'value' => '14', 'name' => __('Video games')),
+            array( 'value' => '15', 'name' => __('Toys')),
+            array( 'value' => '16', 'name' => __('Animals')),
+            array( 'value' => '17', 'name' => __('Food')),
+            array( 'value' => '18', 'name' => __('Gifts')),
+            array( 'value' => '19', 'name' => __('Shows')),
+            array( 'value' => '20', 'name' => __('traveling')),
+            array( 'value' => '21', 'name' => __('Auction')),
+            array( 'value' => '22', 'name' => __('Particular services')),
+            array( 'value' => '23', 'name' => __('Professional Services')),
+            array( 'value' => '24', 'name' => __('Music')),
+            array( 'value' => '25', 'name' => __('Book')),
+            array( 'value' => '26', 'name' => __('Photo'))
+        );
+    }
+
+
 }

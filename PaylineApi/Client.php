@@ -6,6 +6,7 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Framework\App\ProductMetadata;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\PaylineApi\PaylineSDKFactory;
 use Monext\Payline\PaylineApi\Request\DoCapture as RequestDoCapture;
@@ -109,7 +110,13 @@ class Client
     /**
      * @var ProductMetadata
      */
-    private $productMetadata;
+    protected $productMetadata;
+
+    /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
+
 
     /**
      * Client constructor.
@@ -127,6 +134,7 @@ class Client
      * @param EncryptorInterface $encryptor
      * @param ModuleListInterface $moduleList
      * @param ProductMetadata $productMetadata
+     * @param DirectoryList $directoryList
      */
     public function __construct(
         PaylineSDKFactory $paylineSDKFactory,
@@ -142,7 +150,8 @@ class Client
         Logger $logger,
         EncryptorInterface $encryptor,
         ModuleListInterface $moduleList,
-        ProductMetadata $productMetadata
+        ProductMetadata $productMetadata,
+        DirectoryList $directoryList
     ) {
         $this->paylineSDKFactory = $paylineSDKFactory;
         $this->scopeConfig = $scopeConfig;
@@ -158,6 +167,7 @@ class Client
         $this->moduleList = $moduleList;
         $this->productMetadata = $productMetadata;
         $this->responseGetPaymentRecordFactory = $responseGetPaymentRecordFactory;
+        $this->directoryList = $directoryList;
     }
 
     /**
@@ -318,35 +328,57 @@ class Client
      */
     protected function initPaylineSDK()
     {
-        // RESET Singleton on this because sdk::privateData are not resetable
-        //if(!isset($this->paylineSDK)) {
-            // TODO Handle Proxy
-            $paylineSdkParams = array(
-                'merchant_id' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
-                'access_key' => $this->encryptor->decrypt($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE)),
-                'proxy_host' => null,
-                'proxy_port' => null,
-                'proxy_login' => null,
-                'proxy_password' => null,
-                'environment' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
-                'pathLog' => BP . '/var/log/payline_sdk/',
-                'logLevel' => LoggerConstants::INFO,
-            );
+
+        $logSdkDir = 'payline_sdk';
+        $logSdkPath = $this->directoryList->getPath(DirectoryList::LOG) . '/' . $logSdkDir;
+        if (!file_exists($logSdkPath)) {
+            if(!mkdir($logSdkPath)) {
+                $logSdkPath = $this->directoryList->getPath(DirectoryList::LOG);
+            }
+        }
+
+        // Do not RESET Singleton if sdk::privateData is not resetable
+        if(isset($this->paylineSDK) && method_exists($this->paylineSDK, 'reset')) {
+// Need more tests to uncomment
+//            $this->paylineSDK->reset();
+//            $this->logger->log(LoggerConstants::DEBUG, 'Reset and use local paylineSDK');
+//            return $this->paylineSDK;
+        }
+
+        // TODO Handle Proxy
+        $paylineSdkParams = array(
+            'merchant_id' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+            'access_key' => $this->encryptor->decrypt($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE)),
+            'proxy_host' => null,
+            'proxy_port' => null,
+            'proxy_login' => null,
+            'proxy_password' => null,
+            'environment' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
+            'pathLog' => $logSdkPath . '/',
+            'logLevel' => LoggerConstants::INFO,
+        );
 
 
-            $this->logger->log(LoggerConstants::DEBUG, $this->stringifyArrayWithOffuscation($paylineSdkParams));
+        $this->logger->log(LoggerConstants::DEBUG, $this->stringifyArrayWithOffuscation($paylineSdkParams));
 
-            $this->paylineSDK = $this->paylineSDKFactory->create($paylineSdkParams);
-            $currentModule = $this->moduleList->getOne(HelperConstants::MODULE_NAME);
-            $this->paylineSDK->usedBy(      HelperConstants::PAYLINE_API_USED_BY_PREFIX . ' ' .
-                $this->productMetadata->getVersion() . ' - '
-                .' v'.$currentModule['setup_version']);
-        //}
+        $this->paylineSDK = $this->paylineSDKFactory->create($paylineSdkParams);
+        $currentModule = $this->moduleList->getOne(HelperConstants::MODULE_NAME);
+        $this->paylineSDK->usedBy(      HelperConstants::PAYLINE_API_USED_BY_PREFIX . ' ' .
+            $this->productMetadata->getVersion() . ' - '
+            .' v'.$currentModule['setup_version']);
 
-            return $this;
+        if(method_exists($this->paylineSDK, 'setFailoverOptions')) {
+            if($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DISABLE_FAILOVER,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
+                $this->paylineSDK->setFailoverOptions('disabled', true);
+            }
+        }
+
+
+        return $this;
     }
 
 
@@ -386,10 +418,14 @@ class Client
     protected function stringifyArrayWithOffuscation($arrayToPrint, $encryptKeys = ['access_key'])
     {
         foreach ($encryptKeys as $key) {
-            if(isset($arrayToPrint[$key])) {
-                $arrayToPrint[$key] = preg_replace('/^(.{4}).{'.(strlen($arrayToPrint[$key]) - 6).'}(.*)$/', '$1'.str_repeat("x", strlen($arrayToPrint[$key])-6).'$2', $arrayToPrint[$key]);
+            if(isset($arrayToPrint[$key]) ) {
+                $keyLength = strlen($arrayToPrint[$key]);
+                if($keyLength > 6) {
+                    $arrayToPrint[$key] = preg_replace('/^(.{4}).{'.($keyLength  - 6).'}(.*)$/', '$1'.str_repeat("x", $keyLength - 6).'$2', $arrayToPrint[$key]);
+                } else {
+                    $arrayToPrint[$key] = 'xxxxxxxxxxxxxxxxxxxx';
+                }
             }
-
         }
 
         return print_r($arrayToPrint, true);

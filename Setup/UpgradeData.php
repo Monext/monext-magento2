@@ -186,12 +186,12 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         if (version_compare($context->getVersion(), '1.2.3', '<')) {
+            $attribute = $this->customerAttributeFactory->create();
             $categoryMapping = $attribute->getIdByCode(\Magento\Catalog\Model\Category::ENTITY, 'payline_category_mapping');
 
             if(!$categoryMapping) {
                 /** @var  \Magento\Eav\Setup\EavSetup $eavSetup */
                 $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-
                 $eavSetup->addAttribute(\Magento\Catalog\Model\Category::ENTITY, 'payline_category_mapping', [
                     'type'         => 'int',
                     'label'        => 'Payline Category Mapping',

@@ -1,3 +1,13 @@
+# 1.2.13
+Released on 2022-01-24
+- Add full management wallet from customer account
+- Improvement configuration screen
+- Add configuration parameters
+  - To manage behavior on payment error 
+  - To disable failover mechanism
+  - Default category setting
+- Fix log path for SDK
+
 # 1.2.12
 Released on 2021-08-01
 - Add EQUENS payment
