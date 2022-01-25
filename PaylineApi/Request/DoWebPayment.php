@@ -208,6 +208,7 @@ class DoWebPayment extends AbstractRequest
         $data['order']['ref'] = $this->cart->getReservedOrderId();
         $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
+        $data['order']['taxes'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getTaxAmount());
         $data['order']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['order']['date'] = $this->formatDateTime($this->cart->getCreatedAt());
         $data['order']['comment'] = 'Magento order';
