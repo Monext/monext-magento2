@@ -7,42 +7,18 @@ define(
         'use strict';
 
         /*
-        window.paylineEventManager = {
-            eventWillinit: function () {
-                console.log('eventWillinit');
-                console.log(arguments);
-            },
-            eventWillshow: function () {
-                console.log('eventWillshow');
-                console.log(arguments);
-            },
-            eventFinalstatehasbeenreached: function () {
-                console.log('eventFinalstatehasbeenreached');
-                console.log(arguments);
-            },
-        };
-        */
-
         window.eventWillinit= function () {
             console.log('eventWillinit');
             console.log(arguments);
         };
+         */
 
-        window.eventWillshow= function () {
-            console.log('eventWillshow');
-            console.log(arguments);
-        };
 
         window.eventFinalstatehasbeenreached= function () {
-            console.log('eventFinalstatehasbeenreached');
-            console.log(arguments);
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
-            console.log('after invalidate cart');
-
         };
 
         var WidgetApi = {};
-
         _.extend(WidgetApi, {
             initJs: function (environment) {
                 if (environment === 'PROD') {
@@ -78,7 +54,7 @@ define(
                     //'event-didshowstate',
                     // 'event-willdisplaymessage',
                     // 'event-willremovemessage',
-                    // 'event-beforepayment'
+                    // 'event-beforepayment',
                 ];
 
                 var callbacksByEvents = [];

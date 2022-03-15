@@ -25,6 +25,9 @@ class ReturnFromWidget extends Action
         $this->paylinePaymentManagement = $paylinePaymentManagement;
     }
 
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $isSuccess = true;

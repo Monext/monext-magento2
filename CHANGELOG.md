@@ -1,5 +1,6 @@
 # 1.2.13
 Released on 2022-01-24
+- Automatically call refund or reset API on amount error 
 - Add full management wallet from customer account
 - Improvement configuration screen
 - Add configuration parameters
