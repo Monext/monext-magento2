@@ -12,27 +12,31 @@ class Constants
 
     const AVAILABLE_WEB_PAYMENT_PAYLINE = [self::WEB_PAYMENT_CPT, self::WEB_PAYMENT_NX];
 
+    CONST PAYLINE_RETURN_CART_EMPTY     = 0;
+    CONST PAYLINE_RETURN_CART_FULL      = 1;
+    CONST PAYLINE_RETURN_HISTORY_ORDERS = 2;
+
     const CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT = 'payline/general/environment';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID = 'payline/general/merchant_id';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME = 'payline/general/merchant_name';
     const CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY = 'payline/general/access_key';
     const CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE = 'payline/general/language';
     const CONFIG_PATH_PAYLINE_GENERAL_DEBUG = 'payline/general/debug';
+    const CONFIG_PATH_PAYLINE_GENERAL_DISABLE_FAILOVER = 'payline/general/disable_failover';
     const CONFIG_PATH_PAYLINE_GENERAL_CONTRACTS = 'payline/general/contracts';
 
     const CONFIG_PATH_PAYLINE_DELIVERY = 'payline/payline_common/address';
     const CONFIG_PATH_PAYLINE_PREFIX = 'payline/payline_common/prefix';
+    const CONFIG_PATH_PAYLINE_RETURN_REFUSED = 'payline/payline_common/return_payment_refused';
     const CONFIG_PATH_PAYLINE_DEFAULT_DELIVERYTIME = 'payline/common_default/deliverytime';
     const CONFIG_PATH_PAYLINE_DEFAULT_DELIVERYMODE = 'payline/common_default/deliverymode';
     const CONFIG_PATH_PAYLINE_DEFAULT_DELIVERY_EXPECTED_DELAY = 'payline/common_default/delivery_expected_delay';
     const CONFIG_PATH_PAYLINE_DEFAULT_PREFIX = 'payline/common_default/prefix';
-
+    const CONFIG_PATH_PAYLINE_DEFAULT_CATEGORY = 'payline/common_default/category';
 
 
     const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
     const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
-
-
 
     //Const CPT
     const CONFIG_PATH_PAYLINE_CPT_ACTION = 'payment/'.self::WEB_PAYMENT_CPT.'/payment_action';
@@ -68,4 +72,6 @@ class Constants
     const PAYLINE_API_USED_BY_PREFIX = 'Magento';
 
     const MODULE_NAME = 'Monext_Payline';
+
+
 }

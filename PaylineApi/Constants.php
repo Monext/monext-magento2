@@ -5,12 +5,12 @@ namespace Monext\Payline\PaylineApi;
 class Constants
 {
     // @see : https://docs.payline.com/display/DT/Historique+de+version+de+l%27API
-    const LASTEST_API_VERSION = 16;
+    const LASTEST_API_VERSION = 21;
 
     // @see : https://docs.payline.com/display/DT/Codes+-+Mode
     const PAYMENT_MODE_CPT = 'CPT';
     const PAYMENT_MODE_DIF = 'DIF';
-    const PAYMENT_MODE_NX = 'NX';
+    const PAYMENT_MODE_NX  = 'NX';
     const PAYMENT_MODE_REC = 'REC';
 
     // @see : https://docs.payline.com/display/DT/Codes+-+Action

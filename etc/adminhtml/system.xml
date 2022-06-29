@@ -1,19 +1,12 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
             <group id="payline" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Payline</label>
+                <label><![CDATA[<div class="monext-payment-logo"></div><div class="monext-payment-byline">Access your <a href="%1">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>]]></label>
+                <fieldset_css>complex monext-payment-section</fieldset_css>
                 <attribute type="expanded">0</attribute>
-                <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Fieldset</frontend_model>
-                <comment><![CDATA[Access your <a href="%1">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.]]></comment>
-                <help_url>https://homologation-admin.payline.com/userManager.do?reqCode=prepareLogin</help_url>
+                <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
                 <group id="payline_common" translate="label" showInDefault="1" sortOrder="10">
                     <label>Common settings</label>
                     <attribute type="expanded">1</attribute>
@@ -80,6 +73,12 @@
                         <depends>
                             <field id="proxy_enabled">1</field>
                         </depends>
+                    </field>
+                    <field id="disable_failover" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Disable failover</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payline/general/use_failover</config_path>
+                        <comment>With PHP SDK superior to 4.68 a failvover mechanism is implemented to bypass potential network issues.</comment>
                     </field>
                     <group id="user_error_message" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
                         <label>User Error Messages</label>
@@ -158,7 +157,17 @@
                             <config_path>payment/payline_web_payment_cpt/payment_action</config_path>
                             <backend_model>Monext\Payline\Model\System\Config\Backend\Action</backend_model>
                         </field>
-                        <field id="wallet_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+
+
+                        <field id="return_payment_refused" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Return options</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\CanceledReturn</source_model>
+                            <config_path>payline/payline_common/return_payment_refused</config_path>
+                            <comment>Page to return when payment is canceled, refused or in error</comment>
+                        </field>
+
+
+                        <field id="wallet_enabled" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Wallet</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/payline_web_payment_cpt/wallet_enabled</config_path>
@@ -352,10 +361,11 @@
                             <config_path>payline/common_default/delivery_expected_delay</config_path>
                             <validate>required-entry</validate>
                         </field>
-                        <field id="default_address_prefix" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
-                            <label>Prefix</label>
-                            <source_model>\Monext\Payline\Model\System\Config\Source\Customer\Title</source_model>
-                            <config_path>payline/common_default/prefix</config_path>
+                        <field id="default_category" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Category</label>
+                            <source_model>\Monext\Payline\Model\Category\Attribute\Source\CategoryMapping</source_model>
+                            <config_path>payline/common_default/category</config_path>
+                            <comment>Default category if not set on Magento catalog category attribute "Payline Category Mapping"</comment>
                         </field>
                     </group>
                 </group>

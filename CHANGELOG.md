@@ -1,3 +1,16 @@
+# 1.2.13
+Released on 2022-01-24
+- Automatically call refund or reset API on amount error 
+- Add full management wallet from customer account
+- Improvement configuration screen
+- Add configuration parameters
+  - To manage behavior on payment error 
+  - To disable failover mechanism
+  - Default category setting
+- Fix log path for SDK
+- Fix fr_FR translations
+- Fix Payline version API to 21 (revert from 1.2.12)
+
 # 1.2.12
 Released on 2021-08-01
 - Add EQUENS payment

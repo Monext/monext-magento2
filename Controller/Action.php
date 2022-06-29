@@ -26,7 +26,6 @@ abstract class Action extends BaseAction
     protected function getToken()
     {
         $token = $this->getRequest()->getParam('paylinetoken');
-
         if (empty($token)) {
             $token = $this->getRequest()->getParam('token');
         }
@@ -41,7 +40,7 @@ abstract class Action extends BaseAction
             $resultRedirect->setPath('checkout/onepage/success');
         } else {
             $layout = $this->_view->getLayout();
-            $pageErrorHtml = $layout->createBlock(Template::class, 'gateway.error')->setTemplate('Monext_Payline::gateway/error.phtml')->toHtml();
+            $pageErrorHtml = $layout->createBlock(\Monext\Payline\Block\Checkout\GatewayError::class, 'gateway.error')->toHtml();
             /** @var \Magento\Framework\Controller\Result\Raw $resultRedirect */
             $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_RAW);
             $resultRedirect->setHttpResponseCode(200);

@@ -5,6 +5,7 @@
             <general>
                 <merchant_id>MERCHANT_ID</merchant_id>
                 <environment>HOMO</environment>
+                <disable_failover>0</disable_failover>
                 <user_error_message_type1>Error with bank transaction process</user_error_message_type1>
                 <user_error_message_type2>Error with transaction process</user_error_message_type2>
                 <user_error_message_type3>Error with 3DSecure process</user_error_message_type3>
@@ -16,7 +17,11 @@
                 <deliverymode>4</deliverymode>
                 <delivery_expected_delay>3</delivery_expected_delay>
                 <prefix>4</prefix>
+                <category>4</category>
             </common_default>
+            <payline_common>
+                <return_payment_refused>1</return_payment_refused>
+            </payline_common>
         </payline>
         <payment>
             <payline_web_payment_cpt>

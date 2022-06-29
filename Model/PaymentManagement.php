@@ -377,9 +377,15 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->paylineApiClient->callGetPaymentRecord($request);
     }
 
+    /**
+     * @param $token
+     * @param $restoreCartOnError
+     * @return $this
+     *
+     * @throws LocalizedException
+     */
     public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false)
     {
-
         // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT BEFORE DOING ANYTHING
         $quote = $this->paylineCartManagement->getCartByToken($token);
         if($quote && $quote->getId()) {
@@ -416,7 +422,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
                 $this->paylineCartManagement->restoreCartFromOrder($order);
             }
 
-            throw new LocalizedException(__($order->getPayment()->getData('payline_user_message') ?? $order->getPayment()->getData('payline_response')->getLongErrorMessage() ?: 'Payment is in error.'));
+            $errorMessage = $order->getPayment()->hasData('payline_user_message') ? $order->getPayment()->getData('payline_user_message') : 'Payment is in error.';
+            if($order->getPayment()->getData('payline_response')) {
+                $errorMessage = $this->helperData->getUserMessageForCode($order->getPayment()->getData('payline_response'));
+            }
+
+            throw new LocalizedException(__($errorMessage));
         }
 
         return $this;
@@ -434,15 +445,21 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
         $payment->setData('payline_response', $response);
         $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
+
+        $needCancelPayment = false;
         if ($response->isSuccess()) {
             if ($paymentTypeManagement->validate($response, $payment)) {
                 $this->handlePaymentSuccessFacade($response, $payment);
+            } else {
+                $needCancelPayment = true;
             }
         } elseif ( $response->isWaitingAcceptance() ) {
             if ($paymentTypeManagement->validate($response, $payment)) {
                     // TODO: Need to asssociate a transaction
                     //$this->handlePaymentWaitingAcceptance($payment, $message);
                     $this->handlePaymentWaitingAcceptanceFacade($response, $payment);
+            } else {
+                $needCancelPayment = true;
             }
         } else {
             $this->flagPaymentAsInError($payment, $response);
@@ -458,6 +475,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         }
 
         $payment->getOrder()->save();
+
+        if($needCancelPayment) {
+            if($this->callPaylineApiDoCancelPaymentFacade($payment, $response)) {
+                $paymentTypeManagement->handlePaymentCanceled($payment);
+            }
+        }
 
         return $this;
     }
@@ -760,6 +783,54 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+
+    /**
+     * @param OrderInterface $order
+     * @param ResponseGetWebPaymentDetails $response
+     * @param $amount
+     * @return void
+     * @throws \Exception
+     */
+    public function callPaylineApiDoCancelPaymentFacade(
+        OrderPayment $payment,
+        ResponseGetWebPaymentDetails $response
+    )
+    {
+        $order = $payment->getOrder();
+
+        $paymentData = $response->getPaymentData();
+        $transactionData = $response->getTransactionData();
+
+        if(empty($transactionData['id'])) {
+            return false;
+        }
+
+        $paymentData['transactionID'] = $transactionData['id'];
+        $paymentData['comment'] = __(
+            'Reset transaction %1 for order %2',
+            $transactionData['id'],
+            $order->getRealOrderId()
+        )->render();
+        $response1 = $this->callPaylineApiDoVoid($paymentData);
+
+        if ($response1->isSuccess()) {
+            $payment->getOrder()->addCommentToStatusHistory($paymentData['comment'])->save();
+        } else {
+            $this->paylineLogger->log(LoggerConstants::ERROR, 'DoRefund error : ' . $response1->getLongErrorMessage());
+            $paymentData['comment'] = __(
+                'Refund transaction %1 for order %2',
+                $transactionData['id'],
+                $order->getRealOrderId()
+            )->render();
+
+            $response2 = $this->callPaylineApiDoRefund($order, $order->getPayment(), $paymentData);
+            if ($response2->isSuccess()) {
+                $payment->getOrder()->addCommentToStatusHistory($paymentData['comment'])->save();
+            }
+        }
+        return true;
+    }
+
     /**
      * @param OrderPayment $payment
      * @param ResponseGetWebPaymentDetails|null $response
@@ -773,7 +844,6 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $response = $payment->getData('payline_response');
             $message = $response->getResultCode() . ' : ' . $response->getShortErrorMessage();
         }
-
 
         $payment->setData('payline_in_error', true);
         $payment->setData('payline_error_message', $message);

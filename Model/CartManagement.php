@@ -5,11 +5,14 @@ namespace Monext\Payline\Model;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Checkout\Model\Cart as CheckoutCart;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Sales\Model\Order;
+use Magento\Store\Model\ScopeInterface;
 use Monext\Payline\Model\OrderIncrementIdTokenFactory as OrderIncrementIdTokenFactory;
+use Monext\Payline\Helper\Constants as HelperConstants;
 
 class CartManagement
 {
@@ -50,6 +53,8 @@ class CartManagement
 
     protected $cartByToken = [];
 
+    protected  $scopeConfig;
+
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartManagementInterface $cartManagement,
@@ -57,7 +62,8 @@ class CartManagement
         QuoteFactory $quoteFactory,
         CheckoutCart $checkoutCart,
         ProductCollectionFactory $productCollectionFactory,
-        CategoryCollectionFactory $categoryCollectionFactory
+        CategoryCollectionFactory $categoryCollectionFactory,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->cartRepository = $cartRepository;
         $this->cartManagement = $cartManagement;
@@ -66,6 +72,7 @@ class CartManagement
         $this->checkoutCart = $checkoutCart;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->scopeConfig = $scopeConfig;
     }
 
     public function handleReserveCartOrderId($cartId, $forceReserve = false)
@@ -117,6 +124,15 @@ class CartManagement
         return $this->cartByToken[$token];
     }
 
+    /**
+     * Retrieve cart product collection with payline_category_mapping
+     *
+     *
+     * @param $cartId
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getProductCollectionFromCart($cartId)
     {
         $cart = $this->cartRepository->getActive($cartId);
@@ -141,14 +157,14 @@ class CartManagement
 
         $categoryCollection
             ->addAttributeToFilter('entity_id', ['in' => $categoryIds])
-            ->addAttributeToSelect(['name', 'payline_category_mapping', 'level']);
+            ->addAttributeToSelect(['name', 'payline_category_mapping', 'level'])
+            ->addAttributeToFilter('payline_category_mapping', ['gt'=>0]);
 
         foreach ($productCollection as $product) {
             $categoryCandidate = null;
 
             foreach ($product->getCategoryIds() as $categoryId) {
                 $tmpCategory = $categoryCollection->getItemById($categoryId);
-
                 if (!$tmpCategory) {
                     continue;
                 }
@@ -158,12 +174,12 @@ class CartManagement
                 }
             }
 
-            if($categoryCandidate) {
-                $product->setPaylineCategoryMapping(
-                    $categoryCandidate->getPaylineCategoryMapping() ? $categoryCandidate->getPaylineCategoryMapping() : $categoryCandidate->getName()
-                );
+            if($categoryCandidate && $categoryCandidate->getPaylineCategoryMapping()) {
+                $product->setPaylineCategoryMapping($categoryCandidate->getPaylineCategoryMapping());
+            } else {
+                $product->setPaylineCategoryMapping($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DEFAULT_CATEGORY,
+                    ScopeInterface::SCOPE_STORE));
             }
-
         }
 
         return $productCollection;

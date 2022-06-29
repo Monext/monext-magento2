@@ -1,8 +1,8 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \Monext\Payline\Block\Checkout\GatewayError $block */ ?>
 <html>
     <head>
         <script type="text/javascript">
-            window.location.replace("<?php echo $block->getUrl('checkout/cart') ?>");
+            window.location.replace("<?php echo $block->getRedirectUrl() ?>");
         </script>
     </head>
     <body>
