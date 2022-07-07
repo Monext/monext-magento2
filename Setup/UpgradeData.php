@@ -101,10 +101,16 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         if (version_compare($context->getVersion(), '1.0.5', '<')) {
-            $setup->getConnection()->update(
+
+            $setup->getConnection()->delete($setup->getTable('sales_order_status_state'), ['status = ?' => HelperConstants::ORDER_STATUS_PAYLINE_CANCELED]);
+
+            $data[] = ['status' => HelperConstants::ORDER_STATUS_PAYLINE_CANCELED, 'state' => Order::STATE_CANCELED, 'default' => 0, 'visible_on_front' => 1];
+
+            $setup->getConnection()->insertArray(
                 $setup->getTable('sales_order_status_state'),
-                ['state' => Order::STATE_CANCELED],
-                ['status = ?' => HelperConstants::ORDER_STATUS_PAYLINE_CANCELED]
+                ['status', 'state', 'is_default', 'visible_on_front'],
+                $data,
+                AdapterInterface::REPLACE
             );
         }
 
@@ -149,7 +155,7 @@ class UpgradeData implements UpgradeDataInterface
             /** @var \Magento\Customer\Model\Attribute $attribute */
             $attribute = $this->customerAttributeFactory->create();
 
-            $walletAttribute = $attribute->getIdByCode(\Magento\Customer\Api\CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER, 'wallet_id');
+            $walletAttribute = $attribute->getIdByCode(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, 'wallet_id');
 
             if (!$walletAttribute) {
                 $attribute->setData(array(

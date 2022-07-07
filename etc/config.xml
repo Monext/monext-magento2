@@ -11,6 +11,7 @@
                 <user_error_message_type3>Error with 3DSecure process</user_error_message_type3>
                 <user_error_message_type4>Error with payment validation rules</user_error_message_type4>
                 <user_error_message_default>Error when processing payment</user_error_message_default>
+                <debug>500</debug>
             </general>
             <common_default>
                 <deliverytime>2</deliverytime>

@@ -33,7 +33,7 @@ class NotifyFromPaymentGateway extends Action
     public function execute()
     {
         try {
-            $this->paylinePaymentManagement->synchronizePaymentWithPaymentGatewayFacade($this->getToken(), false);
+            $this->paylinePaymentManagement->synchronizePaymentWithPaymentGatewayFacade($this->getToken(), false, true);
         } catch (\Exception $e) {
             $this->loggerPayline->critical(__METHOD__, ['token'=>$this->getToken(), 'exception'=>['message'=>$e->getMessage(), 'code'=>$e->getCode()]]);
         }

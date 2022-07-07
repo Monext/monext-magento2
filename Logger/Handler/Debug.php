@@ -6,6 +6,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\Logger\Handler\Base;
 use Monext\Payline\Helper\Constants as HelperConstants;
+use Monext\Payline\Model\System\Config\Source\DebugLevel;
 use Monolog\Logger;
 
 class Debug extends Base
@@ -25,6 +26,7 @@ class Debug extends Base
     private $scopeConfig;
 
 
+
     /**
      * @param DriverInterface $filesystem
      * @param string $filePath
@@ -38,8 +40,9 @@ class Debug extends Base
         $fileName = null
     ) {
         $this->scopeConfig = $scopeConfig;
-        if ($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
-            $this->loggerType = Logger::DEBUG;
+        $this->loggerType = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if (!$this->loggerType || (int)$this->loggerType<Logger::DEBUG) {
+            $this->loggerType = Logger::ERROR;
         }
 
         parent::__construct(

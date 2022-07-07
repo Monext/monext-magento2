@@ -345,6 +345,12 @@ class Client
 //            return $this->paylineSDK;
         }
 
+
+        $logLevel = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if (!$logLevel || (int)$logLevel<LoggerConstants::DEBUG) {
+            $logLevel = LoggerConstants::ERROR;
+        }
+
         // TODO Handle Proxy
         $paylineSdkParams = array(
             'merchant_id' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID,
@@ -358,7 +364,7 @@ class Client
             'environment' => $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT,
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE),
             'pathLog' => $logSdkPath . '/',
-            'logLevel' => LoggerConstants::INFO,
+            'logLevel' => $logLevel
         );
 
 
