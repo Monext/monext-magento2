@@ -37,7 +37,7 @@
                     </field>
                     <field id="debug" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Debug</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <source_model>Monext\Payline\Model\System\Config\Source\DebugLevel</source_model>
                         <config_path>payline/general/debug</config_path>
                     </field>
                     <field id="proxy_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">

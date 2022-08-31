@@ -48,6 +48,12 @@ abstract class AbstractPaymentResponse extends AbstractResponse
         return !$this->isSuccess() && !$this->isCanceled() && !$this->isAbandoned() && !$this->isWaitingAcceptance() && !$this->isFraud();
     }
 
+    public function isDuplicate()
+    {
+        return in_array($this->getResultCode(), PaylineApiConstants::PAYMENT_BACK_CODES_RETURN_GET_WEB_PAYMENT_DETAILS_TRANSACTION_DUPLICATE);
+    }
+
+
     public function getShortErrorMessage()
     {
         return $this->data['result']['shortMessage'];

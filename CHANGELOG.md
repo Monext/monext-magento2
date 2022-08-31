@@ -1,3 +1,13 @@
+# 1.2.14
+Released on 2022-07-07
+- Fix upgrade scripts
+- Add debug level configuration
+- Call GWPD to stop Payline notification
+- Catch duplicate return to avoid cancel order
+- Remove Magento_Paypal dependency
+- Add domains to csp_whitelist.xml
+
+
 # 1.2.13
 Released on 2022-01-24
 - Automatically call refund or reset API on amount error 

@@ -1,6 +1,7 @@
 <?php
 namespace Monext\Payline\Setup\Patch\Data;
 
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Sales\Model\Order;
 use Monext\Payline\Helper\Constants as HelperConstants;
@@ -32,13 +33,16 @@ class AddOrderStatusCyclePaymentToOrderStateComplete implements DataPatchInterfa
         $this->moduleDataSetup->getConnection()->insertArray(
             $this->moduleDataSetup->getTable('sales_order_status'),
             ['status', 'label'],
-            [['status' => HelperConstants::ORDER_STATUS_PAYLINE_CYCLE_PAYMENT_CAPTURE, 'label' => __('Payment NX/REC in progress')]]
+            [['status' => HelperConstants::ORDER_STATUS_PAYLINE_CYCLE_PAYMENT_CAPTURE, 'label' => __('Payment NX/REC in progress')]],
+            AdapterInterface::REPLACE
+
         );
 
         $this->moduleDataSetup->getConnection()->insertArray(
             $this->moduleDataSetup->getTable('sales_order_status_state'),
             ['status', 'state', 'is_default', 'visible_on_front'],
-            [['status' => HelperConstants::ORDER_STATUS_PAYLINE_CYCLE_PAYMENT_CAPTURE, 'state' => Order::STATE_COMPLETE, 'default' => 0, 'visible_on_front' => 1]]
+            [['status' => HelperConstants::ORDER_STATUS_PAYLINE_CYCLE_PAYMENT_CAPTURE, 'state' => Order::STATE_COMPLETE, 'default' => 0, 'visible_on_front' => 1]],
+            AdapterInterface::REPLACE
         );
         $this->moduleDataSetup->getConnection()->endSetup();
     }

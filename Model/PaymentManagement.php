@@ -384,19 +384,38 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      *
      * @throws LocalizedException
      */
-    public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false)
+    public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false, $notification = false)
     {
         // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT BEFORE DOING ANYTHING
         $quote = $this->paylineCartManagement->getCartByToken($token);
+        $logData = [
+            'token' => $token,
+            'quote_id' => $quote->getId(),
+        ];
+
+        //Call GWPD to stop Payline notification
+        if($notification) {
+            $order = $this->paylineOrderManagement->getOrderByToken($token);
+            if (!$order->getId()) {
+                $response = $this->callPaylineApiGetWebPaymentDetails($token);
+                if($response->isAbandoned()) {
+                    $this->paylineLogger->info("Abandoned payment, call callPaylineApiGetWebPaymentDetails to stop notifications", $logData);
+                    return $this;
+                }
+            }
+        }
+
         if($quote && $quote->getId()) {
             $this->paylineOrderManagement->checkQuotePaymentFromPayline($quote);
             $response = $this->callPaylineApiGetWebPaymentDetails($token);
             $transactionData = $response->getTransactionData();
             // IN CASE THERE IS NO TRANSACTION NO NEED TO CREATE AN ORDER
             if(empty($transactionData) || empty($transactionData['id'])) {
+                $this->paylineLogger->info("Empty transaction data, payment is not finalized.", $logData);
                 throw new \Exception('Payment is not finalized.');
             }
         } else {
+            $this->paylineLogger->info("Cannot retrieve valid customer cart.", $logData);
             throw new \Exception('Cannot retrieve valid customer cart.');
         }
 
@@ -406,13 +425,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $order = $this->paylineOrderManagement->getOrderByToken($token);
         }
 
-        $logData = [
-            'token' => $token,
+        $logData = array_merge($logData, [
             'order_id' => $order->getId(),
             'grand_total' => $order->getGrandTotal(),
             'shipping_amount' => $order->getShippingInclTax(),
             'discount_amount' => $order->getDiscountAmount(),
-        ];
+        ]);
         $this->paylineLogger->debug(__METHOD__, $logData);
 
         $this->synchronizePaymentWithPaymentGateway($order->getPayment(), $token);
@@ -436,8 +454,14 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected function synchronizePaymentWithPaymentGateway(OrderPayment $payment, $token)
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
-        if($payment->getLastTransId()) {
-            $message = __('Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+        $firstTransaction = $this->getFirstTransactionForOrder($payment->getOrder());
+        if($firstTransaction && $firstTransaction->getId()) {
+            if($response->isDuplicate()) {
+                $message = __('Duplicate detected. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+            } else {
+                $message = __('Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+            }
+
             $payment->getOrder()->addStatusHistoryComment($message);
             $payment->getOrder()->save();
             throw new \Exception('Transaction already exists for this order');
@@ -455,9 +479,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             }
         } elseif ( $response->isWaitingAcceptance() ) {
             if ($paymentTypeManagement->validate($response, $payment)) {
-                    // TODO: Need to asssociate a transaction
-                    //$this->handlePaymentWaitingAcceptance($payment, $message);
-                    $this->handlePaymentWaitingAcceptanceFacade($response, $payment);
+                // TODO: Need to asssociate a transaction
+                //$this->handlePaymentWaitingAcceptance($payment, $message);
+                $this->handlePaymentWaitingAcceptanceFacade($response, $payment);
             } else {
                 $needCancelPayment = true;
             }
@@ -723,12 +747,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         );
     }
 
-    public function callPaylineApiDoRefundFacade(
-        OrderInterface $order,
-        $payment,
-        $amount
-    )
-    {
+
+    protected function getFirstTransactionForOrder(OrderInterface $order) {
+
         // Get first transaction used - Always use it for refund
         $filters[] = $this->filterBuilder
             ->setField(TransactionInterface::ORDER_ID)
@@ -743,7 +764,16 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             ->addSortOrder($createdAtSort)
             ->create();
 
-        $transaction = $this->transactionRepository->getList($searchCriteria)->getFirstItem();//$this->transactionRepository->getList($searchCriteria)->getItems();
+        return $this->transactionRepository->getList($searchCriteria)->getFirstItem();
+    }
+
+    public function callPaylineApiDoRefundFacade(
+        OrderInterface $order,
+        $payment,
+        $amount
+    )
+    {
+        $transaction = $this->getFirstTransactionForOrder($order);
 
         // Check existing transaction - else refund impossible
         if (!$transaction || ($transaction && !trim($transaction->getTxnId()))) {
