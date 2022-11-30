@@ -1,3 +1,10 @@
+# 1.2.15
+Released on 2022-11-30
+- Fix tunnel loader
+- Add several workflow to manage doWebPayment token usage
+- Add configuration for customPaymentPageCode
+- Add buyer information
+
 # 1.2.14
 Released on 2022-07-07
 - Fix upgrade scripts

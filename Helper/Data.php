@@ -2,11 +2,17 @@
 
 namespace Monext\Payline\Helper;
 
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Math\Random as MathRandom;
 use Magento\Framework\Serialize\Serializer\Json as Serialize;
+use Magento\Quote\Api\Data\AddressInterface;
+use Magento\Quote\Api\Data\CartInterface;
+use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Quote\Api\Data\TotalsInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
+use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Response\GetWebPaymentDetails as ResponseGetWebPaymentDetails;
 
 class Data extends AbstractHelper
@@ -42,15 +48,18 @@ class Data extends AbstractHelper
 
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
     {
-        // "field": "purchase.delivery.recipient.phone_number"
-        // format attendu: (+33|508|590|594|596|262|681|687|689)|0033|+33|33|+33(0)|0XXXXXXXXX
-        $forbidenPhoneCars = [' ', '.', '(', ')', '-', '/', '\\', '#'];
-        //$regexpPhone = '/^\+?[0-9]{1,14}$/';
-        $regexpPhone = '/^\+?[0-9]{1,14}$/';
+        $normalizedPhone = false;
+        if(!empty($phoneNumberCandidate)) {
+            // "field": "purchase.delivery.recipient.phone_number"
+            // format attendu: (+33|508|590|594|596|262|681|687|689)|0033|+33|33|+33(0)|0XXXXXXXXX
+            $forbidenPhoneCars = [' ', '.', '(', ')', '-', '/', '\\', '#'];
+            //$regexpPhone = '/^\+?[0-9]{1,14}$/';
+            $regexpPhone = '/^\+?[0-9]{1,14}$/';
 
-        $normalizedPhone = str_replace($forbidenPhoneCars, '', $phoneNumberCandidate);
-        if (!preg_match($regexpPhone, $phoneNumberCandidate)) {
-            $normalizedPhone = false;
+            $normalizedPhone = str_replace($forbidenPhoneCars, '', $phoneNumberCandidate);
+            if (!preg_match($regexpPhone, $phoneNumberCandidate)) {
+                $normalizedPhone = false;
+            }
         }
 
         return $normalizedPhone;
@@ -181,6 +190,10 @@ class Data extends AbstractHelper
         return $amount;
     }
 
+    public function getTokenUsage() {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_TOKEN_USAGE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+    }
 
     /**
      * @return string
@@ -188,12 +201,10 @@ class Data extends AbstractHelper
     public function getMerchantName()
     {
         $merchantName = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-
-        if(empty($merchantName)) {
-            $merchantName = $this->scopeConfig->getValue(\Magento\Store\Model\Information::XML_PATH_STORE_INFO_NAME,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        }
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE) ??
+            $this->scopeConfig->getValue(\Magento\Store\Model\Information::XML_PATH_STORE_INFO_NAME,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE) ??
+            '';
 
         return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName)) ?? 'UNDEFINEDMERCHANTNAME';
     }
@@ -248,4 +259,56 @@ class Data extends AbstractHelper
     }
 
 
+    /**
+     * @return bool
+     */
+    public function shouldReuseToken()
+    {
+        if ($this->scopeConfig->getValue('payment/'.HelperConstants::WEB_PAYMENT_CPT.'/integration_type',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE) == PaylineApiConstants::INTEGRATION_TYPE_REDIRECT) {
+            return false;
+        }
+
+        if($this->getTokenUsage() == HelperConstants::TOKEN_USAGE_RECYCLE) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * @param CartInterface $cart
+     * @param ProductCollection $productCollection
+     * @param TotalsInterface $totals
+     * @param PaymentInterface $payment
+     * @param AddressInterface $billingAddress
+     * @param AddressInterface|null $shippingAddress
+     * @return string
+     */
+    public function getCartSha(
+        CartInterface $cart,
+        ProductCollection $productCollection,
+        TotalsInterface $totals,
+        PaymentInterface $payment,
+        AddressInterface $billingAddress,
+        AddressInterface $shippingAddress = null
+    ) {
+
+        if(!$cart->getReservedOrderId()) {
+            return '';
+        }
+
+        $cartDataKeys = [
+            $cart->getId(),
+            $billingAddress->getCountryId(),
+            $shippingAddress->getCountryId(),
+            $totals->getGrandTotal(),
+            $totals->getTaxAmount(),
+            $totals->getBaseCurrencyCode()
+        ];
+
+        return sha1(implode(':', $cartDataKeys));
+    }
+
 }
+

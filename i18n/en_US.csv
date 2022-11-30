@@ -1,22 +1,205 @@
+Configure,Configure
+Close,Close
+"Shipping method","Shipping method"
+"Delivery time","Delivery time"
+"Delivery mode","Delivery mode"
+"Delivery expected delay","Delivery expected delay"
+"Add Configuration","Add Configuration"
+"Matched Expression","Matched Expression"
+Value,Value
+"Add Exception","Add Exception"
+Prefix,Prefix
+Title,Title
+"Select type not found","Select type not found"
+"Class not init with create","Class not init with create"
+"My Wallet","My Wallet"
+"We can't add this item to your shopping cart right now.","We can't add this item to your shopping cart right now."
+"Order #%1 not exist","Order #%1 not exist"
+"Computer (hardware and software)","Computer (hardware and software)"
+"Electronics - TV - Hifi","Electronics - TV - Hifi"
+Phone,Phone
+"Home appliance","Home appliance"
+"Habitat and garden","Habitat and garden"
+"Fashion Clothing","Fashion Clothing"
+"Beauty product","Beauty product"
+Jewelry,Jewelry
+Sport,Sport
+Hobbies,Hobbies
+"Automobiles / motorcycles","Automobiles / motorcycles"
+furnishing,furnishing
+children,children
+"Video games","Video games"
+Toys,Toys
+Animals,Animals
+Food,Food
+Gifts,Gifts
+Shows,Shows
+traveling,traveling
+Auction,Auction
+"Particular services","Particular services"
+"Professional Services","Professional Services"
+Music,Music
+Book,Book
+Photo,Photo
+name,name
+"Please select a category mapping...","Please select a category mapping..."
+"Invalid contract","Invalid contract"
+"Payline card type logo url does not exists.","Payline card type logo url does not exists."
+"Duplicate detected. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Duplicate detected. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
+"Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
+"No authorization transaction found for this order.","No authorization transaction found for this order."
+"No transaction found for this order.","No transaction found for this order."
+"Transaction %s canceled for order %s from Magento Back-Office","Transaction %s canceled for order %s from Magento Back-Office"
+"Error code %1 => %2","Error code %1 => %2"
+"All payment cycle received","All payment cycle received"
+"Transaction %s refunded for order %s from Magento Back-Office","Transaction %s refunded for order %s from Magento Back-Office"
+"Reset transaction %1 for order %2","Reset transaction %1 for order %2"
+"Refund transaction %1 for order %2","Refund transaction %1 for order %2"
+"Payment gateway amount %1 does not match order amount %2.","Payment gateway amount %1 does not match order amount %2."
+". ' : Payment method %1 not available in %2'",". ' : Payment method %1 not available in %2'"
+Authorize,Authorize
+"Authorize and Capture","Authorize and Capture"
+"Cannot save configuration, payment action ""%1"" is not compatible with contract ""%2""","Cannot save configuration, payment action ""%1"" is not compatible with contract ""%2"""
+Daily,Daily
+Weekly,Weekly
+"Twice a month","Twice a month"
+Monthly,Monthly
+"Empty cart","Empty cart"
+"Cart with items","Cart with items"
+"Orders history","Orders history"
+"No contracts available.","No contracts available."
+"No costs","No costs"
+Fixed,Fixed
+Percentage,Percentage
+"Please configure field customer/address/prefix_options","Please configure field customer/address/prefix_options"
+Miss,Miss
+"Mr. / Mister","Mr. / Mister"
+Error,Error
+Warning,Warning
+Notice,Notice
+Info,Info
+Debug,Debug
+"Collect goods from the merchant","Collect goods from the merchant"
+"Use a network of third-party pick-up points (such as Kiala, Alveol, etc.)","Use a network of third-party pick-up points (such as Kiala, Alveol, etc.)"
+"Collect from an airport, a train station or a travel agent","Collect from an airport, a train station or a travel agent"
+"Mail (Colissimo, UPS, DHL, etc., or any private courier)","Mail (Colissimo, UPS, DHL, etc., or any private courier)"
+"Issuing an electronic ticket, downloads","Issuing an electronic ticket, downloads"
+"Ship to cardholder’s billing address","Ship to cardholder’s billing address"
+"Ship to another verified address on file with merchant","Ship to another verified address on file with merchant"
+"Ship to address that is different than the cardholder’s billing address","Ship to address that is different than the cardholder’s billing address"
+"Travel and Event tickets, not shipped","Travel and Event tickets, not shipped"
+"Locker delivery (or other automated pick-up)","Locker delivery (or other automated pick-up)"
+Other,Other
+Express,Express
+Standard,Standard
+"Electronic Delivery","Electronic Delivery"
+"Same day shipping","Same day shipping"
+"Overnight shipping","Overnight shipping"
+"Two-day or more shipping","Two-day or more shipping"
+payline_test,payline_test
+payline_production,payline_production
+payline_redirect,payline_redirect
+payline_widget,payline_widget
+French,French
+English,English
+Spanish,Spanish
+Portuguese,Portuguese
+Italian,Italian
+German,German
+Flemish,Flemish
+Finn,Finn
+"When order status is ""%1""","When order status is ""%1"""
+No,No
+"Back to the shop","Back to the shop"
+"Renew token (default)","Renew token (default)"
+"Renew token and keep history","Renew token and keep history"
+"Recycle existing token","Recycle existing token"
+"Renew token","Renew token"
+"Renew token and keep history (beta)","Renew token and keep history (beta)"
+"Recycle existing token (beta)","Recycle existing token (beta)"
+"Payment method %1 not available in %2","Payment method %1 not available in %2"
+"%1: Captured amount of %2 online.","%1: Captured amount of %2 online."
+"Payment NX/REC in progress","Payment NX/REC in progress"
+"Payline Waiting Capture","Payline Waiting Capture"
+"Payline Captured","Payline Captured"
+"Payline Canceled","Payline Canceled"
+"Payline Pending","Payline Pending"
+"Payline Abandoned","Payline Abandoned"
+"Payline Refused","Payline Refused"
+"Payline Fraud","Payline Fraud"
+"Payline Waiting Acceptance","Payline Waiting Acceptance"
+"Awaiting acceptance by Oney","Awaiting acceptance by Oney"
+"Refresh Contracts","Refresh Contracts"
+"You have no wallets.","You have no wallets."
+"There was an error processing your order. Please contact us or try again later.","There was an error processing your order. Please contact us or try again later."
+"Click here if you are not redirected within 10 seconds...","Click here if you are not redirected within 10 seconds..."
+"You will be redirected on payline payment gateway after place order.","You will be redirected on payline payment gateway after place order."
+"Place Order","Place Order"
+"Payline payment widget will appear when the billing address informations are filled.","Payline payment widget will appear when the billing address informations are filled."
+"Retry call payment widget","Retry call payment widget"
+"You must choose a card type.","You must choose a card type."
+"Payline Section","Payline Section"
+"<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Access your <a href=""%1"">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>","<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Access your <a href=""%1"">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>"
+"Common settings","Common settings"
 "payline_widget_display","Inshop Display"
 "payline_redirect","Redirection"
 "payline_widget","Inshop"
 "payline_test","Test"
 "payline_production","Production"
-"There was an error processing your order. Please contact us or try again later.","There was an error processing your order. Please contact us or try again later."
-"Click here if you are not redirected within 10 seconds...","Click here if you are not redirected within 10 seconds..."
+"Merchant ID","Merchant ID"
+"Access key","Access key"
+Environment,Environment
+Language,Language
+"Merchant Name","Merchant Name"
+Advanced,Advanced
+"Token usage","Token usage"
+"Disable failover","Disable failover"
+"Proxy Enabled","Proxy Enabled"
+"Proxy Host","Proxy Host"
+"Proxy Port","Proxy Port"
+"Proxy Login","Proxy Login"
+"Proxy Password","Proxy Password"
 "User Error Messages","User Error Messages"
-"You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.","You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>."
 "Payline Back (01)","Payline Back (01)"
-"Return codes linked to the return of the bank processing.","Return codes linked to the return of the bank processing."
 "Payline Front (02)","Payline Front (02)"
-"Return codes linked to the return of Payline processing.","Return codes linked to the return of Payline processing."
 "3DSecure (03)","3DSecure (03)"
-"The return codes of the 3DS module related to authentication and 3DSecure processing.","The return codes of the 3DS module related to authentication and 3DSecure processing."
 "LCLF (04)","LCLF (04)"
-"The return codes of the LCLF module related to Payline anti-fraud rules.","The return codes of the LCLF module related to Payline anti-fraud rules."
 "Default message","Default message"
+"Payline Contracts","Payline Contracts"
+Contracts,Contracts
+"Payment solutions","Payment solutions"
+"Payline - Web Payment Cpt","Payline - Web Payment Cpt"
+Enabled,Enabled
+"Type of Integration","Type of Integration"
+payline_widget_display,payline_widget_display
+"Custom payment page code","Custom payment page code"
+"Payment Action","Payment Action"
+"Return options","Return options"
+"Enable Wallet","Enable Wallet"
+"Payline order status","Payline order status"
+"Default status captured","Default status captured"
+"Default status waiting capture","Default status waiting capture"
+"Default status waiting acceptance","Default status waiting acceptance"
+"Default status pending","Default status pending"
+"Default status cancel","Default status cancel"
+"Default status refused","Default status refused"
+"Default status fraud","Default status fraud"
+"Default status abandoned","Default status abandoned"
+"Payline - Web Payment Nx","Payline - Web Payment Nx"
+"Cost type","Cost type"
+"(hors frais de livraison)","(hors frais de livraison)"
+"Costs amount/percentage","Costs amount/percentage"
+"Redirection message","Redirection message"
+"Advanced settings","Advanced settings"
+"Minimum amount","Minimum amount"
+"Billing occurences","Billing occurences"
+"Billing cycle","Billing cycle"
+"Send wallet id","Send wallet id"
+"If wallet id is provided, wallet payment will be available during web payment","If wallet id is provided, wallet payment will be available during web payment"
+"Contracts specific settings","Contracts specific settings"
+"Delivery configuration","Delivery configuration"
+"Prefix configuration","Prefix configuration"
+"Default values","Default values"
+Category,Category
+"Payline Category Mapping","Payline Category Mapping"
 "This message can happen when Payline server cannot be reached.","This message can happen when Payline server cannot be reached."
-"Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored","Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return ""%1 : %2"" was ignored"
-"Transaction already exists for this order","Transaction already exists for this order"
-"Cannot retrieve valid customer cart.","Cannot retrieve valid customer cart."

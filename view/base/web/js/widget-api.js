@@ -2,8 +2,9 @@ define(
     [
         'jquery',
         'underscore',
+        'Magento_Checkout/js/model/full-screen-loader'
     ],
-    function ($, _) {
+    function ($, _, fullScreenLoader) {
         'use strict';
 
         /*
@@ -14,9 +15,12 @@ define(
          */
 
 
-        window.eventFinalstatehasbeenreached= function () {
+        window.eventFinalstatehasbeenreached= function (state) {
+            fullScreenLoader.startLoader();
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
         };
+
+
 
         var WidgetApi = {};
         _.extend(WidgetApi, {
@@ -47,7 +51,6 @@ define(
             showWidget: function (environment, dataToken, dataColumn, widgetContainerId) {
                 var paylineWidgetHtml = '';
                 var callbacks = [
-                    // 'embeddedredirectionallowed',
                     // 'event-willinit',
                     // 'event-willshow',
                     'event-finalstatehasbeenreached',

@@ -22,7 +22,7 @@ class Nx extends AbstractDoWebPaymentType
         $data['contracts'] = $usedContracts->getColumnValues('number');
         $this->addBillingCycle($data);
         $this->addRecurringAmount($data);
-//        $this->addCostRecurringPayment($data); @todo a finir en attente de spec sur les frais de port
+//        $this->addCostRecurringPayment($data);
         $this->prepareUrls($data);
         return $data;
     }
@@ -62,6 +62,12 @@ class Nx extends AbstractDoWebPaymentType
         $data['recurring']['amount'] = $this->paylineHelper->mapMagentoAmountToPaylineAmount($recurringAmount);
     }
 
+    /**
+     * Not used
+     *
+     * @param $data
+     * @return void
+     */
     protected function addCostRecurringPayment(&$data)
     {
         $costType = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/cost_type',
@@ -89,8 +95,7 @@ class Nx extends AbstractDoWebPaymentType
     }
 
     protected function addCostRecurringPaymentTypePercent(&$data, $costAmount) {
-        //On calcule les frais sur le montant de la commande sans les frais de ports
-        //@todo a finir
+        //Fee calculation without shipping cost
         $this->getPayment()->getQuote()->getGrandTotal();
         $data['recurring']['firstAmount'] = $data['recurring']['firstAmount'] + $costAmount;
     }

@@ -37,7 +37,9 @@ class GuestCartManagement
     {
         $quote = $this->paylineCartManagement->getCartByToken($token);
         $quoteIdMask = $this->quoteIdMaskFactory->create()->load($quote->getId(), 'quote_id');
-        $this->guestCartManagement->placeOrder($quoteIdMask->getMaskedId());
+        $orderId = $this->guestCartManagement->placeOrder($quoteIdMask->getMaskedId());
+        $this->paylineCartManagement->saveOrderIdOnToken($token, $orderId);
+
         return $this;
     }
 }
