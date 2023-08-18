@@ -7,6 +7,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Math\Random as MathRandom;
 use Magento\Framework\Serialize\Serializer\Json as Serialize;
+use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
@@ -30,20 +31,24 @@ class Data extends AbstractHelper
      */
     protected $serialize;
 
+    protected $emailAddressValidator;
 
     /**
      * @param Context $context
      * @param MathRandom $mathRandom
      * @param Serialize $serialize
+     * @param EmailAddressValidator $emailAddressValidator
      */
     public function __construct(
         Context $context,
         MathRandom $mathRandom,
-        Serialize $serialize
+        Serialize $serialize,
+        EmailAddressValidator $emailAddressValidator
     ) {
         parent::__construct($context);
         $this->mathRandom = $mathRandom;
         $this->serialize = $serialize;
+        $this->emailAddressValidator = $emailAddressValidator;
     }
 
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
@@ -70,7 +75,8 @@ class Data extends AbstractHelper
         $pattern = '/\+/i';
 
         $charPlusExist = preg_match($pattern, $emailCandidate);
-        if (strlen($emailCandidate) <= 50 && \Zend_Validate::is($emailCandidate, 'EmailAddress') && !$charPlusExist) {
+
+        if (strlen($emailCandidate) <= 50 && $this->emailAddressValidator->isValid($emailCandidate) && !$charPlusExist) {
             return true;
         } else {
             return false;
