@@ -4,81 +4,21 @@ namespace Monext\Payline\Model;
 
 use Magento\Framework\Model\AbstractModel;
 
-class OrderIncrementIdToken extends AbstractModel
+class OrderIncrementIdToken extends AbstractModel implements \Monext\Payline\Api\Data\OrderIncrementIdTokenInterface
 {
     protected function _construct()
     {
         $this->_init('Monext\Payline\Model\ResourceModel\OrderIncrementIdToken');
     }
 
-    // TODO Put this in a dedicated repository
-    public function associateTokenToOrderIncrementId($orderIncrementId, $token)
+    /**
+     * Test token availability (no more 12 min)
+     *
+     * @param $expireIn
+     * @return bool
+     */
+    public function expireSoon($expireIn=12)
     {
-        $itemCandidate = $this->getCollection()
-            ->addFieldToFilter('order_increment_id', $orderIncrementId)
-            ->getFirstItem();
-        
-        if (empty($itemCandidate) || !$itemCandidate->getId()) {
-            $item = $this->getCollection()->getNewEmptyItem();
-            $item
-                ->setOrderIncrementId($orderIncrementId);
-        } else {
-            $item = $itemCandidate;
-        }
-        
-        $item
-            ->setToken($token)
-            ->save();
-        
-        return $this;
-    }
-
-    // TODO Put this in a dedicated repository
-    public function associateOrderIncrementIdToToken($token, $orderIncrementId)
-    {
-        $itemCandidate = $this->getCollection()
-            ->addFieldToFilter('token', $token)
-            ->getFirstItem();
-
-        if (empty($itemCandidate) || !$itemCandidate->getId()) {
-            $item = $this->getCollection()->getNewEmptyItem();
-            $item
-                ->setToken($token);
-        } else {
-            $item = $itemCandidate;
-        }
-
-        $item
-            ->setOrderIncrementId($orderIncrementId)
-            ->save();
-
-        return $this;
-    }
-
-    // TODO Put this in a dedicated repository
-    public function getOrderIncrementIdByToken($token)
-    {
-        $itemCandidate = $this->getCollection()
-            ->addFieldToFilter('token', $token)
-            ->getFirstItem();
-        
-        if (empty($itemCandidate) || !$itemCandidate->getId()) {
-            return null;
-        }
-        
-        return $itemCandidate->getOrderIncrementId();
-    }
-    
-    public function getTokenByOrderIncrementId($orderIncrementId)
-    {
-        $itemCandidate = $this->getCollection()
-            ->addFieldToFilter('order_increment_id', $orderIncrementId)
-            ->getFirstItem();
-        
-        if (empty($itemCandidate) || !$itemCandidate->getId()) {
-            return null;
-        }
-        
-        return $itemCandidate->getToken();
+        return !$this->getData('created_from_second') or (floor($this->getData('created_from_second')) > ( $expireIn * 60 ));
     }
 }

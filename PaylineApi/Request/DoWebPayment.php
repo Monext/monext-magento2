@@ -163,6 +163,10 @@ class DoWebPayment extends AbstractRequest
             $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE,
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
+            $paymentMethod = $this->payment->getMethod();
+            $data['customPaymentPageCode'] = $this->scopeConfig->getValue('payment/'.$paymentMethod.'/custom_payment_page_code',
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
             $this->doWebPaymentTypeFactory->create($this->payment)->getData($data);
             $this->data = $data;
         }
@@ -295,7 +299,6 @@ class DoWebPayment extends AbstractRequest
             if (empty($tmpData)) {
                 $tmpData = $this->billingAddress->$getter();
             }
-            $data['buyer']['title'] =  $this->getCustomerTitle($this->billingAddress->getPrefix());
             $data['buyer'][$dataIdx] = $tmpData;
 
             if ($dataIdx == 'email') {
@@ -306,6 +309,11 @@ class DoWebPayment extends AbstractRequest
                 $data['buyer']['customerId'] = $tmpData;
             }
         }
+
+        $data['buyer']['title'] =  $this->getCustomerTitle($this->billingAddress->getPrefix());
+        $data['buyer']['mobilePhone'] = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone()) ??
+            $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone()) ??
+            '0123456789';
 
         if ($customer->getId()) {
             $data['buyer']['accountCreateDate'] = $this->formatDateTime($customer->getCreatedAt(), 'd/m/y');

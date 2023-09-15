@@ -16,6 +16,12 @@ class Constants
     CONST PAYLINE_RETURN_CART_FULL      = 1;
     CONST PAYLINE_RETURN_HISTORY_ORDERS = 2;
 
+
+    CONST TOKEN_USAGE_ONCE         = 1;
+    CONST TOKEN_USAGE_ONCE_HISTORY = 2;
+    CONST TOKEN_USAGE_RECYCLE      = 3;
+
+
     const CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT = 'payline/general/environment';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID = 'payline/general/merchant_id';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME = 'payline/general/merchant_name';
@@ -23,6 +29,7 @@ class Constants
     const CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE = 'payline/general/language';
     const CONFIG_PATH_PAYLINE_GENERAL_DEBUG = 'payline/general/debug';
     const CONFIG_PATH_PAYLINE_GENERAL_DISABLE_FAILOVER = 'payline/general/disable_failover';
+    const CONFIG_PATH_PAYLINE_GENERAL_TOKEN_USAGE = 'payline/general/token_usage';
     const CONFIG_PATH_PAYLINE_GENERAL_CONTRACTS = 'payline/general/contracts';
 
     const CONFIG_PATH_PAYLINE_DELIVERY = 'payline/payline_common/address';
@@ -38,14 +45,8 @@ class Constants
     const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
     const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
 
-    //Const CPT
-    const CONFIG_PATH_PAYLINE_CPT_ACTION = 'payment/'.self::WEB_PAYMENT_CPT.'/payment_action';
-
-
     //Const NX
     const CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT = 'payment/'.self::WEB_PAYMENT_NX.'/active_amount_min';
-
-
 
     //Raw path for system backend model
     const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';

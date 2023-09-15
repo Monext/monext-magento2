@@ -31,7 +31,7 @@ use Monext\Payline\Api\PaymentManagementInterface as PaylinePaymentManagementInt
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\Helper\Data as HelperData;
 use Monext\Payline\Model\CartManagement as PaylineCartManagement;
-use Monext\Payline\Model\OrderIncrementIdTokenFactory as OrderIncrementIdTokenFactory;
+use Monext\Payline\Model\OrderIncrementIdTokenManagement;
 use Monext\Payline\Model\OrderManagement as PaylineOrderManagement;
 use Monext\Payline\PaylineApi\Client as PaylineApiClient;
 use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
@@ -103,9 +103,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected $paylineCartManagement;
 
     /**
-     * @var OrderIncrementIdTokenFactory
+     * @var OrderIncrementIdTokenManagement
      */
-    protected $orderIncrementIdTokenFactory;
+    protected $orderIncrementIdTokenManagement;
 
     /**
      * @var TransactionRepository
@@ -178,7 +178,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         RequestDoWebPaymentFactory $requestDoWebPaymentFactory,
         PaylineApiClient $paylineApiClient,
         PaylineCartManagement $paylineCartManagement,
-        OrderIncrementIdTokenFactory $orderIncrementIdTokenFactory,
+        OrderIncrementIdTokenManagement $orderIncrementIdTokenManagement,
         RequestGetWebPaymentDetailsFactory $requestGetWebPaymentDetailsFactory,
         TransactionRepository $transactionRepository,
         RequestDoCaptureFactory $requestDoCaptureFactory,
@@ -207,7 +207,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $this->requestDoWebPaymentFactory = $requestDoWebPaymentFactory;
         $this->paylineApiClient = $paylineApiClient;
         $this->paylineCartManagement = $paylineCartManagement;
-        $this->orderIncrementIdTokenFactory = $orderIncrementIdTokenFactory;
+        $this->orderIncrementIdTokenManagement = $orderIncrementIdTokenManagement;
         $this->requestGetWebPaymentDetailsFactory = $requestGetWebPaymentDetailsFactory;
         $this->transactionRepository = $transactionRepository;
         $this->requestDoCaptureFactory = $requestDoCaptureFactory;
@@ -257,6 +257,16 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         ];
     }
 
+    /**
+     * @param CartInterface $cart
+     * @param ProductCollection $productCollection
+     * @param TotalsInterface $totals
+     * @param PaymentInterface $payment
+     * @param AddressInterface $billingAddress
+     * @param AddressInterface|null $shippingAddress
+     * @return \Monext\Payline\PaylineApi\Response\DoWebPayment
+     * @throws \Exception
+     */
     protected function callPaylineApiDoWebPaymentFacade(
         CartInterface $cart,
         ProductCollection $productCollection,
@@ -274,6 +284,16 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         ];
         $this->paylineLogger->debug(__METHOD__, $logData);
 
+        $cartSha = $this->helperData->getCartSha($cart, $productCollection, $totals, $payment, $billingAddress, $shippingAddress);
+        if($cart->getReservedOrderId() && $this->helperData->shouldReuseToken()) {
+            $orderToken = $this->orderIncrementIdTokenManagement->getExistingTokenByOrderIncrementId($cart->getReservedOrderId(), $cartSha);
+
+            if($orderToken && $orderToken->getToken()) {
+                $orderToken->setRedirectUrl();
+                return $orderToken;
+            }
+        }
+
         $this->paylineCartManagement->handleReserveCartOrderId($cart->getId());
 
         $this->paylineLogger->debug(__METHOD__, ['reserved_order_id' => $cart->getReservedOrderId()]);
@@ -283,14 +303,14 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         }
 
         $response = $this->callPaylineApiDoWebPayment($cart, $productCollection, $totals, $payment, $billingAddress, $shippingAddress);
-
         if (!$response->isSuccess()) {
             throw new \Exception($response->getShortErrorMessage());
         }
 
-        $this->orderIncrementIdTokenFactory->create()->associateTokenToOrderIncrementId(
-            $cart->getReservedOrderId(),
-            $response->getToken()
+        $this->orderIncrementIdTokenManagement->associateTokenToCart(
+            $cart,
+            $response->getToken(),
+            $cartSha
         );
 
         return $response;
@@ -314,7 +334,9 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             ->setTotals($totals)
             ->setPayment($payment);
 
-        return $this->paylineApiClient->callDoWebPayment($request);
+        $response = $this->paylineApiClient->callDoWebPayment($request);
+
+        return $response;
     }
 
     protected function callPaylineApiGetWebPaymentDetails($token)
@@ -368,6 +390,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->paylineApiClient->callDoRefund($request);
     }
 
+    /**
+     * @param $contractNumber
+     * @param $paymentRecordId
+     * @return \Monext\Payline\PaylineApi\Response\GetPaymentRecord
+     */
     protected function callPaylinePaymentRecord($contractNumber, $paymentRecordId)
     {
         $request = $this->paymentRecordRequestFactory->create();
@@ -379,12 +406,10 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
     /**
      * @param $token
-     * @param $restoreCartOnError
      * @return $this
-     *
      * @throws LocalizedException
      */
-    public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false, $notification = false)
+    public function synchronizeNotificationPaymentWithPaymentGatewayFacade($token)
     {
         // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT BEFORE DOING ANYTHING
         $quote = $this->paylineCartManagement->getCartByToken($token);
@@ -393,17 +418,35 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             'quote_id' => $quote->getId(),
         ];
 
-        //Call GWPD to stop Payline notification
-        if($notification) {
-            $order = $this->paylineOrderManagement->getOrderByToken($token);
-            if (!$order->getId()) {
-                $response = $this->callPaylineApiGetWebPaymentDetails($token);
-                if($response->isAbandoned()) {
-                    $this->paylineLogger->info("Abandoned payment, call callPaylineApiGetWebPaymentDetails to stop notifications", $logData);
-                    return $this;
-                }
+        $order = $this->paylineOrderManagement->getOrderByToken($token);
+        if (!$order->getId()) {
+            //Call GWPD to stop Payline notification
+            $response = $this->callPaylineApiGetWebPaymentDetails($token);
+            if($response->isAbandoned()) {
+                $this->orderIncrementIdTokenManagement->flagTokenAsDisabled($token);
+                $this->paylineLogger->info("Abandoned payment, call callPaylineApiGetWebPaymentDetails to stop notifications", $logData);
+                return $this;
             }
         }
+
+        return $this->synchronizePaymentWithPaymentGatewayFacade($token);
+    }
+
+    /**
+     * @param $token
+     * @param $restoreCartOnError
+     * @return $this
+     *
+     * @throws LocalizedException
+     */
+    public function synchronizePaymentWithPaymentGatewayFacade($token, $restoreCartOnError = false)
+    {
+        // IN CASE PAYMENT METHOD IS NOT PAYLINE WE EXIT BEFORE DOING ANYTHING
+        $quote = $this->paylineCartManagement->getCartByToken($token);
+        $logData = [
+            'token' => $token,
+            'quote_id' => $quote->getId(),
+        ];
 
         if($quote && $quote->getId()) {
             $this->paylineOrderManagement->checkQuotePaymentFromPayline($quote);
@@ -454,7 +497,8 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected function synchronizePaymentWithPaymentGateway(OrderPayment $payment, $token)
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
-        $firstTransaction = $this->getFirstTransactionForOrder($payment->getOrder());
+        $firstTransaction = $this->getFirstTransactionForOrder($payment->getOrder(), [TransactionInterface::TYPE_CAPTURE, TransactionInterface::TYPE_AUTH, TransactionInterface::TYPE_ORDER, TransactionInterface::TYPE_PAYMENT]);
+
         if($firstTransaction && $firstTransaction->getId()) {
             if($response->isDuplicate()) {
                 $message = __('Duplicate detected. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
@@ -464,7 +508,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
             $payment->getOrder()->addStatusHistoryComment($message);
             $payment->getOrder()->save();
-            throw new \Exception('Transaction already exists for this order');
+
+            $exceptionMessage = 'Transaction already exists for this order.';
+            if($response->isSuccess() && $this->callPaylineApiDoCancelPaymentFacade($payment, $response)) {
+                $exceptionMessage .= '. Payline transaction successfully void or refund.';
+            }
+            throw new \Exception($exceptionMessage);
         }
 
         $payment->setData('payline_response', $response);
@@ -592,7 +641,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $amount
     )
     {
-        $token = $this->orderIncrementIdTokenFactory->create()->getTokenByOrderIncrementId($order->getIncrementId());
+        $token = $this->orderIncrementIdTokenManagement->getTokenByOrderIncrementId($order->getIncrementId());
         $response1 = $this->callPaylineApiGetWebPaymentDetails($token);
 
         if (!$response1->isSuccess()) {
@@ -637,7 +686,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         }
 
         // Get API token
-        $token = $this->orderIncrementIdTokenFactory->create()->getTokenByOrderIncrementId($order->getIncrementId());
+        $token = $this->orderIncrementIdTokenManagement->getTokenByOrderIncrementId($order->getIncrementId());
         $response1 = $this->callPaylineApiGetWebPaymentDetails($token);
 
         if (!$response1->isSuccess()) {
@@ -748,23 +797,27 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     }
 
 
-    protected function getFirstTransactionForOrder(OrderInterface $order) {
+    /**
+     * @param OrderInterface $order
+     * @return \Magento\Sales\Model\Order\Payment\Transaction
+     */
+    protected function getFirstTransactionForOrder(OrderInterface $order, $txnTypes = []) {
+
+        $searchCriteria = $this->searchCriteriaBuilder;
 
         // Get first transaction used - Always use it for refund
-        $filters[] = $this->filterBuilder
-            ->setField(TransactionInterface::ORDER_ID)
-            ->setValue($order->getId())
-            ->create();
-        $createdAtSort = $this->sortOrderBuilder
+        $searchCriteria->addFilter(TransactionInterface::ORDER_ID,$order->getId());
+
+        if(!empty($txnTypes)) {
+            $searchCriteria->addFilter(TransactionInterface::TXN_TYPE, $txnTypes, "in");
+        }
+
+        $searchCriteria->addSortOrder($this->sortOrderBuilder
             ->setField('created_at')
             ->setDirection(Collection::SORT_ORDER_ASC)
-            ->create();
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilters($filters)
-            ->addSortOrder($createdAtSort)
-            ->create();
+            ->create());
 
-        return $this->transactionRepository->getList($searchCriteria)->getFirstItem();
+        return $this->transactionRepository->getList($searchCriteria->create())->getFirstItem();
     }
 
     public function callPaylineApiDoRefundFacade(
@@ -773,7 +826,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $amount
     )
     {
-        $transaction = $this->getFirstTransactionForOrder($order);
+        $transaction = $this->getFirstTransactionForOrder($order, [TransactionInterface::TYPE_CAPTURE, TransactionInterface::TYPE_ORDER, TransactionInterface::TYPE_PAYMENT]);
 
         // Check existing transaction - else refund impossible
         if (!$transaction || ($transaction && !trim($transaction->getTxnId()))) {
@@ -782,7 +835,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         }
 
         // Get API token
-        $token = $this->orderIncrementIdTokenFactory->create()->getTokenByOrderIncrementId($order->getIncrementId());
+        $token = $this->orderIncrementIdTokenManagement->getTokenByOrderIncrementId($order->getIncrementId());
         $response1 = $this->callPaylineApiGetWebPaymentDetails($token);
 
         if (!$response1->isSuccess()) {
@@ -881,4 +934,6 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
         return $payment;
     }
+
+
 }

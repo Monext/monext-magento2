@@ -17,6 +17,13 @@
             <argument name="paylineLogger" xsi:type="object">paylineLogger</argument>
         </arguments>
     </type>
+    <type name="Monext\Payline\Model\OrderIncrementIdTokenManagement">
+        <arguments>
+            <argument name="paylineLogger" xsi:type="object">paylineLogger</argument>
+        </arguments>
+    </type>
+
+
     <!-- Les Factory pourrais être refacto avec un virtualType à tester les impacts sur l'assignation du payment -->
     <type name="Monext\Payline\PaylineApi\Request\DoWebPaymentTypeFactory">
         <arguments>

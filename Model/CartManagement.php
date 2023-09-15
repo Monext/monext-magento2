@@ -11,7 +11,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Sales\Model\Order;
 use Magento\Store\Model\ScopeInterface;
-use Monext\Payline\Model\OrderIncrementIdTokenFactory as OrderIncrementIdTokenFactory;
+use Monext\Payline\Model\OrderIncrementIdTokenManagement;
 use Monext\Payline\Helper\Constants as HelperConstants;
 
 class CartManagement
@@ -32,9 +32,9 @@ class CartManagement
     protected $quoteFactory;
 
     /**
-     * @var OrderIncrementIdTokenFactory
+     * @var OrderIncrementIdTokenManagement
      */
-    protected $orderIncrementIdTokenFactory;
+    protected $orderIncrementIdTokenManagement;
 
     /**
      * @var CheckoutCart
@@ -58,7 +58,7 @@ class CartManagement
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartManagementInterface $cartManagement,
-        OrderIncrementIdTokenFactory $orderIncrementIdTokenFactory,
+        OrderIncrementIdTokenManagement $orderIncrementIdTokenManagement,
         QuoteFactory $quoteFactory,
         CheckoutCart $checkoutCart,
         ProductCollectionFactory $productCollectionFactory,
@@ -68,7 +68,7 @@ class CartManagement
         $this->cartRepository = $cartRepository;
         $this->cartManagement = $cartManagement;
         $this->quoteFactory = $quoteFactory;
-        $this->orderIncrementIdTokenFactory = $orderIncrementIdTokenFactory;
+        $this->orderIncrementIdTokenManagement = $orderIncrementIdTokenManagement;
         $this->checkoutCart = $checkoutCart;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
@@ -94,7 +94,9 @@ class CartManagement
     public function placeOrderByToken($token)
     {
         $quote = $this->getCartByToken($token);
-        $this->cartManagement->placeOrder($quote->getId());
+        $orderId = $this->cartManagement->placeOrder($quote->getId());
+        $this->saveOrderIdOnToken($token, $orderId);
+
         return $this;
     }
 
@@ -117,12 +119,19 @@ class CartManagement
     public function getCartByToken($token)
     {
         if(!isset($this->cartByToken[$token])) {
-            $orderIncrementId = $this->orderIncrementIdTokenFactory->create()->getOrderIncrementIdByToken($token);
+            $orderIncrementId = $this->orderIncrementIdTokenManagement->getOrderIncrementIdByToken($token);
             // TODO Use QuoteRepository instead of quote::load
             $this->cartByToken[$token] = $this->quoteFactory->create()->load($orderIncrementId, 'reserved_order_id');
         }
         return $this->cartByToken[$token];
     }
+
+
+    public function saveOrderIdOnToken($token, $orderId)
+    {
+        $this->orderIncrementIdTokenManagement->saveOrderIdOnToken($token, $orderId);
+    }
+
 
     /**
      * Retrieve cart product collection with payline_category_mapping

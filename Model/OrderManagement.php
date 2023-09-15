@@ -4,15 +4,15 @@ namespace Monext\Payline\Model;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
-use Monext\Payline\Model\OrderIncrementIdTokenFactory;
+use Monext\Payline\Model\OrderIncrementIdTokenManagement;
 use Monext\Payline\Helper\Data as HelperData;
 
 class OrderManagement
 {
     /**
-     * @var OrderIncrementIdTokenFactory
+     * @var OrderIncrementIdTokenManagement
      */
-    protected $orderIncrementIdTokenFactory;
+    protected $orderIncrementIdTokenManagement;
 
     /**
      * @var OrderFactory
@@ -30,13 +30,13 @@ class OrderManagement
     protected $orderSender;
 
     public function __construct(
-        OrderIncrementIdTokenFactory $orderIncrementIdTokenFactory,
+        OrderIncrementIdTokenManagement $orderIncrementIdTokenManagement,
         OrderFactory $orderFactory,
         HelperData $helperData,
         \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender
     ) {
         $this->orderFactory = $orderFactory;
-        $this->orderIncrementIdTokenFactory = $orderIncrementIdTokenFactory;
+        $this->orderIncrementIdTokenManagement = $orderIncrementIdTokenManagement;
         $this->helperData = $helperData;
         $this->orderSender = $orderSender;
     }
@@ -81,7 +81,7 @@ class OrderManagement
      */
     public function getOrderByToken($token)
     {
-        $orderIncrementId = $this->orderIncrementIdTokenFactory->create()->getOrderIncrementIdByToken($token);
+        $orderIncrementId = $this->orderIncrementIdTokenManagement->getOrderIncrementIdByToken($token);
         return $this->orderFactory->create()->load($orderIncrementId, 'increment_id');
     }
 

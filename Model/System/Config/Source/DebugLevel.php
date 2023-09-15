@@ -20,4 +20,19 @@ class DebugLevel implements ArrayInterface
             ['value' => Logger::DEBUG, 'label' => __('Debug')]
         ];
     }
+
+    /**
+     * Get options in "key-value" format
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [Logger::ERROR => __('Error'),
+            Logger::WARNING => __('Warning'),
+            Logger::NOTICE => __('Notice'),
+            Logger::INFO => __('Info'),
+            Logger::DEBUG => __('Debug')
+            ];
+    }
 }

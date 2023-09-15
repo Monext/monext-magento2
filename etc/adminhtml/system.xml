@@ -35,51 +35,61 @@
                         <config_path>payline/general/merchant_name</config_path>
                         <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
                     </field>
-                    <field id="debug" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Debug</label>
-                        <source_model>Monext\Payline\Model\System\Config\Source\DebugLevel</source_model>
-                        <config_path>payline/general/debug</config_path>
-                    </field>
-                    <field id="proxy_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Proxy Enabled</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payline/general/proxy_enabled</config_path>
-                    </field>
-                    <field id="proxy_host" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Proxy Host</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payline/general/proxy_host</config_path>
-                        <depends>
-                            <field id="proxy_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="proxy_port" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Proxy Port</label>
-                        <config_path>payline/general/proxy_port</config_path>
-                        <depends>
-                            <field id="proxy_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="proxy_login" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Proxy Login</label>
-                        <config_path>payline/general/proxy_login</config_path>
-                        <depends>
-                            <field id="proxy_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="proxy_password" translate="label" type="obscure" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Proxy Password</label>
-                        <config_path>payline/general/proxy_password</config_path>
-                        <depends>
-                            <field id="proxy_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="disable_failover" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Disable failover</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payline/general/use_failover</config_path>
-                        <comment>With PHP SDK superior to 4.68 a failvover mechanism is implemented to bypass potential network issues.</comment>
-                    </field>
+                    <group id="advanced_common" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                        <label>Advanced</label>
+                        <attribute type="expanded">0</attribute>
+                        <field id="debug" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Debug</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\DebugLevel</source_model>
+                            <config_path>payline/general/debug</config_path>
+                        </field>
+                        <field id="token_usage" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Token usage</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\TokenUsage</source_model>
+                            <config_path>payline/general/token_usage</config_path>
+                            <comment>Manage how to deal with token generation.</comment>
+                        </field>
+                        <field id="disable_failover" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Disable failover</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payline/general/use_failover</config_path>
+                            <comment>With PHP SDK superior to 4.68 a failvover mechanism is implemented to bypass potential network issues.</comment>
+                        </field>
+                        <field id="proxy_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Proxy Enabled</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payline/general/proxy_enabled</config_path>
+                        </field>
+                        <field id="proxy_host" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Proxy Host</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payline/general/proxy_host</config_path>
+                            <depends>
+                                <field id="proxy_enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="proxy_port" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Proxy Port</label>
+                            <config_path>payline/general/proxy_port</config_path>
+                            <depends>
+                                <field id="proxy_enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="proxy_login" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Proxy Login</label>
+                            <config_path>payline/general/proxy_login</config_path>
+                            <depends>
+                                <field id="proxy_enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="proxy_password" translate="label" type="obscure" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Proxy Password</label>
+                            <config_path>payline/general/proxy_password</config_path>
+                            <depends>
+                                <field id="proxy_enabled">1</field>
+                            </depends>
+                        </field>
+                    </group>
                     <group id="user_error_message" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
                         <label>User Error Messages</label>
                         <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
@@ -150,6 +160,14 @@
                             <depends>
                                 <field id="integration_type">widget</field>
                             </depends>
+                        </field>
+                        <field id="custom_payment_page_code" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Custom payment page code</label>
+                            <config_path>payment/payline_web_payment_cpt/custom_payment_page_code</config_path>
+                            <comment>ID of a style defined in Payline administration tool.</comment>
+<!--                            <depends>-->
+<!--                                <field id="integration_type">redirect</field>-->
+<!--                            </depends>-->
                         </field>
                         <field id="payment_action" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Payment Action</label>

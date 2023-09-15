@@ -5,6 +5,7 @@
             <general>
                 <merchant_id>MERCHANT_ID</merchant_id>
                 <environment>HOMO</environment>
+                <token_usage>1</token_usage>
                 <disable_failover>0</disable_failover>
                 <user_error_message_type1>Error with bank transaction process</user_error_message_type1>
                 <user_error_message_type2>Error with transaction process</user_error_message_type2>
