@@ -1,3 +1,8 @@
+# 1.2.17
+Released on 2023-10-26
+- Remove use of Magento\Quote\Api\Data\TotalsInterface
+- Fix warning "Property declared dynamically" on PaymentManagement
+
 # 1.2.16
 Released on 2023-08-18
 - Compatibility Magento 2.4.6 (remove Zend_Validate)

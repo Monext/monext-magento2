@@ -4,12 +4,12 @@ namespace Monext\Payline\PaylineApi\Request;
 
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\UrlInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
-use Magento\Quote\Api\Data\TotalsInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\Helper\Currency as HelperCurrency;
 use Monext\Payline\Helper\Data as HelperData;
@@ -29,7 +29,7 @@ class DoWebPayment extends AbstractRequest
     protected $productCollection;
 
     /**
-     * @var TotalsInterface
+     * @var DataObject
      */
     protected $totals;
 
@@ -133,7 +133,11 @@ class DoWebPayment extends AbstractRequest
         return $this;
     }
 
-    public function setTotals(TotalsInterface $totals)
+    /**
+     * @param DataObject $totals
+     * @return $this
+     */
+    public function setTotals(DataObject $totals)
     {
         $this->totals = $totals;
         return $this;
@@ -179,7 +183,7 @@ class DoWebPayment extends AbstractRequest
         $paymentMethod = $this->payment->getMethod();
         $paymentAdditionalInformation = $this->payment->getAdditionalInformation();
 
-        $data['payment']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
+        $data['payment']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal());
         $data['payment']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['payment']['action'] = $this->scopeConfig->getValue('payment/' . $paymentMethod . '/payment_action',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -211,7 +215,7 @@ class DoWebPayment extends AbstractRequest
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
         $data['order']['country'] = $this->billingAddress->getCountry();
-        $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal() + $this->totals->getTaxAmount());
+        $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal());
         $taxes = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getTaxAmount());
         $data['order']['taxes'] = $taxes ? $taxes : null;
         $data['order']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());

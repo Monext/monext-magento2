@@ -5,13 +5,13 @@ namespace Monext\Payline\Helper;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
 use Magento\Framework\Math\Random as MathRandom;
 use Magento\Framework\Serialize\Serializer\Json as Serialize;
 use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
-use Magento\Quote\Api\Data\TotalsInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Response\GetWebPaymentDetails as ResponseGetWebPaymentDetails;
@@ -285,7 +285,7 @@ class Data extends AbstractHelper
     /**
      * @param CartInterface $cart
      * @param ProductCollection $productCollection
-     * @param TotalsInterface $totals
+     * @param DataObject $totals
      * @param PaymentInterface $payment
      * @param AddressInterface $billingAddress
      * @param AddressInterface|null $shippingAddress
@@ -294,7 +294,7 @@ class Data extends AbstractHelper
     public function getCartSha(
         CartInterface $cart,
         ProductCollection $productCollection,
-        TotalsInterface $totals,
+        DataObject $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
         AddressInterface $shippingAddress = null
