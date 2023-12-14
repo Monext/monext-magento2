@@ -3,6 +3,7 @@
 namespace Monext\Payline\Block\Adminhtml\System\Config;
 
 use Exception;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Html\Select;
 
 class RendererSelectFactory
@@ -29,7 +30,7 @@ class RendererSelectFactory
     public function create($type)
     {
         if (!in_array($type, array_keys($this->sources))) {
-            throw new Exception(__('Select type not found'));
+            throw new LocalizedException(__('Select type not found'));
         }
         $this->class = $this->sources[$type];
         return $this;
@@ -42,7 +43,7 @@ class RendererSelectFactory
     public function getClass()
     {
         if (is_null($this->class)) {
-            throw new Exception(__('Class not init with create'));
+            throw new LocalizedException(__('Class not init with create'));
         }
         return $this->class;
     }

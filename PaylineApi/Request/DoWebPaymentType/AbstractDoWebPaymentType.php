@@ -2,6 +2,7 @@
 
 namespace Monext\Payline\PaylineApi\Request\DoWebPaymentType;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\UrlInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Quote\Api\Data\PaymentInterface;
@@ -82,7 +83,7 @@ abstract class AbstractDoWebPaymentType
     public function getPayment()
     {
         if(is_null($this->payment)) {
-            throw new \Exception('Payment not set');
+            throw new LocalizedException(__('Payment not set'));
         }
         return $this->payment;
     }

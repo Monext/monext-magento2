@@ -2,6 +2,7 @@
 
 namespace Monext\Payline\PaylineApi\Request;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Monext\Payline\PaylineApi\Request\DoWebPaymentType\AbstractDoWebPaymentType;
 
@@ -41,7 +42,7 @@ class DoWebPaymentTypeFactory
     protected function getDoWebPaymentTypeClass($paymentMethod)
     {
         if(!isset($this->availableDoWebPaymentTypeClass[$paymentMethod])) {
-            throw new \Exception(__('Payment method %1 not available in %2', $paymentMethod, implode(', ', array_keys($this->availableDoWebPaymentTypeClass))));
+            throw new LocalizedException(__('Payment method %1 not available in %2', $paymentMethod, implode(', ', array_keys($this->availableDoWebPaymentTypeClass))));
         }
         return $this->availableDoWebPaymentTypeClass[$paymentMethod];
     }

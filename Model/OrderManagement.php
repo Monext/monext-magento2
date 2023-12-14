@@ -2,6 +2,7 @@
 
 namespace Monext\Payline\Model;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Monext\Payline\Model\OrderIncrementIdTokenManagement;
@@ -93,7 +94,7 @@ class OrderManagement
     public function checkQuotePaymentFromPayline(\Magento\Quote\Model\Quote $quote)
     {
         if (!$this->helperData->isPaymentQuoteFromPayline($quote->getPayment())) {
-            throw new \Exception('Invalid Payment Method');
+            throw new LocalizedException(__('Invalid Payment Method'));
         }
 
         return $this;
@@ -108,7 +109,7 @@ class OrderManagement
     public function checkOrderPaymentFromPayline(\Magento\Sales\Model\Order $order)
     {
         if (!$this->helperData->isPaymentFromPayline($order->getPayment())) {
-            throw new \Exception('Invalid Payment Method');
+            throw new LocalizedException(__('Invalid Payment Method'));
         }
 
         return $this;
