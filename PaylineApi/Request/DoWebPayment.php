@@ -214,6 +214,8 @@ class DoWebPayment extends AbstractRequest
     protected function prepareOrderData(&$data)
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
+        //TODO: Add origin to manage smartdisplay
+        //$data['order']['origin'] = '';
         $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal());
         $taxes = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getTaxAmount());

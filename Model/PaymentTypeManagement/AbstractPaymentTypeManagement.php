@@ -57,6 +57,9 @@ abstract class AbstractPaymentTypeManagement
         $transactionData = $response->getTransactionData();
         $payment->setTransactionId($transactionData['id']);
 
+        //Keep all payment data
+        $this->helperData->setPaymentAdditionalInformation($payment, $response, ['payment']);
+
         //In widget mode or with NX payment there is no contract_number
         if(!$payment->getAdditionalInformation('contract_number') && $response->getContractNumber()) {
             $payment->setAdditionalInformation('contract_number', $response->getContractNumber());

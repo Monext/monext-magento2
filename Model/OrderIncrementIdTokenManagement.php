@@ -162,13 +162,19 @@ class OrderIncrementIdTokenManagement implements \Monext\Payline\Api\TokenManage
     {
         $orderTokenCollection = $this->getTokenCollectionFromIncrementId($orderIncrementId);
 
+        $token = null;
         foreach ($orderTokenCollection as $orderToken) {
+            if(in_array($orderToken->getState(), [OrderIncrementIdTokenInterface::TOKEN_STATUS_DISABLED])) {
+               continue;
+            }
+
+            $token = $orderToken->getToken();
             if ($orderToken->getOrderEntityId()) {
-                return $orderToken->getToken();
+                break;
             }
         }
 
-        return null;
+        return $token;
     }
 
 

@@ -5,24 +5,24 @@
         "monext/payline-sdk": "*"
     },
     "type": "magento2-module",
-    "version": "1.2.16",
+    "version": "1.2.18",
     "authors" : [
         {
             "name" : "Matthieu BOUCHOT",
             "email" : "matthieu.bouchot@agence-tbd.com",
-            "homepage" : "https://www.agence-tbd.com/",
+            "homepage" : "https://www.tbdgroup.com/",
             "role": "Developer"
         },
         {
             "name" : "Vincent PIETRI",
             "email" : "vincent.pietri@tbdgroup.com",
-            "homepage" : "https://www.agence-tbd.com/",
+            "homepage" : "https://www.tbdgroup.com/",
             "role": "Developer"
         },
         {
             "name" : "Christopher BROUARD",
             "email" : "christopher.brouard@tbdgroup.com",
-            "homepage" : "https://www.agence-tbd.com/",
+            "homepage" : "https://www.tbdgroup.com/",
             "role": "Developer"
         }
     ],

@@ -2,65 +2,65 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="payment">
-            <group id="payline" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="payline" translate="label,comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label><![CDATA[<div class="monext-payment-logo"></div><div class="monext-payment-byline">Access your <a href="%1">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>]]></label>
                 <fieldset_css>complex monext-payment-section</fieldset_css>
                 <attribute type="expanded">0</attribute>
                 <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
-                <group id="payline_common" translate="label" showInDefault="1" sortOrder="10">
+                <group id="payline_common" translate="label,comment" showInDefault="1" sortOrder="10">
                     <label>Common settings</label>
                     <attribute type="expanded">1</attribute>
                     <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>
-                    <field id="merchant_id" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="merchant_id" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Merchant ID</label>
                         <config_path>payline/general/merchant_id</config_path>
                     </field>
-                    <field id="access_key" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="access_key" translate="label,comment" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Access key</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payline/general/access_key</config_path>
                     </field>
-                    <field id="environment" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="environment" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Environment</label>
                         <source_model>Monext\Payline\Model\System\Config\Source\Environment</source_model>
                         <config_path>payline/general/environment</config_path>
                     </field>
-                    <field id="language" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="language" translate="label,comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Language</label>
                         <source_model>Monext\Payline\Model\System\Config\Source\Language</source_model>
                         <config_path>payline/general/language</config_path>
                     </field>
-                    <field id="merchant_name" translate="label" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="merchant_name" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Merchant Name</label>
                         <config_path>payline/general/merchant_name</config_path>
                         <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
                     </field>
-                    <group id="advanced_common" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                    <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
                         <label>Advanced</label>
                         <attribute type="expanded">0</attribute>
-                        <field id="debug" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="debug" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Debug</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\DebugLevel</source_model>
                             <config_path>payline/general/debug</config_path>
                         </field>
-                        <field id="token_usage" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="token_usage" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Token usage</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\TokenUsage</source_model>
                             <config_path>payline/general/token_usage</config_path>
                             <comment>Manage how to deal with token generation.</comment>
                         </field>
-                        <field id="disable_failover" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="disable_failover" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Disable failover</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payline/general/use_failover</config_path>
                             <comment>With PHP SDK superior to 4.68 a failvover mechanism is implemented to bypass potential network issues.</comment>
                         </field>
-                        <field id="proxy_enabled" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="proxy_enabled" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Proxy Enabled</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payline/general/proxy_enabled</config_path>
                         </field>
-                        <field id="proxy_host" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="proxy_host" translate="label,comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Proxy Host</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payline/general/proxy_host</config_path>
@@ -68,21 +68,21 @@
                                 <field id="proxy_enabled">1</field>
                             </depends>
                         </field>
-                        <field id="proxy_port" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="proxy_port" translate="label,comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Proxy Port</label>
                             <config_path>payline/general/proxy_port</config_path>
                             <depends>
                                 <field id="proxy_enabled">1</field>
                             </depends>
                         </field>
-                        <field id="proxy_login" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="proxy_login" translate="label,comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Proxy Login</label>
                             <config_path>payline/general/proxy_login</config_path>
                             <depends>
                                 <field id="proxy_enabled">1</field>
                             </depends>
                         </field>
-                        <field id="proxy_password" translate="label" type="obscure" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="proxy_password" translate="label,comment" type="obscure" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Proxy Password</label>
                             <config_path>payline/general/proxy_password</config_path>
                             <depends>
@@ -90,41 +90,41 @@
                             </depends>
                         </field>
                     </group>
-                    <group id="user_error_message" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
+                    <group id="user_error_message" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
                         <label>User Error Messages</label>
                         <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
                         <attribute type="expanded">0</attribute>
-                        <field id="type1" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="type1" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Payline Back (01)</label>
                             <config_path>payline/general/user_error_message_type1</config_path>
                             <comment><![CDATA[Return codes linked to the return of the bank processing.]]></comment>
                         </field>
-                        <field id="type2" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="type2" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Payline Front (02)</label>
                             <config_path>payline/general/user_error_message_type2</config_path>
                             <comment><![CDATA[Return codes linked to the return of Payline processing.]]></comment>
                         </field>
-                        <field id="type3" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="type3" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>3DSecure (03)</label>
                             <config_path>payline/general/user_error_message_type3</config_path>
                             <comment><![CDATA[The return codes of the 3DS module related to authentication and 3DSecure processing.]]></comment>
                         </field>
-                        <field id="type4" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="type4" translate="label,comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>LCLF (04)</label>
                             <config_path>payline/general/user_error_message_type4</config_path>
                             <comment><![CDATA[The return codes of the LCLF module related to Payline anti-fraud rules.]]></comment>
                         </field>
-                        <field id="default" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <field id="default" translate="label,comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Default message</label>
                             <config_path>payline/general/user_error_message_default</config_path>
                             <comment><![CDATA[This message can happen when Payline server cannot be reached.]]></comment>
                         </field>
                     </group>
                 </group>
-                <group id="payline_contracts" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
+                <group id="payline_contracts" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
                     <label>Payline Contracts</label>
                     <attribute type="expanded">0</attribute>
-                    <field id="contracts" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="contracts" translate="label,comment" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Contracts</label>
                         <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Contract</frontend_model>
                         <source_model>Monext\Payline\Model\System\Config\Source\Contract</source_model>
@@ -132,28 +132,28 @@
                         <config_path>payline/general/contracts</config_path>
                     </field>
                 </group>
-                <group id="payline_solutions" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
+                <group id="payline_solutions" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
                     <label>Payment solutions</label>
                     <attribute type="expanded">0</attribute>
-                    <group id="payline_cpt" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                    <group id="payline_cpt" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
                         <label>Payline - Web Payment Cpt</label>
                         <comment><![CDATA[Select payments in your shopping cart. Payline will process your card payments through the Payline Gateway or the widget.]]></comment>
                         <attribute type="expanded">0</attribute>
-                        <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enabled</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/payline_web_payment_cpt/active</config_path>
                         </field>
-                        <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="title" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Title</label>
                             <config_path>payment/payline_web_payment_cpt/title</config_path>
                         </field>
-                        <field id="integration_type" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="integration_type" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Type of Integration</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\IntegrationType</source_model>
                             <config_path>payment/payline_web_payment_cpt/integration_type</config_path>
                         </field>
-                        <field id="widget_display" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="widget_display" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>payline_widget_display</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\WidgetDisplay</source_model>
                             <config_path>payment/payline_web_payment_cpt/widget_display</config_path>
@@ -161,7 +161,7 @@
                                 <field id="integration_type">widget</field>
                             </depends>
                         </field>
-                        <field id="custom_payment_page_code" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="custom_payment_page_code" translate="label,comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Custom payment page code</label>
                             <config_path>payment/payline_web_payment_cpt/custom_payment_page_code</config_path>
                             <comment>ID of a style defined in Payline administration tool.</comment>
@@ -169,7 +169,7 @@
 <!--                                <field id="integration_type">redirect</field>-->
 <!--                            </depends>-->
                         </field>
-                        <field id="payment_action" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="payment_action" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Payment Action</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\PaymentAction</source_model>
                             <config_path>payment/payline_web_payment_cpt/payment_action</config_path>
@@ -177,7 +177,7 @@
                         </field>
 
 
-                        <field id="return_payment_refused" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="return_payment_refused" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Return options</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\CanceledReturn</source_model>
                             <config_path>payline/payline_common/return_payment_refused</config_path>
@@ -185,66 +185,66 @@
                         </field>
 
 
-                        <field id="wallet_enabled" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="wallet_enabled" translate="label,comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enable Wallet</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/payline_web_payment_cpt/wallet_enabled</config_path>
                         </field>
-                        <group id="payline_cpt_status" translate="label" showInDefault="1" showInWebsite="1" sortOrder="100">
+                        <group id="payline_cpt_status" translate="label,comment" showInDefault="1" showInWebsite="1" sortOrder="100">
                             <label>Payline order status</label>
                             <attribute type="expanded">0</attribute>
-                            <field id="payline_status_captured" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_captured" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status captured</label>
                                 <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_captured</config_path>
                             </field>
-                            <field id="payline_status_waiting_capture" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_waiting_capture" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status waiting capture</label>
                                 <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_waiting_capture</config_path>
                             </field>
-                            <field id="payline_status_waiting_acceptance" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_waiting_acceptance" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status waiting acceptance</label>
                                 <source_model>Magento\Sales\Model\Config\Source\Order\Status\Processing</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_waiting_acceptance</config_path>
                             </field>
-                            <field id="payline_status_pending" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_pending" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status pending</label>
                                 <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_pending</config_path>
                             </field>
-                            <field id="payline_status_cancel" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_cancel" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status cancel</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToCanceled</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_canceled</config_path>
                             </field>
-                            <field id="payline_status_refused" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_refused" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status refused</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToCanceled</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_refused</config_path>
                             </field>
-                            <field id="payline_status_fraud" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_fraud" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status fraud</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToCanceled</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_fraud</config_path>
                             </field>
-                            <field id="payline_status_abandoned" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="payline_status_abandoned" translate="label,comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Default status abandoned</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToCanceled</source_model>
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_abandoned</config_path>
                             </field>
                         </group>
                     </group>
-                    <group id="payline_nx" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                    <group id="payline_nx" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
                         <label>Payline - Web Payment Nx</label>
                         <comment><![CDATA[Customer will select card payments and schedule through the Payline Gateway.]]></comment>
                         <attribute type="expanded">0</attribute>
-                        <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="active" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enabled</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                             <config_path>payment/payline_web_payment_nx/active</config_path>
                         </field>
-                        <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="title" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Title</label>
                             <config_path>payment/payline_web_payment_nx/title</config_path>
                             <depends>
@@ -260,7 +260,7 @@
                                 <field id="active">1</field>
                             </depends>
                         </field>
-                        <field id="cost_amount" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="cost_amount" translate="label,comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Costs amount/percentage</label>
                             <config_path>payment/payline_web_payment_nx/cost_amount</config_path>
                             <depends>
@@ -274,43 +274,43 @@
 <!--                            <config_path>payment/payline_web_payment_nx/template_url</config_path>-->
 <!--                            <comment><![CDATA[URL to a custom HTML template. Refer to Payline documentation]]></comment>-->
 <!--                        </field>-->
-<!--                        <field id="custom_payment_page_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                        <field id="custom_payment_page_code" translate="label,comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                            <label>Custom payment page code</label>-->
 <!--                            <config_path>payment/payline_web_payment_nx/custom_payment_page_code</config_path>-->
 <!--                            <comment><![CDATA[ID of a style defined in Payline administration tool.]]></comment>-->
 <!--                        </field>-->
-<!--                        <field id="custom_payment_page_code_ua_regexp" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                        <field id="custom_payment_page_code_ua_regexp" translate="label,comment" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                            <label>Custom payment page exception</label>-->
 <!--                            <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Exception</frontend_model>-->
 <!--                            <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>-->
 <!--                            <config_path>payment/payline_web_payment_nx/custom_payment_page_code_ua_regexp</config_path>-->
 <!--                            <comment><![CDATA[Match expressions in the same order as displayed in the configuration.]]></comment>-->
 <!--                        </field>-->
-                        <field id="redirect_message" translate="label" type="textarea" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <field id="redirect_message" translate="label,comment" type="textarea" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Redirection message</label>
                             <config_path>payment/payline_web_payment_nx/redirect_message</config_path>
                             <depends>
                                 <field id="active">1</field>
                             </depends>
                         </field>
-                        <group id="advanced_settings_nx" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="90">
+                        <group id="advanced_settings_nx" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="90">
                             <label>Advanced settings</label>
                             <attribute type="expanded">0</attribute>
                             <depends>
                                 <field id="active">1</field>
                             </depends>
-                            <field id="active_amount_min" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="active_amount_min" translate="label,comment" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Minimum amount</label>
                                 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                                 <config_path>payment/payline_web_payment_nx/active_amount_min</config_path>
                                 <comment><![CDATA[To display, check if the cart amount is greater than or equal to the minimum amount]]></comment>
                             </field>
-                            <field id="billing_occurrences" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="billing_occurrences" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Billing occurences</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\BillingOccurances</source_model>
                                 <config_path>payment/payline_web_payment_nx/billing_occurrences</config_path>
                             </field>
-                            <field id="billing_cycle" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <field id="billing_cycle" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                                 <label>Billing cycle</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\BillingCycles</source_model>
                                 <config_path>payment/payline_web_payment_nx/billing_cycle</config_path>
@@ -322,64 +322,64 @@
                                 <comment><![CDATA[If wallet id is provided, wallet payment will be available during web payment]]></comment>
                             </field>
 <!--                        @todo : En attente de spec-->
-<!--                            <field id="automate_invoice_creation" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                            <field id="automate_invoice_creation" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                                <label>Automate invoice creation</label>-->
 <!--                                <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToInvoice</source_model>-->
 <!--                                <config_path>payment/payline_web_payment_nx/automate_invoice_creation</config_path>-->
 <!--                            </field>-->
-<!--                            <field id="status_when_payline_schedule_alert" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">&ndash;&gt;-->
+<!--                            <field id="status_when_payline_schedule_alert" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">&ndash;&gt;-->
 <!--                                <label>Order status when credit card expiration date is closed</label>-->
 <!--                                <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>-->
 <!--                                <config_path>payment/payline_web_payment_nx/status_when_payline_schedule_alert</config_path>-->
 <!--                            </field>-->
-<!--                            <field id="status_when_credit_card_schedule_is_expired" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                            <field id="status_when_credit_card_schedule_is_expired" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                                <label>Order status when an instalment fails</label>-->
 <!--                                <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>-->
 <!--                                <config_path>payment/payline_web_payment_nx/status_when_credit_card_schedule_is_expired</config_path>-->
 <!--                            </field>-->
-<!--                            <field id="status_when_payline_schedule_alert" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                            <field id="status_when_payline_schedule_alert" translate="label,comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                                <label>Order status when credit card expiration date is close</label>-->
 <!--                                <config_path>payment/payline_web_payment_nx/status_when_payline_schedule_alert</config_path>-->
 <!--                            </field>-->
                         </group>
                     </group>
                 </group>
-                <group id="contracts_specific_settings" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="40">
+                <group id="contracts_specific_settings" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="40">
                     <label>Contracts specific settings</label>
                     <comment>Please fill in the fields in the "Delivery configuration" and "Prefix configuration" section first and foremost. If you they are not filled in, the Default values will be used.</comment>
                     <attribute type="expanded">0</attribute>
-                    <field id="address" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="address" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Delivery configuration</label>
                         <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Delivery</frontend_model>
                         <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                         <config_path>payline/payline_common/address</config_path>
                     </field>
-                    <field id="prefix" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="prefix" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Prefix configuration</label>
                         <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Form\Field\Prefix</frontend_model>
                         <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                         <config_path>payline/payline_common/prefix</config_path>
                     </field>
 
-                    <group id="default_values" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
+                    <group id="default_values" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
                         <label>Default values</label>
                         <attribute type="expanded">0</attribute>
-                        <field id="default_address_deliverytime" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <field id="default_address_deliverytime" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Delivery time</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\Delivery\Time</source_model>
                             <config_path>payline/common_default/deliverytime</config_path>
                         </field>
-                        <field id="default_address_deliverymode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <field id="default_address_deliverymode" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Delivery mode</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\Delivery\Mode</source_model>
                             <config_path>payline/common_default/deliverymode</config_path>
                         </field>
-                        <field id="default_address_delivery_expected_delay" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <field id="default_address_delivery_expected_delay" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Delivery expected delay</label>
                             <config_path>payline/common_default/delivery_expected_delay</config_path>
                             <validate>required-entry</validate>
                         </field>
-                        <field id="default_category" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <field id="default_category" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Category</label>
                             <source_model>\Monext\Payline\Model\Category\Attribute\Source\CategoryMapping</source_model>
                             <config_path>payline/common_default/category</config_path>
