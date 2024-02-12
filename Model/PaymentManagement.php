@@ -10,15 +10,15 @@ use Magento\Framework\Data\Collection;
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Checkout\Api\PaymentInformationManagementInterface as CheckoutPaymentInformationManagementInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\BillingAddressManagementInterface as QuoteBillingAddressManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
-use Magento\Quote\Api\Data\TotalsInterface;
 use Magento\Quote\Api\PaymentMethodManagementInterface as QuotePaymentMethodManagementInterface;
+use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\ShippingAddressManagementInterface as QuoteShippingAddressManagementInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
@@ -51,11 +51,6 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      * @var CartRepositoryInterface
      */
     protected $cartRepository;
-
-    /**
-     * @var CartTotalRepositoryInterface
-     */
-    protected $cartTotalRepository;
 
     /**
      * @var CheckoutPaymentInformationManagementInterface
@@ -167,12 +162,57 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      */
     protected $transactionManager;
 
+    /**
+     * @var array
+     */
     protected $gwpdResponseByToken = [];
 
+    /**
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
 
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var SortOrderBuilder
+     */
+    private $sortOrderBuilder;
+
+
+    /**
+     * @param CartRepositoryInterface $cartRepository
+     * @param CheckoutPaymentInformationManagementInterface $checkoutPaymentInformationManagement
+     * @param QuotePaymentMethodManagementInterface $quotePaymentMethodManagement
+     * @param RequestDoWebPaymentFactory $requestDoWebPaymentFactory
+     * @param PaylineApiClient $paylineApiClient
+     * @param CartManagement $paylineCartManagement
+     * @param \Monext\Payline\Model\OrderIncrementIdTokenManagement $orderIncrementIdTokenManagement
+     * @param RequestGetWebPaymentDetailsFactory $requestGetWebPaymentDetailsFactory
+     * @param TransactionRepository $transactionRepository
+     * @param RequestDoCaptureFactory $requestDoCaptureFactory
+     * @param RequestDoVoidFactory $requestDoVoidFactory
+     * @param RequestDoRefundFactory $requestDoRefundFactory
+     * @param QuoteBillingAddressManagementInterface $quoteBillingAddressManagement
+     * @param QuoteShippingAddressManagementInterface $quoteShippingAddressManagement
+     * @param Transaction\ManagerInterface $transactionManager
+     * @param OrderManagement $paylineOrderManagement
+     * @param Logger $logger
+     * @param WalletManagement $walletManagement
+     * @param HelperData $helperData
+     * @param FilterBuilder $filterBuilder
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param SortOrderBuilder $sortOrderBuilder
+     * @param ScopeConfigInterface $scopeConfig
+     * @param PaymentTypeManagementFactory $paymentTypeManagementFactory
+     * @param PaymentRecordRequestFactory $paymentRecordRequestFactory
+     * @param Logger $paylineLogger
+     */
     public function __construct(
         CartRepositoryInterface $cartRepository,
-        CartTotalRepositoryInterface $cartTotalRepository,
         CheckoutPaymentInformationManagementInterface $checkoutPaymentInformationManagement,
         QuotePaymentMethodManagementInterface $quotePaymentMethodManagement,
         RequestDoWebPaymentFactory $requestDoWebPaymentFactory,
@@ -201,7 +241,6 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     )
     {
         $this->cartRepository = $cartRepository;
-        $this->cartTotalRepository = $cartTotalRepository;
         $this->checkoutPaymentInformationManagement = $checkoutPaymentInformationManagement;
         $this->quotePaymentMethodManagement = $quotePaymentMethodManagement;
         $this->requestDoWebPaymentFactory = $requestDoWebPaymentFactory;
@@ -229,6 +268,15 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $this->transactionManager = $transactionManager;
     }
 
+    /**
+     * @param $cartId
+     * @param PaymentInterface $paymentMethod
+     * @param AddressInterface|null $billingAddress
+     * @return array|\Monext\Payline\Api\anyType
+     * @throws LocalizedException
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function saveCheckoutPaymentInformationFacade(
         $cartId,
         PaymentInterface $paymentMethod,
@@ -239,13 +287,18 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->wrapCallPaylineApiDoWebPaymentFacade($cartId);
     }
 
+    /**
+     * @param $cartId
+     * @return array
+     * @throws LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function wrapCallPaylineApiDoWebPaymentFacade($cartId)
     {
         $cart = $this->cartRepository->getActive($cartId);
         $response = $this->callPaylineApiDoWebPaymentFacade(
             $cart,
             $this->paylineCartManagement->getProductCollectionFromCart($cartId),
-            $this->cartTotalRepository->get($cartId),
             $this->quotePaymentMethodManagement->get($cartId),
             $this->quoteBillingAddressManagement->get($cartId),
             $cart->getIsVirtual() ? null : $this->quoteShippingAddressManagement->get($cartId)
@@ -257,10 +310,36 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         ];
     }
 
+
+    /**
+     * @param $cartId
+     * @return DataObject
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function getTotalsForCartId($cartId) {
+
+        /** @var \Magento\Quote\Model\Quote $quote */
+        $quote = $this->cartRepository->getActive($cartId);
+        if ($quote->isVirtual()) {
+            $quote->collectTotals();
+        }
+
+        $totals = [
+            'grand_total' => $quote->getGrandTotal(),
+            'base_currency_code' => $quote->getBaseCurrencyCode(),
+            'tax_amount' => $quote->getShippingAddress()->getTaxAmount(),
+            'shipping_amount' => $quote->getShippingAddress()->getShippingInclTax(),
+            'discount_amount' => $quote->getShippingAddress()->getDiscountAmount()
+        ];
+
+        return new DataObject($totals);
+    }
+
+
+
     /**
      * @param CartInterface $cart
      * @param ProductCollection $productCollection
-     * @param TotalsInterface $totals
      * @param PaymentInterface $payment
      * @param AddressInterface $billingAddress
      * @param AddressInterface|null $shippingAddress
@@ -270,12 +349,13 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     protected function callPaylineApiDoWebPaymentFacade(
         CartInterface $cart,
         ProductCollection $productCollection,
-        TotalsInterface $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
         AddressInterface $shippingAddress = null
     )
     {
+        $totals = $this->getTotalsForCartId($cart->getId());
+
         $logData = [
             'cart_id' => $cart->getId(),
             'grand_total' => $totals->getGrandTotal(),
@@ -316,29 +396,42 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $response;
     }
 
+    /**
+     * @param CartInterface $cart
+     * @param ProductCollection $productCollection
+     * @param DataObject $totals
+     * @param PaymentInterface $payment
+     * @param AddressInterface $billingAddress
+     * @param AddressInterface|null $shippingAddress
+     * @return \Monext\Payline\PaylineApi\Response\DoWebPayment
+     */
     protected function callPaylineApiDoWebPayment(
         CartInterface $cart,
         ProductCollection $productCollection,
-        TotalsInterface $totals,
+        DataObject $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
         AddressInterface $shippingAddress = null
     )
     {
+        /** @var \Monext\Payline\PaylineApi\Request\DoWebPayment $request */
         $request = $this->requestDoWebPaymentFactory->create();
+
         $request
             ->setCart($cart)
             ->setProductCollection($productCollection)
+            ->setTotals($totals)
             ->setBillingAddress($billingAddress)
             ->setShippingAddress($shippingAddress)
-            ->setTotals($totals)
             ->setPayment($payment);
 
-        $response = $this->paylineApiClient->callDoWebPayment($request);
-
-        return $response;
+        return $this->paylineApiClient->callDoWebPayment($request);
     }
 
+    /**
+     * @param $token
+     * @return mixed|ResponseGetWebPaymentDetails
+     */
     protected function callPaylineApiGetWebPaymentDetails($token)
     {
 
@@ -352,6 +445,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->gwpdResponseByToken[$token];
     }
 
+    /**
+     * @param TransactionInterface $authorizationTransaction
+     * @param array $paymentData
+     * @return \Monext\Payline\PaylineApi\Response\DoCapture
+     */
     protected function callPaylineApiDoCapture(
         TransactionInterface $authorizationTransaction,
         array $paymentData
@@ -365,6 +463,10 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->paylineApiClient->callDoCapture($request);
     }
 
+    /**
+     * @param array $paymentData
+     * @return \Monext\Payline\PaylineApi\ResponseDoVoid
+     */
     protected function callPaylineApiDoVoid(
         array $paymentData
     )
@@ -375,6 +477,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this->paylineApiClient->callDoVoid($request);
     }
 
+    /**
+     * @param OrderInterface $order
+     * @param OrderPaymentInterface $payment
+     * @param array $paymentData
+     * @return \Monext\Payline\PaylineApi\ResponseDoRefund
+     */
     protected function callPaylineApiDoRefund(
         OrderInterface $order,
         OrderPaymentInterface $payment,
@@ -494,6 +602,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+    /**
+     * @param OrderPayment $payment
+     * @param $token
+     * @return $this
+     * @throws \Exception
+     */
     protected function synchronizePaymentWithPaymentGateway(OrderPayment $payment, $token)
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
@@ -558,6 +672,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+    /**
+     * @param ResponseGetWebPaymentDetails $response
+     * @param OrderPayment $payment
+     * @return $this
+     * @throws \Exception
+     */
     protected function handlePaymentSuccessFacade(
         ResponseGetWebPaymentDetails $response,
         OrderPayment $payment
@@ -571,6 +691,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+    /**
+     * @param OrderPayment $payment
+     * @param $message
+     * @return void
+     */
     protected function handlePaymentFraud(OrderPayment $payment, $message = null)
     {
         $this->paylineOrderManagement->handleSetOrderStateStatus(
@@ -581,6 +706,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         );
     }
 
+    /**
+     * @param OrderPayment $payment
+     * @param $message
+     * @return void
+     */
     protected function handlePaymentWaitingAcceptance(OrderPayment $payment, $message = null)
     {
         $this->paylineOrderManagement->handleSetOrderStateStatus(
@@ -591,6 +721,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         );
     }
 
+    /**
+     * @param ResponseGetWebPaymentDetails $response
+     * @param OrderPayment $payment
+     * @return $this
+     */
     protected function handlePaymentWaitingAcceptanceFacade(
         ResponseGetWebPaymentDetails $response,
         OrderPayment $payment
@@ -608,6 +743,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     }
 
 
+    /**
+     * @param OrderPayment $payment
+     * @param $message
+     * @return void
+     */
     protected function handlePaymentAbandoned(OrderPayment $payment, $message = null)
     {
         $this->paylineOrderManagement->handleSetOrderStateStatus(
@@ -618,6 +758,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         );
     }
 
+    /**
+     * @param OrderPayment $payment
+     * @param $message
+     * @return void
+     */
     protected function handlePaymentRefused(OrderPayment $payment, $message = null)
     {
         $this->paylineOrderManagement->handleSetOrderStateStatus(
@@ -674,6 +819,12 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         return $this;
     }
 
+    /**
+     * @param OrderInterface $order
+     * @param $payment
+     * @return $this
+     * @throws \Exception
+     */
     public function callPaylineApiDoVoidFacade(
         OrderInterface $order,
         $payment
@@ -871,7 +1022,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      * @param OrderInterface $order
      * @param ResponseGetWebPaymentDetails $response
      * @param $amount
-     * @return void
+     * @return void|bool
      * @throws \Exception
      */
     public function callPaylineApiDoCancelPaymentFacade(

@@ -96,7 +96,6 @@ class Nx extends AbstractDoWebPaymentType
 
     protected function addCostRecurringPaymentTypePercent(&$data, $costAmount) {
         //Fee calculation without shipping cost
-        $this->getPayment()->getQuote()->getGrandTotal();
         $data['recurring']['firstAmount'] = $data['recurring']['firstAmount'] + $costAmount;
     }
 }
