@@ -1,3 +1,9 @@
+# 1.2.16
+Released on 2023-08-18
+- Compatibility Magento 2.4.6 (remove Zend_Validate)
+- Fix setup class UpdgradeIncrementIdToken
+
+
 # 1.2.15
 Released on 2022-11-30
 - Fix tunnel loader

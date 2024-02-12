@@ -40,9 +40,9 @@ class Debug extends Base
         $fileName = null
     ) {
         $this->scopeConfig = $scopeConfig;
-        $this->loggerType = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        if (!$this->loggerType || (int)$this->loggerType<Logger::DEBUG) {
-            $this->loggerType = Logger::ERROR;
+        $this->loggerType = (int)$this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DEBUG, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if (!$this->loggerType || $this->loggerType<Logger::DEBUG) {
+            $this->loggerType = Logger::DEBUG;
         }
 
         parent::__construct(

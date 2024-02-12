@@ -30,22 +30,16 @@ class UpdgradeIncrementIdToken implements \Magento\Framework\Setup\Patch\SchemaP
 
         $connection->dropForeignKey($connection->getIndexName(
             $tableToken,
-            ['token'],
+            ['token', 'order_entity_id'],
             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
         ));
 
-        $connection->dropForeignKey( $connection->getIndexName(
-            $tableToken,
-            ['order_entity_id'],
-            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-        ));
-
-        $connection->dropColumn('sha');
-        $connection->dropColumn('cart_id');
-        $connection->dropColumn('order_entity_id');
-        $connection->dropColumn('order_entity_id');
-        $connection->dropColumn('order_entity_id');
-
+        $connection->dropColumn($tableToken, 'cart_id');
+        $connection->dropColumn($tableToken, 'order_entity_id');
+        $connection->dropColumn($tableToken, 'sha');
+        $connection->dropColumn($tableToken, 'state');
+        $connection->dropColumn($tableToken, 'updated_at');
+        $connection->dropColumn($tableToken, 'created_at');
     }
 
 
@@ -146,22 +140,11 @@ class UpdgradeIncrementIdToken implements \Magento\Framework\Setup\Patch\SchemaP
             $tableToken,
             $connection->getIndexName(
                 $tableToken,
-                ['order_entity_id'],
+                ['order_entity_id','token'],
                 \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
             ),
-            ['order_entity_id'],
+            ['order_entity_id','token'],
             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-        );
-
-        $connection->addIndex(
-            $tableToken,
-            $connection->getIndexName(
-                $tableToken,
-                ['token'],
-                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-            ),
-            ['token'],
-             \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
         );
 
         /** @var \Magento\Framework\DB\Select $select */
@@ -179,6 +162,10 @@ class UpdgradeIncrementIdToken implements \Magento\Framework\Setup\Patch\SchemaP
                 []
             );
 
+
+
+        //Attention
+        //
         $connection->query(
             $connection->updateFromSelect(
                 $select,
