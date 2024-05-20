@@ -305,10 +305,15 @@ class Data extends AbstractHelper
             return '';
         }
 
+        $shippingCountryId = $billingAddress->getCountryId();
+        if ($shippingAddress) {
+            $shippingCountryId = $shippingAddress->getCountryId();
+        }
+
         $cartDataKeys = [
             $cart->getId(),
             $billingAddress->getCountryId(),
-            $shippingAddress->getCountryId(),
+            $shippingCountryId,
             $totals->getGrandTotal(),
             $totals->getTaxAmount(),
             $totals->getBaseCurrencyCode()
