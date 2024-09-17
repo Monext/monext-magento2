@@ -1,3 +1,7 @@
+# 1.2.19
+Released on 2024-05-23
+- Check transaction ID before cancel
+
 # 1.2.18
 Released on 2023-12-13
 - Clean i18n files and generalize LocalizedException
