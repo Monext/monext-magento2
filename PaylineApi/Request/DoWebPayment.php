@@ -109,24 +109,40 @@ class DoWebPayment extends AbstractRequest
         $this->doWebPaymentTypeFactory = $doWebPaymentTypeFactory;
     }
 
+    /**
+     * @param CartInterface $cart
+     * @return $this
+     */
     public function setCart(CartInterface $cart)
     {
         $this->cart = $cart;
         return $this;
     }
 
+    /**
+     * @param ProductCollection $productCollection
+     * @return $this
+     */
     public function setProductCollection(ProductCollection $productCollection)
     {
         $this->productCollection = $productCollection;
         return $this;
     }
 
+    /**
+     * @param AddressInterface $billingAddress
+     * @return $this
+     */
     public function setBillingAddress(AddressInterface $billingAddress)
     {
         $this->billingAddress = $billingAddress;
         return $this;
     }
 
+    /**
+     * @param AddressInterface|null $shippingAddress
+     * @return $this
+     */
     public function setShippingAddress(AddressInterface $shippingAddress = null)
     {
         $this->shippingAddress = $shippingAddress;
@@ -143,6 +159,10 @@ class DoWebPayment extends AbstractRequest
         return $this;
     }
 
+    /**
+     * @param PaymentInterface $payment
+     * @return $this
+     */
     public function setPayment(PaymentInterface $payment)
     {
         $this->payment = $payment;
@@ -178,6 +198,10 @@ class DoWebPayment extends AbstractRequest
         return $this->data;
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     protected function preparePaymentData(&$data)
     {
         $paymentMethod = $this->payment->getMethod();
@@ -210,7 +234,11 @@ class DoWebPayment extends AbstractRequest
     }
 
 
-
+    /**
+     * @param $data
+     * @return void
+     * @throws \Exception
+     */
     protected function prepareOrderData(&$data)
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
@@ -227,6 +255,10 @@ class DoWebPayment extends AbstractRequest
         $this->prepareOrderDeliveryData($data);
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     protected function prepareOrderDetailsData(&$data)
     {
         $data['order']['details'] = [];
@@ -247,6 +279,11 @@ class DoWebPayment extends AbstractRequest
         }
     }
 
+    /**
+     * @param $data
+     * @return void
+     * @throws \Exception
+     */
     protected function prepareOrderDeliveryData(&$data)
     {
 
@@ -294,6 +331,10 @@ class DoWebPayment extends AbstractRequest
         return $expectedDate->format('d/m/Y');
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     protected function prepareBuyerData(&$data)
     {
         $customer = $this->cart->getCustomer();
@@ -316,10 +357,21 @@ class DoWebPayment extends AbstractRequest
             }
         }
 
+        $mobilePhone = '0123456789';
+        if ($this->shippingAddress
+            && $this->shippingAddress->getTelephone()
+            && $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone())
+        ) {
+            $mobilePhone = $this->shippingAddress->getTelephone();
+        } elseif ($this->billingAddress
+            && $this->billingAddress->getTelephone()
+            && $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone())
+        ) {
+            $mobilePhone = $this->billingAddress->getTelephone();
+        }
+
         $data['buyer']['title'] =  $this->getCustomerTitle($this->billingAddress->getPrefix());
-        $data['buyer']['mobilePhone'] = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone()) ??
-            $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone()) ??
-            '0123456789';
+        $data['buyer']['mobilePhone'] = $mobilePhone;
 
         if ($customer->getId()) {
             $data['buyer']['accountCreateDate'] = $this->formatDateTime($customer->getCreatedAt(), 'd/m/y');
@@ -334,6 +386,10 @@ class DoWebPayment extends AbstractRequest
         }
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     protected function prepareBillingAddressData(&$data)
     {
         $data['billingAddress']['title'] = $this->getCustomerTitle($this->billingAddress->getPrefix());
@@ -364,6 +420,10 @@ class DoWebPayment extends AbstractRequest
         $data['billingAddress']['name'] = $this->cleanAndSubstr($name, 0, 100);
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     protected function prepareShippingAddressData(&$data)
     {
         if (!$this->cart->getIsVirtual() && isset($this->shippingAddress)) {
@@ -397,6 +457,10 @@ class DoWebPayment extends AbstractRequest
         }
     }
 
+    /**
+     * @param $prefix
+     * @return mixed
+     */
     protected function getCustomerTitle($prefix)
     {
         $title = $this->helperData->getDefaultPrefix();
@@ -420,8 +484,6 @@ class DoWebPayment extends AbstractRequest
      */
     protected function cleanAndSubstr($string , $offset , $length = null)
     {
-        //$cleanString = iconv('UTF-8', "ASCII//TRANSLIT", $string);
-
         $cleanString = str_replace(array("\r", "\n", "\t"), array('', '', ''), $string);
         if (function_exists('mb_substr')) {
             $cleanString = mb_substr($cleanString, $offset, $length, 'UTF-8');
