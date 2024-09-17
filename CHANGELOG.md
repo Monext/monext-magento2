@@ -1,3 +1,8 @@
+# 1.2.18
+Released on 2023-12-13
+- Clean i18n files and generalize LocalizedException
+- Refactoring callPaylineApiDo methods and limit call to getWebPaymentDetails
+
 # 1.2.17
 Released on 2023-10-26
 - Remove use of Magento\Quote\Api\Data\TotalsInterface

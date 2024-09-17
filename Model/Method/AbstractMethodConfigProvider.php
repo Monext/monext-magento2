@@ -4,6 +4,7 @@ namespace Monext\Payline\Model\Method;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Asset\Repository as AssetRepository;
 use Magento\Payment\Helper\Data as PaymentHelper;
@@ -99,7 +100,7 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
             $fileNames = $this->getCardTypeImageFileNames();
 
             if (!isset($fileNames[$cardType])) {
-                throw new \Exception(__('Payline card type logo url does not exists.'));
+                throw new LocalizedException(__('Payline card type logo url does not exists.'));
             }
 
             return $this->assetRepository->getUrlWithParams('Monext_Payline::images/'.$fileNames[$cardType], ['_secure' => true]);

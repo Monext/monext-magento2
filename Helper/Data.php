@@ -12,6 +12,7 @@ use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Sales\Model\Order\Payment\Transaction;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Response\GetWebPaymentDetails as ResponseGetWebPaymentDetails;
@@ -304,10 +305,15 @@ class Data extends AbstractHelper
             return '';
         }
 
+        $shippingCountryId = $billingAddress->getCountryId();
+        if ($shippingAddress) {
+            $shippingCountryId = $shippingAddress->getCountryId();
+        }
+
         $cartDataKeys = [
             $cart->getId(),
             $billingAddress->getCountryId(),
-            $shippingAddress->getCountryId(),
+            $shippingCountryId,
             $totals->getGrandTotal(),
             $totals->getTaxAmount(),
             $totals->getBaseCurrencyCode()
@@ -316,5 +322,68 @@ class Data extends AbstractHelper
         return sha1(implode(':', $cartDataKeys));
     }
 
-}
+    /**
+     * @param $payment
+     * @param \Monext\Payline\PaylineApi\AbstractResponse $response
+     * @return void
+     */
+    public function setPaymentAdditionalInformation($payment, $response, $keys=[]) {
 
+        foreach ($keys as $key) {
+            $data = $response->getData()[$key] ?? [];
+            foreach (array_filter($data, fn($value) => !is_null($value)) as $dataKey => $dataValue) {
+                $payment->setTransactionAdditionalInfo($key.':'.$dataKey, $dataValue);
+            }
+        }
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @param $key
+     * @param $setTxnId
+     * @return array
+     */
+    public function getPaymentDataFromTransaction(Transaction $transaction, $key='payment', $setTxnId=true)
+    {
+        return $this->getDataFromTransactionAdditionalInformation($transaction, 'payment', true);
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @param $key
+     * @param $setTxnId
+     * @return array
+     */
+    protected function getDataFromTransactionAdditionalInformation(Transaction $transaction, $key, $setTxnId=false)
+    {
+        $paymentData = [];
+        foreach ($transaction->getAdditionalInformation() as $paymentKey=>$paymentValue) {
+            if(preg_match('/'.$key.':(.*)/', $paymentKey, $match)) {
+                $paymentData[$match[1]] = $paymentValue;
+            }
+        }
+
+        if($setTxnId) {
+            $paymentData['transactionID'] = $transaction->getTxnId();
+        }
+
+        return $paymentData;
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @return string
+     */
+    public function getPaymentMode(string $paymentMethod)
+    {
+        switch ($paymentMethod) {
+            case HelperConstants::WEB_PAYMENT_NX:
+                return PaylineApiConstants::PAYMENT_MODE_NX;
+            case HelperConstants::WEB_PAYMENT_REC:
+                return PaylineApiConstants::PAYMENT_MODE_REC;
+            default:
+                return PaylineApiConstants::PAYMENT_MODE_CPT;
+        }
+    }
+
+}

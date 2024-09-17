@@ -2,6 +2,7 @@
 
 namespace Monext\Payline\PaylineApi\Request\DoWebPaymentType;
 
+use Magento\Framework\Exception\LocalizedException;
 use Monext\Payline\Helper\Constants;
 
 class Nx extends AbstractDoWebPaymentType
@@ -49,7 +50,7 @@ class Nx extends AbstractDoWebPaymentType
         $billingOccurrences = (int)$this->scopeConfig->getValue('payment/' . static::PAYMENT_METHOD . '/billing_occurrences',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         if($billingOccurrences === 0) {
-            throw new \Exception('Config error : Billing occurrences can not be zero');
+            throw new LocalizedException(__('Config error : Billing occurrences can not be zero'));
         }
         $data['recurring']['billingLeft'] = $billingOccurrences;
 

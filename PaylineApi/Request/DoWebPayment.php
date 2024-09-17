@@ -214,6 +214,8 @@ class DoWebPayment extends AbstractRequest
     protected function prepareOrderData(&$data)
     {
         $data['order']['ref'] = $this->cart->getReservedOrderId();
+        //TODO: Add origin to manage smartdisplay
+        //$data['order']['origin'] = '';
         $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal());
         $taxes = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getTaxAmount());
@@ -314,10 +316,19 @@ class DoWebPayment extends AbstractRequest
             }
         }
 
+        $mobilePhone = '0123456789';
+        if ($this->shippingAddress && $this->shippingAddress->getTelephone()) {
+            if (!($mobilePhone = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone()))) {
+                if ($this->billingAddress && $this->billingAddress->getTelephone()) {
+                    if (!($mobilePhone = $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone()))) {
+                        $mobilePhone = '0123456789';
+                    }
+                }
+            }
+        }
+
         $data['buyer']['title'] =  $this->getCustomerTitle($this->billingAddress->getPrefix());
-        $data['buyer']['mobilePhone'] = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone()) ??
-            $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone()) ??
-            '0123456789';
+        $data['buyer']['mobilePhone'] = $mobilePhone;
 
         if ($customer->getId()) {
             $data['buyer']['accountCreateDate'] = $this->formatDateTime($customer->getCreatedAt(), 'd/m/y');

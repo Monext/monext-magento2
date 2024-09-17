@@ -7,6 +7,7 @@ use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Data\Collection\AbstractDb as CollectionAbstractDb;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
@@ -98,7 +99,7 @@ class AbstractMethod extends BaseAbstractMethod
             $contract = $this->contractManagement->getUsedContracts()->getItemById($data[PaymentInterface::KEY_ADDITIONAL_DATA]['contract_id']);
 
             if (!$contract || !$contract->getId()) {
-                throw new \Exception(__('Invalid contract'));
+                throw new LocalizedException(__('Invalid contract'));
             }
 
             $this->getInfoInstance()
@@ -123,6 +124,7 @@ class AbstractMethod extends BaseAbstractMethod
             $this->paylinePaymentManagement->callPaylineApiDoVoidFacade($payment->getOrder(), $payment);
         }
     }
+
 
     public function refund(InfoInterface $payment, $amount)
     {
