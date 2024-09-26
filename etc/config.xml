@@ -30,6 +30,7 @@
                 <active>0</active>
                 <model>Monext\Payline\Model\Method\WebPayment\Cpt</model>
                 <order_status>payline_captured</order_status>
+                <redirect_3ds>1</redirect_3ds>
             </payline_web_payment_cpt>
             <payline_web_payment_nx>
                 <active>0</active>
