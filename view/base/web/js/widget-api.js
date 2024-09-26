@@ -7,37 +7,47 @@ define(
     function ($, _, fullScreenLoader) {
         'use strict';
 
-        /*
-        window.eventWillinit= function () {
-            console.log('eventWillinit');
-            console.log(arguments);
+        window.eventDidshowstate= function () {
+            if(arguments.state='PAYMENT_SUCCESS') {
+                fullScreenLoader.stopLoader();
+            }
         };
-         */
-
 
         window.eventFinalstatehasbeenreached= function (state) {
             fullScreenLoader.startLoader();
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
         };
 
-
-
-        var WidgetApi = {};
+        let WidgetApi = {};
         _.extend(WidgetApi, {
-            initJs: function (environment) {
-                if (environment === 'PROD') {
-                    $('head').append('<script id="payline-widget-api-js" type="text/javascript" src="https://payment.payline.com/scripts/widget-min.js"></script>');
-                } else {
-                    $('head').append('<script id="payline-widget-api-js" type="text/javascript" src="https://homologation-payment.payline.com/scripts/widget-min.js"></script>');
-                }
+
+            widgetContext : {},
+
+            setContext: function(config) {
+                this.widgetContext['environment'] = config.hasOwnProperty('environment') ? config['environment'] : 'HOMO';
+                this.widgetContext['widgetDisplay'] = config.hasOwnProperty('widgetDisplay') ? config['widgetDisplay'] : 'tab';
+                this.widgetContext['containerId'] = config.hasOwnProperty('containerId') ? config['containerId'] : 'payline-widget-container';
+                this.widgetContext['dataEmbeddedredirectionallowed'] = config.hasOwnProperty('dataEmbeddedredirectionallowed') ? config['dataEmbeddedredirectionallowed'] : 'true';
             },
 
-            initCss: function (environment) {
-                if (environment === 'PROD') {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://payment.payline.com/styles/widget-min.css">');
-                } else {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://homologation-payment.payline.com/styles/widget-min.css">');
+            getContext: function (key) {
+                if(!key || !this.widgetContext.hasOwnProperty(key)) {
+                    throw new Error('Cannot get key for context');
                 }
+
+                return this.widgetContext[key];
+            },
+
+            getDomain : function () {
+                return (this.getContext('environment') === 'PROD') ? 'payment.payline.com' : 'homologation-payment.payline.com';
+            },
+
+            initJs: function () {
+                $('head').append('<script id="payline-widget-api-js" type="text/javascript" src="https://'+this.getDomain() +'/scripts/widget-min.js"></script>');
+            },
+
+            initCss: function () {
+                $('head').append('<link rel="stylesheet" type="text/css" href="https://'+this.getDomain() +'/styles/widget-min.css">');
             },
 
             destroyJs: function () {
@@ -48,48 +58,40 @@ define(
                 console.log(state)
             },
 
-            showWidget: function (environment, dataToken, dataColumn, widgetContainerId) {
-                var paylineWidgetHtml = '';
-                var callbacks = [
+
+            showWidget: function (context, dataToken) {
+                this.setContext(context);
+
+                let widgetDivAttributes = [];
+                widgetDivAttributes.push('data-token="' + dataToken + '"');
+                widgetDivAttributes.push('data-template="' + this.getContext('widgetDisplay') + '"');
+                widgetDivAttributes.push('data-embeddedredirectionallowed="' + this.getContext('dataEmbeddedredirectionallowed') + '"');
+
+
+                let callbacks = [
                     // 'event-willinit',
                     // 'event-willshow',
                     'event-finalstatehasbeenreached',
-                    //'event-didshowstate',
+                    'event-didshowstate',
                     // 'event-willdisplaymessage',
                     // 'event-willremovemessage',
                     // 'event-beforepayment',
                 ];
 
-                var callbacksByEvents = [];
                 $.each(callbacks, function(i, item) {
-                    //callbacksByEvents.push('data-' + item + '="paylineEventManager.' +jQuery.camelCase(item) + '"');
-                    callbacksByEvents.push('data-' + item + '="' +jQuery.camelCase(item) + '"');
+                    widgetDivAttributes.push('data-' + item + '="' +jQuery.camelCase(item) + '"');
                 });
 
-                if (dataColumn === 'lightbox') {
-                    paylineWidgetHtml = '<div id="PaylineWidget" data-token="' +
-                        dataToken
-                        + '" '
-                        + callbacksByEvents.join(' ')
-                        + '/>';
-                } else {
-                    paylineWidgetHtml = '<div id="PaylineWidget" data-template="' +
-                        dataColumn +
-                        '" data-token="' +
-                        dataToken +
-                        '" ' +
-                        callbacksByEvents.join(' ') +
-                        '/>';
-                }
+                let paylineWidgetHtml = `<div id="PaylineWidget" ${widgetDivAttributes.join(' ')} />`;
 
-                $('#'+widgetContainerId).append(paylineWidgetHtml);
+                $('#'+this.getContext('containerId')).append(paylineWidgetHtml);
 
                 if (!window.isPaylineWidgetCssApiLoaded) {
-                    this.initCss(environment);
+                    this.initCss();
                     window.isPaylineWidgetCssApiLoaded = true;
                 }
 
-                this.initJs(environment);
+                this.initJs();
             },
 
             destroyWidget: function (widgetContainerId) {
@@ -97,8 +99,6 @@ define(
                 $('#'+widgetContainerId).html('');
             }
         });
-
-
 
         return WidgetApi;
     }

@@ -74,11 +74,8 @@ define(
                 var self = this;
 
                 if (this.getPaylinetokenQueryParam()) {
-                    self.showWidget(
-                        self.getEnvironment(),
+                    self.showWidgetByToken(
                         self.getPaylinetokenQueryParam(),
-                        self.getMethodConfigData('widgetDisplay'),
-                        self.widgetContainerId
                     );
                 }
             },
@@ -103,11 +100,8 @@ define(
                     $.when(
                         saveCheckoutPaymentInformationFacadeAction(self.getData(), self.messageContainer)
                     ).done(function (response) {
-                        self.showWidget(
-                            self.getEnvironment(),
+                        self.showWidgetByToken(
                             response[0],
-                            self.getMethodConfigData('widgetDisplay'),
-                            self.widgetContainerId
                         );
                         self.isPaymentWidgetMessageVisible(false);
                         self.flagPreventSaveCheckoutPaymentInformationFacade = false;
@@ -159,12 +153,19 @@ define(
                 WidgetApi.destroyWidget(this.widgetContainerId);
             },
 
-            showWidget: function (environment, dataToken, dataColumn, widgetContainerId) {
+
+            showWidgetByToken: function (dataToken) {
+                let self = this;
+                let config = {
+                    "environment":self.getEnvironment(),
+                    "dataColumn":self.getMethodConfigData('widgetDisplay'),
+                    "widgetContainerId":self.widgetContainerId,
+                    "dataEmbeddedredirectionallowed":self.getMethodConfigData('dataEmbeddedredirectionallowed')
+                }
+
                 WidgetApi.showWidget(
-                    environment,
+                    config,
                     dataToken,
-                    dataColumn,
-                    widgetContainerId
                 );
             }
         });
