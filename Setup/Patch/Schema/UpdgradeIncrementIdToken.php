@@ -63,90 +63,7 @@ class UpdgradeIncrementIdToken implements \Magento\Framework\Setup\Patch\SchemaP
     {
 
         $connection = $this->moduleDataSetup->getConnection();
-
         $tableToken = $this->moduleDataSetup->getTable('payline_order_increment_id_token');
-
-         $connection->addColumn(
-            $tableToken,
-            'cart_id',
-             [
-                 'type' => Table::TYPE_INTEGER,
-                 'comment' => 'Cart id',
-                 'nullable' => true,
-                 'default' => null,
-                 'unsigned' => true
-             ]
-        );
-
-        $connection->addColumn(
-            $tableToken,
-            'order_entity_id',
-            [
-                'type' => Table::TYPE_INTEGER,
-                'comment' => 'Order id',
-                'nullable' => true,
-                'default' => null,
-                'unsigned' => true
-            ]
-        );
-
-        $connection->addColumn(
-            $tableToken,
-            'sha',
-            [
-                'type' => Table::TYPE_TEXT,
-                'length' => 255,
-                'comment' => 'Cart SHA signature',
-                'nullable' => true,
-                'default' => null,
-            ]
-        );
-
-        $connection->addColumn(
-            $tableToken,
-            'state',
-            [
-                'comment' => 'Token state',
-                'type' => Table::TYPE_SMALLINT,
-                'nullable' => true,
-                'default' => null,
-                'unsigned' => true
-            ]
-        );
-
-        $connection->addColumn(
-            $tableToken,
-            'created_at',
-            [
-                'comment' => 'Token state',
-                'type' => Table::TYPE_TIMESTAMP,
-                'nullable' => true,
-                'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT
-            ]
-        );
-
-        $connection->addColumn(
-            $tableToken,
-            'updated_at',
-            [
-                'comment' => 'Token state',
-                'type' => Table::TYPE_TIMESTAMP,
-                'nullable' => true,
-                'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE
-            ]
-        );
-
-        $connection->addIndex(
-            $tableToken,
-            $connection->getIndexName(
-                $tableToken,
-                ['order_entity_id','token'],
-                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-            ),
-            ['order_entity_id','token'],
-            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
-        );
-
         /** @var \Magento\Framework\DB\Select $select */
         $select = $connection
             ->select()->from(
@@ -161,7 +78,6 @@ class UpdgradeIncrementIdToken implements \Magento\Framework\Setup\Patch\SchemaP
                 new \Zend_Db_Expr("soi.increment_id = poiit.order_increment_id"),
                 []
             );
-
 
 
         //Attention

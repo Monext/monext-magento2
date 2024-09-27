@@ -149,17 +149,26 @@
                             <config_path>payment/payline_web_payment_cpt/title</config_path>
                         </field>
                         <field id="integration_type" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Type of Integration</label>
+                            <label>Integration type</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\IntegrationType</source_model>
                             <config_path>payment/payline_web_payment_cpt/integration_type</config_path>
                         </field>
                         <field id="widget_display" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>payline_widget_display</label>
+                            <label>Template name</label>
                             <source_model>Monext\Payline\Model\System\Config\Source\WidgetDisplay</source_model>
                             <config_path>payment/payline_web_payment_cpt/widget_display</config_path>
                             <depends>
                                 <field id="integration_type">widget</field>
                             </depends>
+                        </field>
+                        <field id="iframe_3ds" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>ACS 3DS iframe integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/payline_web_payment_cpt/iframe_3ds</config_path>
+                            <depends>
+                                <field id="integration_type">widget</field>
+                            </depends>
+                            <comment>For IFRAME integration, you need to make sure that the CSP is correctly configured and won't block assets from ACS sites.</comment>
                         </field>
                         <field id="custom_payment_page_code" translate="label,comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Custom payment page code</label>

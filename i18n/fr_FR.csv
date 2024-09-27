@@ -103,3 +103,7 @@ Language,Langue
 "Customer will select card payments and schedule through the Payline Gateway.", "Le client sélectionnera les paiements par carte et planifiera via la passerelle Payline."
 "Reset transaction %1 for order %2","Annulation de la transaction %1 pour la commande %2"
 "Refund transaction %1 for order %2","Remboursement de la transaction %1 pour la commande %2"
+"Integration type","Type d'intégration"
+"Template name","Nom du template"
+"ACS 3DS iframe integration","Intégration ACS 3DS en iframe"
+"For IFRAME integration, you need to make sure that the CSP is correctly configured and won't block assets from ACS sites.","Pour une intégration en IFRAME il faut s'assurer que la CSP est correctement configurée et ne bloquera pas les assets des sites d'ACS."

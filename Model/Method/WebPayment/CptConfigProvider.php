@@ -43,7 +43,7 @@ class CptConfigProvider extends AbstractMethodConfigProvider
         $config = array();
         $config['payment']['paylineWebPaymentCpt']['integrationType'] = $this->getMethodConfigData('integration_type');
         $config['payment']['paylineWebPaymentCpt']['widgetDisplay'] = $this->getMethodConfigData('widget_display');
-        $config['payment']['paylineWebPaymentCpt']['dataEmbeddedredirectionallowed'] = !empty($this->getMethodConfigData('redirect_3ds')) ? 'true' : 'false';
+        $config['payment']['paylineWebPaymentCpt']['dataEmbeddedredirectionallowed'] = !empty($this->getMethodConfigData('iframe_3ds')) ? 'true' : 'false';
         return $config;
     }
 }

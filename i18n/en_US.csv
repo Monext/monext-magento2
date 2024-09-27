@@ -223,3 +223,8 @@ payline_widget_display,payline_widget_display
 Category,Category
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Default category if not set on Magento catalog category attribute ""Payline Category Mapping"""
 "Payline Category Mapping","Payline Category Mapping"
+"Integration type","Integration type"
+"Template name","Template name"
+"ACS 3DS iframe integration","ACS 3DS iframe integration"
+"For IFRAME integration, you need to make sure that the CSP is correctly configured and won't block assets from ACS sites.","For IFRAME integration, you need to make sure that the CSP is correctly configured and won't block assets from ACS sites."
+
