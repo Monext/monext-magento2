@@ -88,5 +88,6 @@ class Constants
 
     const MODULE_NAME = 'Monext_Payline';
 
+    const PAYLINE_LOG_FILENAME = 'payline.log';
 
 }

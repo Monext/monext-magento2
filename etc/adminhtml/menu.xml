@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Monext_Payline::payline_logs"
+             title="Payline Logs"
+             translate="title"
+             module="Monext_Payline"
+             sortOrder="30"
+             parent="Magento_AsynchronousOperations::system_magento_logging"
+             action="payline/logs/index"
+             resource="Magento_Logging::system_magento_logging_bulk_operations"/>
+    </menu>
+</config>

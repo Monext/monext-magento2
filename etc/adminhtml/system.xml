@@ -6,7 +6,7 @@
                 <label><![CDATA[<div class="monext-payment-logo"></div><div class="monext-payment-byline">Access your <a href="%1">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>]]></label>
                 <fieldset_css>complex monext-payment-section</fieldset_css>
                 <attribute type="expanded">0</attribute>
-                <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
+                <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
                 <group id="payline_common" translate="label,comment" showInDefault="1" sortOrder="10">
                     <label>Common settings</label>
                     <attribute type="expanded">1</attribute>
@@ -506,6 +506,14 @@
                             <comment>Default category if not set on Magento catalog category attribute "Payline Category Mapping"</comment>
                         </field>
                     </group>
+                </group>
+                <group id="payline_log_section" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Logs</label>
+                    <field id="log_button" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Load Logs</label>
+                        <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\LogButton</frontend_model>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    </field>
                 </group>
             </group>
         </section>

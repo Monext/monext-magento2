@@ -1,0 +1,24 @@
+<?php
+/** @var $block \Monext\Payline\Block\Adminhtml\Logs  */
+$result = $block->getFileContent();
+?>
+
+<?php if (isset($result['content'])): ?>
+    <div class="log_container">
+        <div id="log_display" class="log_display">
+            <?= /* @noEscape */ $result['content']; ?>
+        </div>
+    </div>
+
+<?php else : ?>
+<p><?= /* @noEscape */ $result['error'] ?? ''; ?></p>
+<?php endif; ?>
+
+<button
+    id="payline_download_logs"
+    class="button action-configure"
+    type="button"
+    style="margin-top: 10px;"
+    onclick="window.location = '<?php echo $block->getUrl('payline/logs/download'); ?>'; return false;">
+    <span><?php echo __('Download Logs') ?></span>
+</button>
