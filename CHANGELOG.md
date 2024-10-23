@@ -5,6 +5,8 @@ Released on 2024-05-23
 - Refactoring widget-api.js
 - Check transaction ID before cancel
 - Fallback billing phone
+- Update redirection logo for cofidis cahoc
+- Fix configuration failover deactivation path 
 
 # 1.2.18
 Released on 2023-12-13

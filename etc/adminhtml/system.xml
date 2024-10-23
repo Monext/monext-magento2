@@ -52,7 +52,7 @@
                         <field id="disable_failover" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Disable failover</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                            <config_path>payline/general/use_failover</config_path>
+                            <config_path>payline/general/disable_failover</config_path>
                             <comment>With PHP SDK superior to 4.68 a failvover mechanism is implemented to bypass potential network issues.</comment>
                         </field>
                         <field id="proxy_enabled" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
