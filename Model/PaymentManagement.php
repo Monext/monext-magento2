@@ -606,26 +606,36 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     {
         $response = $this->callPaylineApiGetWebPaymentDetails($token);
         $firstTransaction = $this->getFirstTransactionForOrder($payment->getOrder(), [TransactionInterface::TYPE_CAPTURE, TransactionInterface::TYPE_AUTH, TransactionInterface::TYPE_ORDER, TransactionInterface::TYPE_PAYMENT]);
+        $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
 
         if($firstTransaction && $firstTransaction->getId()) {
+
+            $throwError = false;
+            $message = __('A tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
             if($response->isDuplicate()) {
                 $message = __('Duplicate detected. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+                $payment->getOrder()->addStatusHistoryComment($message);
             } else {
-                $message = __('Tansaction already exist for this order. Payline API call to getWebPaymentDetails with return "%1 : %2" was ignored', $response->getResultCode(), $response->getLongErrorMessage());
+                if ( $response->isSuccess()
+                    && $response->getTransactionData()['id']
+                    && $firstTransaction->getTxnId() !=  $response->getTransactionData()['id']
+                    && $this->callPaylineApiDoCancelPaymentFacade($payment->getOrder(), $response)) {
+                    $throwError = true;
+                    $message = __('Transaction already exists for this order. Payline transaction successfully void or refund.');
+                    $paymentTypeManagement->handlePaymentCanceled($payment, $message);
+                }
             }
 
-            $payment->getOrder()->addStatusHistoryComment($message);
             $payment->getOrder()->save();
 
-            $exceptionMessage = 'Transaction already exists for this order.';
-            if($response->isSuccess() && $this->callPaylineApiDoCancelPaymentFacade($payment, $response)) {
-                $exceptionMessage = 'Transaction already exists for this order. Payline transaction successfully void or refund.';
+            if($throwError) {
+                throw new LocalizedException($message);
             }
-            throw new LocalizedException(__($exceptionMessage));
+            return $this;
         }
 
         $payment->setData('payline_response', $response);
-        $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
+
 
         $needCancelPayment = false;
         if ($response->isSuccess()) {
@@ -658,7 +668,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $payment->getOrder()->save();
 
         if($needCancelPayment) {
-            if($this->callPaylineApiDoCancelPaymentFacade($payment, $response)) {
+            if($this->callPaylineApiDoCancelPaymentFacade($payment->getOrder(), $response)) {
                 $paymentTypeManagement->handlePaymentCanceled($payment);
             }
         }
@@ -977,12 +987,10 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      * @throws \Exception
      */
     public function callPaylineApiDoCancelPaymentFacade(
-        OrderPayment $payment,
+        OrderInterface $order,
         ResponseGetWebPaymentDetails $response
     )
     {
-        $order = $payment->getOrder();
-
         $paymentData     = $response->getPaymentData();
         $transactionData = $response->getTransactionData();
 
@@ -999,7 +1007,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         $responseVoid = $this->callPaylineApiDoVoid($paymentData);
 
         if ($responseVoid->isSuccess()) {
-            $payment->getOrder()->addCommentToStatusHistory($paymentData['comment'])->save();
+            $order->addCommentToStatusHistory($paymentData['comment'])->save();
         } else {
             $this->paylineLogger->log(LoggerConstants::ERROR, 'DoRefund error : ' . $responseVoid->getLongErrorMessage());
             $paymentData['comment'] = __(
@@ -1010,7 +1018,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
             $responseRefund = $this->callPaylineApiDoRefund($paymentData);
             if ($responseRefund->isSuccess()) {
-                $payment->getOrder()->addCommentToStatusHistory($paymentData['comment'])->save();
+                $order->addCommentToStatusHistory($paymentData['comment'])->save();
             }
         }
         return true;

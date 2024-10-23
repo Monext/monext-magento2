@@ -1,3 +1,13 @@
+# 1.2.19
+Released on 2024-05-23
+- Redirect to ACS by default to keep compatibilty with 2.4.7 and CSP restrict mode
+- Replace Setup/UpgradeSchema with db_schema.xml
+- Refactoring widget-api.js
+- Check transaction ID before cancel
+- Fallback billing phone
+- Update redirection logo for cofidis cahoc
+- Fix configuration failover deactivation path 
+
 # 1.2.18
 Released on 2023-12-13
 - Clean i18n files and generalize LocalizedException

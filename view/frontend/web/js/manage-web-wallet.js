@@ -8,10 +8,8 @@ define(
 
         return function (config) {
             WidgetApi.showWidget(
-                config['environment'],
-                config['token'],
-                config['widgetDisplay'],
-                config['containerId']
+                config,
+                config['token']
             );
         };
     }

@@ -1,0 +1,33 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="payline_contract" resource="default" engine="innodb" comment="Payline Contract">
+        <column name="id" xsi:type="int" nullable="false" unsigned="true"  identity="true"  comment="Id"/>
+        <column name="number" xsi:type="varchar" nullable="false"    length="255" comment="Number"/>
+        <column name="card_type" xsi:type="varchar" nullable="false"    length="255" comment="Card Type"/>
+        <column name="currency" xsi:type="varchar" nullable="true"    length="255" comment="Currency"/>
+        <column name="label" xsi:type="varchar" nullable="false"    length="255" comment="Label"/>
+        <column name="point_of_sell_label" xsi:type="varchar" nullable="false"    length="255" comment="Point Of Sell Label"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="payline_order_increment_id_token" resource="default" engine="innodb" comment="Payline Order Increment Id Token">
+        <column name="id" xsi:type="int" nullable="false"   unsigned="true"  identity="true"  comment="Id"/>
+        <column name="order_increment_id" xsi:type="varchar" nullable="false"    length="32" comment="Order Increment Id"/>
+        <column name="token" xsi:type="varchar" nullable="false"    length="255" comment="Token"/>
+        <column name="cart_id" xsi:type="int" nullable="true"   unsigned="true"  comment="Cart id"/>
+        <column name="order_entity_id" xsi:type="int" nullable="true"   unsigned="true"  comment="Order id"/>
+        <column name="sha" xsi:type="varchar" nullable="true"    length="255" comment="Cart SHA signature"/>
+        <column name="state" xsi:type="smallint" nullable="true"   unsigned="true"  comment="Token state"/>
+        <column name="created_at" xsi:type="timestamp" nullable="true" default="CURRENT_TIMESTAMP"     comment="Created at"/>
+        <column name="updated_at" xsi:type="timestamp" nullable="true" default="CURRENT_TIMESTAMP"     comment="Updated at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="PAYLINE_ORDER_INCREMENT_ID_TOKEN_ORDER_ENTITY_ID_TOKEN">
+            <column name="order_entity_id"/>
+            <column name="token"/>
+        </constraint>
+    </table>
+</schema>

@@ -68,24 +68,6 @@ class UpdateCategoryMapping implements DataPatchInterface
                     END")],
                 ['value > 26', 'attribute_id = '. $categoryMapping]
             );
-
-
-//            $update = "UPDATE catalog_category_entity_int set
-//value = CASE
-//       WHEN substring(value, 1,2) = '10' THEN 1
-//       WHEN substring(value, 1,2) = '20' THEN 2
-//       WHEN substring(value, 1,2) = '40' THEN 4
-//       WHEN substring(value, 1,2) = '50' THEN 5
-//       WHEN substring(value, 1,2) = '59' THEN 5
-//       WHEN substring(value, 1,2) = '11' THEN 11
-//       WHEN substring(value, 1,2) = '12' THEN 12
-//       WHEN substring(value, 1,2) = '17' THEN 17
-//       WHEN substring(value, 1,2) = '24' THEN 24
-//       ELSE value
-//END
-//where value>26 and attribute_id=186";
-
-
         }
 
 
