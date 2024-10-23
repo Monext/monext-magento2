@@ -91,6 +91,8 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_4XONEY => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_3XONEY_SF => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_4XONEY_SF => 'oney.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CADHOC => 'cadhoc.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_COFIDIS => 'cofidispay.png',
         ];
     }
 
