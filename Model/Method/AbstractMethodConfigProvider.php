@@ -91,6 +91,14 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_4XONEY => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_3XONEY_SF => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_4XONEY_SF => 'oney.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CASINO3X => 'floa3x.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CASINO4X => 'floa4x.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_PAYCONIQ => 'payconiq-h40.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_MULTIBANCO => 'multibanco.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_MBWAY => 'mbway.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_BANCONTACT => 'bancontact.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_KLARNA => 'klarna.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_IDEAL => 'ideal.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CADHOC => 'cadhoc.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_COFIDIS => 'cofidispay.png',
         ];
@@ -100,14 +108,14 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
     {
         try {
             $fileNames = $this->getCardTypeImageFileNames();
-
+            $cardType=str_ireplace('_MNXT', '', $cardType);
             if (!isset($fileNames[$cardType])) {
                 throw new LocalizedException(__('Payline card type logo url does not exists.'));
             }
 
             return $this->assetRepository->getUrlWithParams('Monext_Payline::images/'.$fileNames[$cardType], ['_secure' => true]);
         } catch (\Exception $e) {
-            return $this->urlBuilder->getUrl('', ['_direct' => 'core/index/notFound']);
+            return $this->assetRepository->getUrlWithParams('Monext_Payline::images/default.png', ['_secure' => true]);
         }
     }
 }
