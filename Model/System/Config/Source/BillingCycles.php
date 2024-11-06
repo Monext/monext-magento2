@@ -8,6 +8,7 @@ class BillingCycles implements OptionSourceInterface
 {
     /**
      * @return array
+     * In case of update, modification in \Monext\Payline\Helper\Data::getIntervalMapping must be made
      */
     public function toOptionArray()
     {

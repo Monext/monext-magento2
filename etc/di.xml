@@ -30,6 +30,7 @@
             <argument name="availableDoWebPaymentTypeClass" xsi:type="array">
                 <item name="payline_web_payment_cpt" xsi:type="object">Monext\Payline\PaylineApi\Request\DoWebPaymentType\Cpt</item>
                 <item name="payline_web_payment_nx" xsi:type="object">Monext\Payline\PaylineApi\Request\DoWebPaymentType\Nx</item>
+                <item name="payline_web_payment_rec" xsi:type="object">Monext\Payline\PaylineApi\Request\DoWebPaymentType\Rec</item>
             </argument>
         </arguments>
     </type>
@@ -38,6 +39,7 @@
             <argument name="availablePaymentTypeManagementClass" xsi:type="array">
                 <item name="payline_web_payment_cpt" xsi:type="object">Monext\Payline\Model\PaymentTypeManagement\Cpt</item>
                 <item name="payline_web_payment_nx" xsi:type="object">Monext\Payline\Model\PaymentTypeManagement\Nx</item>
+                <item name="payline_web_payment_rec" xsi:type="object">Monext\Payline\Model\PaymentTypeManagement\Rec</item>
             </argument>
         </arguments>
     </type>

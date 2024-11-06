@@ -43,6 +43,12 @@
                 <cost_amount>0</cost_amount>
                 <active_amount_min>0</active_amount_min>
             </payline_web_payment_nx>
+            <payline_web_payment_rec>
+                <active>0</active>
+                <model>Monext\Payline\Model\Method\WebPayment\Rec</model>
+                <order_status>payline_captured</order_status>
+                <payment_action>129</payment_action> <!-- Force a auth + capture -->
+            </payline_web_payment_rec>
         </payment>
     </default>
 </config>

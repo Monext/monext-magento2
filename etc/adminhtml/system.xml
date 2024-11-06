@@ -244,7 +244,7 @@
                             </field>
                         </group>
                     </group>
-                    <group id="payline_nx" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                    <group id="payline_nx" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
                         <label>Payline - Web Payment Nx</label>
                         <comment><![CDATA[Customer will select card payments and schedule through the Payline Gateway.]]></comment>
                         <attribute type="expanded">0</attribute>
@@ -350,6 +350,117 @@
 <!--                                <label>Order status when credit card expiration date is close</label>-->
 <!--                                <config_path>payment/payline_web_payment_nx/status_when_payline_schedule_alert</config_path>-->
 <!--                            </field>-->
+                        </group>
+                    </group>
+                    <group id="payline_rec" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30">
+                        <label>Payline - Web Payment Rec</label>
+                        <comment><![CDATA[This payment method allows merchants to offer buyers payment for purchases in several installments.]]></comment>
+                        <attribute type="expanded">0</attribute>
+                        <field id="active" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enabled</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>payment/payline_web_payment_rec/active</config_path>
+                        </field>
+                        <field id="title" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Title</label>
+                            <config_path>payment/payline_web_payment_rec/title</config_path>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="start_cycle" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>The date of the first expiry</label>
+                            <config_path>payment/payline_web_payment_rec/start_cycle</config_path>
+                            <source_model>Monext\Payline\Model\System\Config\Source\StartDate</source_model>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="billingDay" translate="label,comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Day when the deadlines must be processed</label>
+                            <comment>Day when the deadlines must be processed. Choose 0 so that the debits are made on the same day as the first order.</comment>
+                            <config_path>payment/payline_web_payment_rec/billing_day</config_path>
+                            <source_model>Monext\Payline\Model\System\Config\Source\MonthsDays</source_model>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="billing_cycle" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Periodicity of payments</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\BillingCycles</source_model>
+                            <config_path>payment/payline_web_payment_rec/billing_cycle</config_path>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="billing_number" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Number of payments (allow calculate endDate)</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\SubscribePeriods</source_model>
+                            <config_path>payment/payline_web_payment_rec/billing_number</config_path>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="allowed_type" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allowed products</label>
+                            <config_path>payment/payline_web_payment_rec/allowed_type</config_path>
+                            <source_model>Monext\Payline\Model\System\Config\Source\AllowedProductType</source_model>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                        </field>
+                        <field id="allowed_product_id" translate="label,comment" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allowed products IDs</label>
+                            <comment>Add IDs separated by semicolon.</comment>
+                            <config_path>payment/payline_web_payment_rec/allowed_product_id</config_path>
+                            <depends>
+                                <field id="allowed_type">product_id</field>
+                            </depends>
+                        </field>
+                        <field id="allowed_product_sku" translate="label,comment" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allowed products SKUs</label>
+                            <comment>Add SKUs separated by semicolon.</comment>
+                            <config_path>payment/payline_web_payment_rec/allowed_product_sku</config_path>
+                            <depends>
+                                <field id="allowed_type">product_sku</field>
+                            </depends>
+                        </field>
+                        <field id="allowed_product_type" translate="label,comment" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allowed attribute set</label>
+                            <config_path>payment/payline_web_payment_rec/allowed_product_type</config_path>
+                            <source_model>Magento\Catalog\Model\Product\AttributeSet\Options</source_model>
+                            <depends>
+                                <field id="allowed_type">product_type</field>
+                            </depends>
+                        </field>
+                        <group id="advanced_settings_rec" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="90">
+                            <label>Advanced settings</label>
+                            <attribute type="expanded">0</attribute>
+                            <depends>
+                                <field id="active">1</field>
+                            </depends>
+                            <field id="status_when_credit_card_schedule_is_expired" translate="label,comment" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Status when credit card schedule is expired</label>
+                                <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                                <config_path>payment/payline_web_payment_rec/status_when_credit_card_schedule_is_expired</config_path>
+                            </field>
+                            <field id="status_when_payline_schedule_alert" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Status when payline schedule alert</label>
+                                <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                                <config_path>payment/payline_web_payment_rec/status_when_payline_schedule_alert</config_path>
+                            </field>
+
+                            <field id="send_wallet_id" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Send wallet id</label>
+                                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                                <config_path>payment/payline_web_payment_rec/send_wallet_id</config_path>
+                                <comment><![CDATA[If wallet id is provided, wallet payment will be available during web payment]]></comment>
+                            </field>
+                            <field id="automate_invoice_creation" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Automate invoice creation</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\Order\OrderStatusToInvoice</source_model>
+                                <config_path>payment/payline_web_payment_rec/automate_invoice_creation</config_path>
+                            </field>
                         </group>
                     </group>
                 </group>

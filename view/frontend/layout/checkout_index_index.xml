@@ -36,6 +36,14 @@
                                                                         </item>
                                                                     </item>
                                                                 </item>
+                                                                <item name="payline-rec" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Monext_Payline/js/view/payment/payline-rec</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="payline_web_payment_rec" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>

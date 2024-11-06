@@ -6,6 +6,7 @@
                 <item name="payline_web_payment_general_config_provider" xsi:type="object">Monext\Payline\Model\Method\WebPayment\GeneralConfigProvider</item>
                 <item name="payline_web_payment_cpt_config_provider" xsi:type="object">Monext\Payline\Model\Method\WebPayment\CptConfigProvider</item>
                 <item name="payline_web_payment_nx_config_provider" xsi:type="object">Monext\Payline\Model\Method\WebPayment\NxConfigProvider</item>
+                <item name="payline_web_payment_rec_config_provider" xsi:type="object">Monext\Payline\Model\Method\WebPayment\RecConfigProvider</item>
             </argument>
         </arguments>
     </type>
