@@ -70,7 +70,7 @@ class LogButton extends Field
         });
     }
 </script>
-<div class="log_container"><div id="log_display" class="log_display"></div></div>
+<div id="log_display" class="log_container log_container_config"></div>
 SCRIPT;
     }
 }

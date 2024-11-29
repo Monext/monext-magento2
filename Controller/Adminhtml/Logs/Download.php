@@ -14,10 +14,27 @@ use Monext\Payline\Helper\Constants as HelperConstants;
 
 class Download extends Action
 {
-    protected FileFactory $fileFactory;
-    protected DirectoryList $directoryList;
-    protected RawFactory $rawFactory;
+    /**
+     * @var FileFactory
+     */
+    protected $fileFactory;
 
+    /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
+
+    /**
+     * @var RawFactory
+     */
+    protected $rawFactory;
+
+    /**
+     * @param Context $context
+     * @param FileFactory $fileFactory
+     * @param DirectoryList $directoryList
+     * @param RawFactory $rawFactory
+     */
     public function __construct(Context     $context,
                                 FileFactory $fileFactory,
                                 DirectoryList $directoryList,

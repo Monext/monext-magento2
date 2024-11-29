@@ -15,7 +15,11 @@ class Logs extends Template
      * @var string
      */
     protected $_template = 'Monext_Payline::payline_logs.phtml';
-    protected DirectoryList $directoryList;
+
+    /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
 
     /**
      * @param Context $context
@@ -41,7 +45,7 @@ class Logs extends Template
         $result = null;
         $filePath = $this->getFilePath();
         $lengthBefore = 100000;
-
+        
         try {
             $handle = fopen($filePath, 'r');
             fseek($handle, -$lengthBefore, SEEK_END);
@@ -55,7 +59,7 @@ class Logs extends Template
                     return $this->getErrorMessage($filePath);
                 }
                 fclose($handle);
-                $result['content'] = '... <br/>'. nl2br($this->_escaper->escapeHtml($contents));
+                $result['content'] = '... ' . PHP_EOL . $this->_escaper->escapeHtml($contents);
             }
         } catch (\Exception $e) {
             return $this->getErrorMessage($filePath);

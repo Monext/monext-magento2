@@ -4,10 +4,9 @@ $result = $block->getFileContent();
 ?>
 
 <?php if (isset($result['content'])): ?>
-    <div class="log_container">
-        <div id="log_display" class="log_display">
+    <div id="log_display" class="log_container">
+
             <?= /* @noEscape */ $result['content']; ?>
-        </div>
     </div>
 
 <?php else : ?>

@@ -11,9 +11,21 @@ use Monext\Payline\Helper\Constants as HelperConstants;
 
 class Load extends Action
 {
-    protected RawFactory $rawFactory;
-    protected DirectoryList $directoryList;
+    /**
+     * @var RawFactory
+     */
+    protected $rawFactory;
 
+    /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
+
+    /**
+     * @param Context $context
+     * @param RawFactory $rawFactory
+     * @param DirectoryList $directoryList
+     */
     public function __construct(Context     $context,
                                 RawFactory $rawFactory,
                                 DirectoryList $directoryList
@@ -28,7 +40,6 @@ class Load extends Action
     {
         $filePath = $this->getFilePath();
         $lengthBefore = 50000;
-
         try {
             $handle = fopen($filePath, 'r');
             fseek($handle, -$lengthBefore, SEEK_END);
@@ -41,7 +52,7 @@ class Load extends Action
                 fclose($handle);
 
                 $resultRaw = $this->rawFactory->create();
-                return $resultRaw->setContents('... <br/>'. nl2br($contents));
+                return $resultRaw->setContents('...' . PHP_EOL. $contents);
             }
 
         } catch (\Exception $e) {
