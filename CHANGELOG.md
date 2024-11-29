@@ -1,3 +1,9 @@
+# 1.2.20
+Released on 2024-11-14
+- Add REC payment
+- Update logos
+- Update SDK dependency to fit rebranding monext/monext-php
+
 # 1.2.19
 Released on 2024-05-23
 - Redirect to ACS by default to keep compatibilty with 2.4.7 and CSP restrict mode
