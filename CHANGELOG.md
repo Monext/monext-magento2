@@ -3,6 +3,9 @@ Released on 2024-11-14
 - Add REC payment
 - Update logos
 - Update SDK dependency to fit rebranding monext/monext-php
+- Fix cart restore on user payment cancelled
+- Add default translation
+- Add Klarna payment compatibility
 
 # 1.2.19
 Released on 2024-05-23

@@ -1,3 +1,9 @@
+"Transaction cancelled by user","La transaction a été annulée"
+"Error with bank transaction process", "Erreur dans le processus de transaction bancaire"
+"Error with transaction process", "Erreur dans le processus de transaction"
+"Error with 3DSecure process", "Erreur dans le processus 3DSecure"
+"Error with payment validation rules", "Erreur dans les règles de validation de paiement"
+"Error when processing payment", "Erreur lors du traitement du paiement"
 Configure,Configure
 "Close","Fermer"
 "Shipping method","Methode de livraison Magento"

@@ -435,8 +435,9 @@ class Client
         }
 
         array_walk_recursive($arrayToClean, function(&$item, $key) {
-            if(preg_match('/Logo$/', $key, $match)) {$item="xxxxxx".$match[1]."xxxxxx";}
-
+            if(preg_match('/Logo$/', $key, $match)) {
+                $item="xxxxxx".$key."xxxxxx";
+            }
         });
 
 

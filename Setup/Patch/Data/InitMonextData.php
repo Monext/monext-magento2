@@ -18,9 +18,21 @@ class InitMonextData implements DataPatchInterface
      * @var ModuleDataSetupInterface
      */
     private $moduleDataSetup;
-    private AttributeFactory $customerAttributeFactory;
-    private SetFactory $attributeSetFactory;
-    private EavSetupFactory $eavSetupFactory;
+
+    /**
+     * @var AttributeFactory
+     */
+    private $customerAttributeFactory;
+
+    /**
+     * @var SetFactory
+     */
+    private $attributeSetFactory;
+
+    /**
+     * @var EavSetupFactory
+     */
+    private $eavSetupFactory;
 
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup

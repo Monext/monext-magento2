@@ -30,7 +30,11 @@ abstract class AbstractPaymentTypeManagement
      * @var ManagerInterface
      */
     protected $transactionManager;
-    protected Logger $paylineLogger;
+
+    /**
+     * @var Logger
+     */
+    protected $paylineLogger;
 
     /**
      * AbstractPaymentTypeManagement constructor.

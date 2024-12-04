@@ -5,6 +5,7 @@ namespace Monext\Payline\Model;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Checkout\Model\Cart as CheckoutCart;
+use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -20,6 +21,9 @@ class CartManagement
      * @var CartRepositoryInterface
      */
     protected $cartRepository;
+
+
+    protected $checkoutSession;
 
     /**
      * @var CartManagementInterface
@@ -57,6 +61,7 @@ class CartManagement
 
     public function __construct(
         CartRepositoryInterface $cartRepository,
+        Session $checkoutSession,
         CartManagementInterface $cartManagement,
         OrderIncrementIdTokenManagement $orderIncrementIdTokenManagement,
         QuoteFactory $quoteFactory,
@@ -66,6 +71,8 @@ class CartManagement
         ScopeConfigInterface $scopeConfig
     ) {
         $this->cartRepository = $cartRepository;
+        $this->checkoutSession =  $checkoutSession;
+
         $this->cartManagement = $cartManagement;
         $this->quoteFactory = $quoteFactory;
         $this->orderIncrementIdTokenManagement = $orderIncrementIdTokenManagement;
@@ -102,6 +109,7 @@ class CartManagement
 
     public function restoreCartFromOrder(Order $order)
     {
+        $this->checkoutSession->clearQuote();
         foreach ($order->getItemsCollection() as $orderItem) {
             $this->checkoutCart->addOrderItem($orderItem);
         }

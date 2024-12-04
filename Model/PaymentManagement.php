@@ -182,7 +182,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      * @var SortOrderBuilder
      */
     private $sortOrderBuilder;
-    private Currency $helperCurrency;
+
+    /**
+     * @var Currency
+     */
+    private $helperCurrency;
 
 
     /**

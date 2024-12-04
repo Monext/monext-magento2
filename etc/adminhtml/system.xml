@@ -7,7 +7,7 @@
                 <fieldset_css>complex monext-payment-section</fieldset_css>
                 <attribute type="expanded">0</attribute>
                 <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
-                <group id="payline_common" translate="label,comment" showInDefault="1" sortOrder="10">
+                <group id="payline_common" translate="label,comment" showInDefault="1" showInStore="1" sortOrder="10">
                     <label>Common settings</label>
                     <attribute type="expanded">1</attribute>
                     <frontend_model>Magento\Config\Block\System\Config\Form\Fieldset</frontend_model>

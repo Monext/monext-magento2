@@ -34,8 +34,15 @@ class Data extends AbstractHelper
      */
     protected $serialize;
 
+    /**
+     * @var EmailAddressValidator
+     */
     protected $emailAddressValidator;
-    private BillingCycles $billingCycles;
+
+    /**
+     * @var BillingCycles
+     */
+    private  $billingCycles;
 
     /**
      * @param Context $context

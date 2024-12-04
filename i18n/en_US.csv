@@ -1,3 +1,9 @@
+"Transaction cancelled by user","Transaction cancelled by user"
+"Error with bank transaction process","Error with bank transaction process"
+"Error with transaction process","Error with transaction process"
+"Error with 3DSecure process","Error with 3DSecure process"
+"Error with payment validation rules","Error with payment validation rules"
+"Error when processing payment","Error when processing payment"
 Configure,Configure
 Close,Close
 "Shipping method","Shipping method"
