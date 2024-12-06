@@ -13,6 +13,7 @@ use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Store\Model\StoreManagerInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Response\GetWebPaymentDetails as ResponseGetWebPaymentDetails;
@@ -44,6 +45,8 @@ class Data extends AbstractHelper
      */
     private  $billingCycles;
 
+    protected  $storeManager;
+
     /**
      * @param Context $context
      * @param MathRandom $mathRandom
@@ -55,12 +58,15 @@ class Data extends AbstractHelper
         MathRandom $mathRandom,
         Serialize $serialize,
         EmailAddressValidator $emailAddressValidator,
+        StoreManagerInterface $storeManager,
         BillingCycles $billingCycles
     ) {
         parent::__construct($context);
+
         $this->mathRandom = $mathRandom;
         $this->serialize = $serialize;
         $this->emailAddressValidator = $emailAddressValidator;
+        $this->storeManager = $storeManager;
         $this->billingCycles = $billingCycles;
     }
 
@@ -122,7 +128,7 @@ class Data extends AbstractHelper
 
     public function mapMagentoAmountToPaylineAmount($magentoAmount)
     {
-        return round($magentoAmount * 100, 0);
+        return round((float)$magentoAmount * 100, 0);
     }
 
     public function mapPaylineAmountToMagentoAmount($paylineAmount)
@@ -225,7 +231,15 @@ class Data extends AbstractHelper
                 ScopeInterface::SCOPE_STORE) ??
             '';
 
-        return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName)) ?? 'UNDEFINEDMERCHANTNAME';
+        if(empty($merchantName)) {
+            $merchantName = $this->storeManager->getStore()->getFrontendName();
+        }
+
+        if(empty($merchantName)) {
+            $merchantName = $this->storeManager->getStore()->getName();
+        }
+
+        return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName));
     }
 
     /**

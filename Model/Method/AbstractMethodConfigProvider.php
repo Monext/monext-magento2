@@ -97,6 +97,7 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_MULTIBANCO => 'multibanco.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_MBWAY => 'mbway.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_BANCONTACT => 'bancontact.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_KLARNA_PAY => 'klarna.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_KLARNA => 'klarna.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_IDEAL => 'ideal.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CADHOC => 'cadhoc.png',
