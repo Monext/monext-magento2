@@ -5,7 +5,7 @@
         "monext/monext-php": "*"
     },
     "type": "magento2-module",
-    "version": "1.2.19",
+    "version": "1.2.20",
     "authors" : [
         {
             "name" : "Matthieu BOUCHOT",
@@ -28,7 +28,7 @@
     ],
     "support": {
         "email": "support@payline.com",
-        "docs": "https://docs.payline.com/"
+        "docs": "https://docs.monext.fr/display/DT"
     },
     "autoload": {
         "files": [

@@ -1,0 +1,54 @@
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+
+    .payline-contracts {
+        &_table {
+            margin-bottom: 20px;
+            border: none;
+
+            tr {
+                &:not(:last-child) {
+                    border-bottom: 1px solid #efefef;
+                }
+
+                &.selected {
+                    td {
+                        background: #efefef;
+                    }
+                }
+            }
+
+            td {
+                vertical-align: middle;
+                padding-bottom: 5px;
+                padding-top: 5px;
+
+                &:first-child {
+                    @media (min-width: 460px) {
+                        width: 75%;
+                    }
+                }
+
+                &:last-child {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+
+                    @media (max-width: 459px) {
+                        width: 100px;
+                    }
+                }
+            }
+
+            input[type="radio"],
+            input[type="radio"] + label {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

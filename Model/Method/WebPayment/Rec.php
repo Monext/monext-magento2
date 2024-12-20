@@ -68,7 +68,7 @@ class Rec extends AbstractMethod
         if(empty($allowedType) || empty($allowedProductByType)) {
             return false;
         }
-        $allowedValues = explode(';',$allowedProductByType);
+        $allowedValues = preg_split('/,|;/',$allowedProductByType);
 
         $attributeGetter = [
             HelperConstants::CONFIG_PAYLINE_REC_ALLOWED_PRODUCT_SKU => 'getSku',

@@ -327,7 +327,7 @@ class DoWebPayment extends AbstractRequest
                 }
             }
 
-            $deliveryData['deliveryCharge'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->shippingAddress->getShippingAmount());
+            $deliveryData['deliveryCharge'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->shippingAddress->getShippingInclTax());
 
             if($deliveryData['deliveryExpectedDelay']) {
                 $deliveryData['deliveryExpectedDate'] = $this->getDeliveryExpectedDate($deliveryData['deliveryExpectedDelay']);
