@@ -6,7 +6,8 @@ Released on 2024-11-14
 - Update SDK dependency to fit rebranding monext/monext-php
 - Fix cart restore on user payment cancelled
 - Improve fr_FR translations
-- Improve frontend redirect contracts template 
+- Improve frontend redirect contracts template
+- Add log visibility in backoffice
 
 # 1.2.19
 Released on 2024-05-23

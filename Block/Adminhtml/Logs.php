@@ -45,7 +45,7 @@ class Logs extends Template
         $result = null;
         $filePath = $this->getFilePath();
         $lengthBefore = 100000;
-        
+
         try {
             $handle = fopen($filePath, 'r');
             fseek($handle, -$lengthBefore, SEEK_END);
@@ -59,7 +59,16 @@ class Logs extends Template
                     return $this->getErrorMessage($filePath);
                 }
                 fclose($handle);
-                $result['content'] = '... ' . PHP_EOL . $this->_escaper->escapeHtml($contents);
+
+                $logsLines = [];
+                foreach (explode("\n", $contents) as $line) {
+                    if($line != ''){
+                        $logsLines[] = $line;
+                    }
+                }
+
+                $implodedContent = implode("\n", array_reverse($logsLines));
+                $result['content'] = '... ' . PHP_EOL . $this->_escaper->escapeHtml($implodedContent);
             }
         } catch (\Exception $e) {
             return $this->getErrorMessage($filePath);

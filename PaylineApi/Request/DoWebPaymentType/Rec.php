@@ -78,6 +78,9 @@ class Rec extends AbstractDoWebPaymentType
         $data['recurring']['firstAmount'] = $data['payment']['amount'];
         $data['recurring']['amount'] = $data['payment']['amount'];
         $data['recurring']['billingCycle'] = $billingCycle;
+
+        $data['recurring']['billingLeft'] = $billingNumber;
+
         $data['recurring']['billingDay'] = ($billingDay && $billingCycle >= 40) ? sprintf('%02d', $billingDay) : date('d');
         $data['recurring']['startDate'] = $recurringStartDate->format('d/m/Y');
     }

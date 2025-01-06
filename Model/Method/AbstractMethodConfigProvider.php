@@ -82,10 +82,10 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
     public function getCardTypeImageFileNames()
     {
         return [
-            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CB => 'cb.png',
-            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CB_3DS => 'cb.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CB => 'cb.jpg',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CB_3DS => 'cb.jpg',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_PAYPAL => 'paypal.png',
-            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_AMEX => 'amex.gif',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_AMEX => 'amex.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_ONEY => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_3XONEY => 'oney.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_4XONEY => 'oney.png',
@@ -102,6 +102,7 @@ abstract class AbstractMethodConfigProvider implements ConfigProviderInterface
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_IDEAL => 'ideal.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_CADHOC => 'cadhoc.png',
             PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_COFIDIS => 'cofidispay.png',
+            PaylineApiConstants::PAYMENT_CONTRACT_CARD_TYPE_APPLEPAY => 'apple_pay.png',
         ];
     }
 

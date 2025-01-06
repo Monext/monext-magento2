@@ -41,7 +41,9 @@ You can also check [our documentation](https://docs.monext.fr/display/DT/Payment
 
 ### Requirements
 
-* Magento >= 2.3
+* Magento 2.4 (current 2.4.7-p3)
+* Magento 2.3 (obsolete)
+
 
 ### Installation process
 
