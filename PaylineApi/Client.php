@@ -186,6 +186,10 @@ class Client
         }
         unset($data['order']['details']);
 
+        if($data['privateData']){
+            $this->addPrivateDataToPaylineSDK(array($data['privateData']));
+        }
+
         $response->fromData(
             $this->paylineSDK->doWebPayment($data)
         );
