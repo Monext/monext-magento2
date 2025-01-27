@@ -5,3 +5,5 @@
 .simplepath-wrapper-set.active .admin__collapsible-block { display:none; }
 .monext-payment-section.section-config.active > .admin__collapsible-block + input + fieldset { margin-left: 80px; }
 .monext-payment-section table.form-list td.value { width: 60%; }
+.log_container { overflow: auto;  padding: 5px; margin-top: 10px; font-family: "Courier New", monospace;white-space: pre;background:black; color:#2EC029}
+.log_container_config { height: 410px; width:700px}

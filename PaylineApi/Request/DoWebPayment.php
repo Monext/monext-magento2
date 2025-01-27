@@ -214,7 +214,6 @@ class DoWebPayment extends AbstractRequest
         $data['payment']['mode'] = $paymentAdditionalInformation['payment_mode'];
 
         $this->addSoftDescriptor($data);
-
     }
 
     /**
@@ -230,7 +229,9 @@ class DoWebPayment extends AbstractRequest
 
         $customer = $this->cart->getCustomer();
         $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
-        $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . date('yymd') . $this->cart->getReservedOrderId() . $cutomerIdKey, 0, 64);
+
+        /** @see https://developer.paypal.com/docs/api/orders/v2/#orders_create : soft_descriptor */
+        $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . $this->cart->getReservedOrderId() . date('yymd'), 0, 22);
     }
 
 
@@ -247,7 +248,7 @@ class DoWebPayment extends AbstractRequest
         $data['order']['country'] = $this->billingAddress->getCountry();
         $data['order']['amount'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getGrandTotal());
         $taxes = $this->helperData->mapMagentoAmountToPaylineAmount($this->totals->getTaxAmount());
-        $data['order']['taxes'] = $taxes ? $taxes : null;
+        $data['order']['taxes'] = $taxes ? $taxes : 0;
         $data['order']['currency'] = $this->helperCurrency->getNumericCurrencyCode($this->totals->getBaseCurrencyCode());
         $data['order']['date'] = $this->formatDateTime($this->cart->getCreatedAt());
         $data['order']['comment'] = 'Magento order';
@@ -262,12 +263,14 @@ class DoWebPayment extends AbstractRequest
     protected function prepareOrderDetailsData(&$data)
     {
         $data['order']['details'] = [];
+        $lastTaxRate = 0;
+        $lastCategory = 0;
 
         foreach ($this->cart->getItems() as $item) {
             $tmpProduct = $this->productCollection->getItemById($item->getProductId());
             $orderDetail = [
                 'ref' => $item->getSku(),
-                'price' => $this->helperData->mapMagentoAmountToPaylineAmount($item->getPrice()),
+                'price' => $this->helperData->mapMagentoAmountToPaylineAmount($item->getPriceInclTax()),
                 'quantity' => $item->getQty(),
                 'brand' => $tmpProduct->getManufacturer(),
                 'category' => $tmpProduct->getPaylineCategoryMapping(),
@@ -275,8 +278,25 @@ class DoWebPayment extends AbstractRequest
                 'comment' => 'Magento item'
             ];
 
+            $lastTaxRate = $this->helperData->mapMagentoAmountToPaylineAmount($item->getTaxPercent());
+            $lastCategory = $tmpProduct->getPaylineCategoryMapping();
+
             $data['order']['details'][] = $orderDetail;
         }
+
+
+        if($this->totals->getDiscountAmount()) {
+            $orderDetail = [
+                'ref' => 'CART_DISCOUNT',
+                'price' => -1 * round(abs($this->totals->getDiscountAmount()) * 100),
+                'quantity' => 1,
+                'comment' => 'Cart amount adjustment',
+                'category' =>  $lastCategory,
+                'taxRate' => $lastTaxRate,
+            ];
+            $data['order']['details'][] = $orderDetail;
+        }
+
     }
 
     /**
@@ -306,6 +326,8 @@ class DoWebPayment extends AbstractRequest
                     }
                 }
             }
+
+            $deliveryData['deliveryCharge'] = $this->helperData->mapMagentoAmountToPaylineAmount($this->shippingAddress->getShippingInclTax());
 
             if($deliveryData['deliveryExpectedDelay']) {
                 $deliveryData['deliveryExpectedDate'] = $this->getDeliveryExpectedDate($deliveryData['deliveryExpectedDelay']);

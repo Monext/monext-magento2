@@ -2,10 +2,10 @@
     "name": "monext/module-payline",
     "description": "Magento2 Extension to use the Payline payment solution by Monext",
     "require": {
-        "monext/payline-sdk": "*"
+        "monext/monext-php": "*"
     },
     "type": "magento2-module",
-    "version": "1.2.19",
+    "version": "1.2.20",
     "authors" : [
         {
             "name" : "Matthieu BOUCHOT",
@@ -28,7 +28,7 @@
     ],
     "support": {
         "email": "support@payline.com",
-        "docs": "https://docs.payline.com/"
+        "docs": "https://docs.monext.fr/display/DT"
     },
     "autoload": {
         "files": [

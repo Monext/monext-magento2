@@ -182,7 +182,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
      * @var SortOrderBuilder
      */
     private $sortOrderBuilder;
-    private Currency $helperCurrency;
+
+    /**
+     * @var Currency
+     */
+    private $helperCurrency;
 
 
     /**
@@ -554,8 +558,10 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $this->paylineOrderManagement->checkQuotePaymentFromPayline($quote);
             $response = $this->callPaylineApiGetWebPaymentDetails($token);
             $transactionData = $response->getTransactionData();
+            $paymentData = $response->getPaymentData();
+            $paymentRecordId = $response->getPaymentRecordId();
             // IN CASE THERE IS NO TRANSACTION NO NEED TO CREATE AN ORDER
-            if(empty($transactionData) || empty($transactionData['id'])) {
+            if($paymentData['mode'] !== 'REC' && empty($paymentRecordId) && (empty($transactionData) || empty($transactionData['id']))) {
                 $this->paylineLogger->info("Empty transaction data, payment is not finalized.", $logData);
                 throw new LocalizedException(__('Payment is not finalized.'));
             }
@@ -861,68 +867,11 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             throw new \Exception($response->getShortErrorMessage());
         }
 
-        $nbTxnSuccess = 0;
-        foreach ($response->getBillingRecords() as $record) {
-            if (in_array($record['status'], PaylineApiConstants::PAYMENT_BACK_CODES_RETURN_CYCLING_SUCCESS)) {
-                ++$nbTxnSuccess;
-                if ($this->checkIfTransactionExists($record['transaction']['id'], $payment) === false) {
-                    $payment->setTransactionId($record['transaction']['id']);
-                    $payment->setParentTransactionId($payment->getLastTransId());
-                    $payment->setTransactionAdditionalInfo('payline_record', $record['transaction']);
-                    $payment->registerCaptureNotification($this->helperData->mapPaylineAmountToMagentoAmount($record['amount']), true);
-                    $orderIsUpdated = true;
-                }
-            } elseif (in_array($record['status'], PaylineApiConstants::PAYMENT_BACK_CODES_RETURN_CYCLING_ERROR)) {
-                $payment->getOrder()->addStatusHistoryComment(__('Error code %1 => %2', $record['result']['code'], $record['result']['longMessage']), false);
-                $orderIsUpdated = true;
-            }
-        }
-
-        $this->paylineLogger->debug('Count billing records : ' . count($response->getBillingRecords()));
-        $this->paylineLogger->debug('Nb records Sucess : ' . $nbTxnSuccess);
-        if (count($response->getBillingRecords()) === $nbTxnSuccess) {
-            $switchStatus = false;
-            if (
-                $payment->getOrder()->getState() === Order::STATE_COMPLETE
-                && $payment->getOrder()->getStatus() === HelperConstants::ORDER_STATUS_PAYLINE_CYCLE_PAYMENT_CAPTURE
-            ) {
-                $switchStatus = true;
-            }
-            $this->paylineLogger->debug('Switch Status : ' . $switchStatus);
-            $payment->getOrder()->addStatusHistoryComment(__('All payment cycle received'), $switchStatus);
-            $payment->getOrder()->setPaiementCompleted(true);
-            $orderIsUpdated = true;
-        } else {
-            $payment->getOrder()->setPaiementCompleted(false);
-        }
-
-        $isPaymentCyclingCompleted = ($payment->getOrder()->getPaiementCompleted()) ? '1' : '0';
-        $this->paylineLogger->debug('Paiement Cycling Completed : ' . $isPaymentCyclingCompleted);
-        $this->paylineLogger->debug('Order status : ' . $payment->getOrder()->getStatus());
-        $this->paylineLogger->debug('Order state : ' . $payment->getOrder()->getState());
-
-        //save_mode => flag pour la livraison après ou pendant les échéances
-        if ($orderIsUpdated === true && !$payment->getOrder()->hasData('save_mode')) {
-            $payment->getOrder()->save();
-        }
+        $paymentTypeManagement = $this->paymentTypeManagementFactory->create($payment);
+        $paymentTypeManagement->handlePaymentRecord($response, $payment);
 
         return $this;
     }
-
-    /**
-     * @param $transactionId
-     * @param OrderPayment $payment
-     * @return bool
-     */
-    protected function checkIfTransactionExists($transactionId, OrderPayment $payment)
-    {
-        return $this->transactionManager->isTransactionExists(
-            $transactionId,
-            $payment->getId(),
-            $payment->getOrder()->getId()
-        );
-    }
-
 
     /**
      * @param OrderInterface $order

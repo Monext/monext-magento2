@@ -1,15 +1,15 @@
-<table style="margin-bottom: 20px; border: none;">
+<table class="payline-contracts_table">
     <tbody>
     <!-- ko foreach: getContracts() -->
-        <tr>
-            <td style="width: 15%; vertical-align: middle; padding-bottom: 0px;">
+        <tr data-bind="css: { 'selected': $parent.isContractChecked() === id }">
+            <td>
                 <input type="radio"
                     name="payment[payline_contract]"
                     class="radio"
                     data-bind="attr: {'id': id}, value: id, checked: $parent.isContractChecked"/>
                 <label data-bind="attr: {'for': id}" class="label"><span data-bind="text: label"></span></label>
             </td>
-            <td style="vertical-align: middle; padding-bottom: 0px;">
+            <td>
                 <img data-bind="attr: {'src': logo}"/>
             </td>
         </tr>

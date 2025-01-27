@@ -13,9 +13,12 @@ use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use Magento\Store\Model\StoreManagerInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
 use Monext\Payline\PaylineApi\Constants as PaylineApiConstants;
 use Monext\Payline\PaylineApi\Response\GetWebPaymentDetails as ResponseGetWebPaymentDetails;
+use Magento\Store\Model\ScopeInterface;
+use Monext\Payline\Model\System\Config\Source\BillingCycles;
 
 class Data extends AbstractHelper
 {
@@ -32,7 +35,17 @@ class Data extends AbstractHelper
      */
     protected $serialize;
 
+    /**
+     * @var EmailAddressValidator
+     */
     protected $emailAddressValidator;
+
+    /**
+     * @var BillingCycles
+     */
+    private  $billingCycles;
+
+    protected  $storeManager;
 
     /**
      * @param Context $context
@@ -44,12 +57,17 @@ class Data extends AbstractHelper
         Context $context,
         MathRandom $mathRandom,
         Serialize $serialize,
-        EmailAddressValidator $emailAddressValidator
+        EmailAddressValidator $emailAddressValidator,
+        StoreManagerInterface $storeManager,
+        BillingCycles $billingCycles
     ) {
         parent::__construct($context);
+
         $this->mathRandom = $mathRandom;
         $this->serialize = $serialize;
         $this->emailAddressValidator = $emailAddressValidator;
+        $this->storeManager = $storeManager;
+        $this->billingCycles = $billingCycles;
     }
 
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
@@ -105,12 +123,12 @@ class Data extends AbstractHelper
     public function isWalletEnabled($paymentMethod)
     {
         return $this->scopeConfig->getValue('payment/'.$paymentMethod.'/wallet_enabled',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            ScopeInterface::SCOPE_STORE);
     }
 
     public function mapMagentoAmountToPaylineAmount($magentoAmount)
     {
-        return round($magentoAmount * 100, 0);
+        return round((float)$magentoAmount * 100, 0);
     }
 
     public function mapPaylineAmountToMagentoAmount($paylineAmount)
@@ -126,7 +144,7 @@ class Data extends AbstractHelper
 
         $path = 'payment/' . $order->getPayment()->getMethod() . '/order_status_' . $status;
         if ($configurableStatus = $this->scopeConfig->getValue($path,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE)) {
+            ScopeInterface::SCOPE_STORE)) {
             $status = $configurableStatus;
         }
         return $status;
@@ -146,7 +164,7 @@ class Data extends AbstractHelper
         if(is_null($this->delivery)) {
             $this->delivery = [];
             $addressConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_DELIVERY,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+                ScopeInterface::SCOPE_STORE);
             if ($addressConfigSerialized) {
                 try {
                     $this->delivery = $this->serialize->unserialize($addressConfigSerialized);
@@ -162,7 +180,7 @@ class Data extends AbstractHelper
         if(is_null($this->prefix)) {
             $this->prefix = [];
             $prefixConfigSerialized = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_PREFIX,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+                ScopeInterface::SCOPE_STORE);
             if ($prefixConfigSerialized) {
                 try {
                     $this->prefix = $this->serialize->unserialize($prefixConfigSerialized);
@@ -192,14 +210,14 @@ class Data extends AbstractHelper
 
     public function getNxMinimumAmountCart($store = null)
     {
-        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $store);
+        $amount = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT, ScopeInterface::SCOPE_STORE, $store);
         $amount = ($amount < 0) ? 0 : $amount;
         return $amount;
     }
 
     public function getTokenUsage() {
         return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_TOKEN_USAGE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -208,12 +226,20 @@ class Data extends AbstractHelper
     public function getMerchantName()
     {
         $merchantName = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE) ??
+            ScopeInterface::SCOPE_STORE) ??
             $this->scopeConfig->getValue(\Magento\Store\Model\Information::XML_PATH_STORE_INFO_NAME,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE) ??
+                ScopeInterface::SCOPE_STORE) ??
             '';
 
-        return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName)) ?? 'UNDEFINEDMERCHANTNAME';
+        if(empty($merchantName)) {
+            $merchantName = $this->storeManager->getStore()->getFrontendName();
+        }
+
+        if(empty($merchantName)) {
+            $merchantName = $this->storeManager->getStore()->getName();
+        }
+
+        return  preg_replace('/[^A-Z0-9]/', '', strtoupper($merchantName));
     }
 
     /**
@@ -225,9 +251,9 @@ class Data extends AbstractHelper
         $resultCode = $response->getResultCode();
 
         $configPath = HelperConstants::CONFIG_PATH_PAYLINE_ERROR_TYPE . substr($resultCode, 1,1);
-        $errorMessage = $this->scopeConfig->getValue($configPath, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        $errorMessage = $this->scopeConfig->getValue($configPath, ScopeInterface::SCOPE_STORE);
         if(empty($errorMessage)) {
-            $errorMessage = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_ERROR_DEFAULT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            $errorMessage = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_ERROR_DEFAULT, ScopeInterface::SCOPE_STORE);
         }
 
         return !empty($errorMessage) ? $errorMessage : $response->getLongErrorMessage();
@@ -272,7 +298,7 @@ class Data extends AbstractHelper
     public function shouldReuseToken()
     {
         if ($this->scopeConfig->getValue('payment/'.HelperConstants::WEB_PAYMENT_CPT.'/integration_type',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE) == PaylineApiConstants::INTEGRATION_TYPE_REDIRECT) {
+                ScopeInterface::SCOPE_STORE) == PaylineApiConstants::INTEGRATION_TYPE_REDIRECT) {
             return false;
         }
 
@@ -386,4 +412,38 @@ class Data extends AbstractHelper
         }
     }
 
+    public function getRecAllowedType($store = null)
+    {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_REC_ALLOWED_TYPE, ScopeInterface::SCOPE_STORE, $store);
+    }
+    public function getRecAllowedProductByType($allowedType, $store = null)
+    {
+        return $this->scopeConfig->getValue('payment/'.HelperConstants::WEB_PAYMENT_REC.'/allowed_'.$allowedType, ScopeInterface::SCOPE_STORE, $store);
+    }
+    public function getRecBillingCycle($store = null)
+    {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_REC_BILLING_CYCLE, ScopeInterface::SCOPE_STORE, $store);
+    }
+    public function getRecStartCycle($store = null)
+    {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_REC_START_CYCLE, ScopeInterface::SCOPE_STORE, $store);
+    }
+    public function getRecBillingDay($store = null)
+    {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_REC_BILLING_DAY, ScopeInterface::SCOPE_STORE, $store);
+    }
+    public function getRecBillingNumber($store = null)
+    {
+        return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_REC_BILLING_NUMBER, ScopeInterface::SCOPE_STORE, $store);
+    }
+
+    public function getIntervalMapping()
+    {
+        return array(
+            10 => array('unit' => 'day', 'multiplier' => 1),
+            20 => array('unit' => 'week', 'multiplier' => 1),
+            30 => array('unit' => 'week', 'multiplier' =>  2),
+            40 => array('unit' => 'month', 'multiplier' => 1),
+        );
+    }
 }

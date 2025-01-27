@@ -368,7 +368,7 @@ class Client
         );
 
 
-        $this->logger->log(LoggerConstants::DEBUG, $this->stringifyArrayWithOffuscation($paylineSdkParams));
+        $this->logger->log(LoggerConstants::DEBUG, 'create paylineSDKFactory', $this->arrayClearSdkDataToLog($paylineSdkParams));
 
         $this->paylineSDK = $this->paylineSDKFactory->create($paylineSdkParams);
         $currentModule = $this->moduleList->getOne(HelperConstants::MODULE_NAME);
@@ -398,8 +398,8 @@ class Client
         $logLevel =  $response->isSuccess() ? LoggerConstants::DEBUG : LoggerConstants::ERROR;
         $this->logger->log($logLevel,
             get_class($request),
-            ['Request'=> $this->stringifyArrayWithOffuscation($request->getData()),
-                'Response'=> $this->stringifyArrayWithOffuscation($response->getData())]);
+            ['Request'=> $this->arrayClearSdkDataToLog($request->getData()),
+                'Response'=> $this->arrayClearSdkDataToLog($response->getData())]);
 
     }
 
@@ -417,23 +417,30 @@ class Client
 
 
     /**
-     * @param $arrayToPrint
+     * @param $arrayToClean
      * @param string[] $encryptKeys
      * @return bool|string
      */
-    protected function stringifyArrayWithOffuscation($arrayToPrint, $encryptKeys = ['access_key'])
+    protected function arrayClearSdkDataToLog($arrayToClean, $encryptKeys = ['access_key'])
     {
         foreach ($encryptKeys as $key) {
-            if(isset($arrayToPrint[$key]) ) {
-                $keyLength = strlen($arrayToPrint[$key]);
+            if(isset($arrayToClean[$key]) ) {
+                $keyLength = strlen($arrayToClean[$key]);
                 if($keyLength > 6) {
-                    $arrayToPrint[$key] = preg_replace('/^(.{4}).{'.($keyLength  - 6).'}(.*)$/', '$1'.str_repeat("x", $keyLength - 6).'$2', $arrayToPrint[$key]);
+                    $arrayToClean[$key] = preg_replace('/^(.{4}).{'.($keyLength  - 6).'}(.*)$/', '$1'.str_repeat("x", $keyLength - 6).'$2', $arrayToClean[$key]);
                 } else {
-                    $arrayToPrint[$key] = 'xxxxxxxxxxxxxxxxxxxx';
+                    $arrayToClean[$key] = "xxxxxx".$key."xxxxxx";
                 }
             }
         }
 
-        return print_r($arrayToPrint, true);
+        array_walk_recursive($arrayToClean, function(&$item, $key) {
+            if(preg_match('/Logo$/', $key, $match)) {
+                $item="xxxxxx".$key."xxxxxx";
+            }
+        });
+
+
+        return $arrayToClean;
     }
 }

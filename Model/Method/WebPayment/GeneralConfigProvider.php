@@ -19,6 +19,7 @@ class GeneralConfigProvider extends AbstractMethodConfigProvider
         foreach ($contractCollection as $contract) {
             $config['payline']['general']['contracts'][] = [
                 'id' => $contract->getId(),
+                'number' => $contract->getNumber(),
                 'cardType' => $contract->getCardType(),
                 'logo' => $this->getCardTypeLogoUrl($contract->getCardType()),
                 'label' => $contract->getLabel(),

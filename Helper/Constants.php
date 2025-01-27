@@ -10,7 +10,7 @@ class Constants
     const WEB_PAYMENT_NX = 'payline_web_payment_nx';
     const WEB_PAYMENT_REC = 'payline_web_payment_rec';
 
-    const AVAILABLE_WEB_PAYMENT_PAYLINE = [self::WEB_PAYMENT_CPT, self::WEB_PAYMENT_NX];
+    const AVAILABLE_WEB_PAYMENT_PAYLINE = [self::WEB_PAYMENT_CPT, self::WEB_PAYMENT_NX, self::WEB_PAYMENT_REC];
 
     CONST PAYLINE_RETURN_CART_EMPTY     = 0;
     CONST PAYLINE_RETURN_CART_FULL      = 1;
@@ -48,6 +48,20 @@ class Constants
     //Const NX
     const CONFIG_PATH_PAYLINE_NX_MINIMUM_AMOUNT = 'payment/'.self::WEB_PAYMENT_NX.'/active_amount_min';
 
+    //Const REC
+    const CONFIG_PATH_PAYLINE_REC_ALLOWED_TYPE = 'payment/'.self::WEB_PAYMENT_REC.'/allowed_type';
+    const CONFIG_PAYLINE_REC_ALLOWED_PRODUCT_ID = 'product_id';
+    const CONFIG_PAYLINE_REC_ALLOWED_PRODUCT_SKU = 'product_sku';
+    const CONFIG_PAYLINE_REC_ALLOWED_PRODUCT_TYPE = 'product_type';
+    const CONFIG_PATH_PAYLINE_REC_START_CYCLE = 'payment/'.self::WEB_PAYMENT_REC.'/start_cycle';
+    const CONFIG_PATH_PAYLINE_REC_BILLING_DAY = 'payment/'.self::WEB_PAYMENT_REC.'/billing_day';
+    const CONFIG_PATH_PAYLINE_REC_BILLING_NUMBER = 'payment/'.self::WEB_PAYMENT_REC.'/billing_number';
+    const CONFIG_PATH_PAYLINE_REC_BILLING_CYCLE = 'payment/'.self::WEB_PAYMENT_REC.'/billing_cycle';
+    const CONFIG_PATH_PAYLINE_REC_STATUS_CARD_SCHEDULE_EXPIRED = 'payment/'.self::WEB_PAYMENT_REC.'/status_when_credit_card_schedule_is_expired';
+    const CONFIG_PATH_PAYLINE_REC_STATUS_SCHEDULE_ALERT = 'payment/'.self::WEB_PAYMENT_REC.'/status_when_payline_schedule_alert';
+    const CONFIG_PATH_PAYLINE_REC_SEND_WALLET_ID = 'payment/'.self::WEB_PAYMENT_REC.'/send_wallet_id';
+    const CONFIG_PATH_PAYLINE_REC_AUTOMATE_INVOICE_CREATION = 'payment/'.self::WEB_PAYMENT_REC.'/automate_invoice_creation';
+
     //Raw path for system backend model
     const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';
     const CONFIG_PATH_RAW_PAYLINE_CPT_ACTION        = 'groups/payline/groups/payline_solutions/groups/payline_cpt/fields/payment_action/value';
@@ -74,5 +88,6 @@ class Constants
 
     const MODULE_NAME = 'Monext_Payline';
 
+    const PAYLINE_LOG_FILENAME = 'payline.log';
 
 }
