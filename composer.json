@@ -1,5 +1,5 @@
 {
-    "name": "monext/module-payline",
+    "name": "monext/magento2-module",
     "description": "Magento2 Extension to use the Payline payment solution by Monext",
     "require": {
         "monext/monext-php": "*"
