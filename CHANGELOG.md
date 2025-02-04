@@ -1,4 +1,8 @@
 # 1.2.20
+Released on 2025-02-04
+- Fix updatePersonalDetails to 0
+
+# 1.2.20
 Released on 2024-11-14
 - Add REC payment
 - Add Klarna payment compatibility

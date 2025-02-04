@@ -5,7 +5,7 @@
         "monext/monext-php": "*"
     },
     "type": "magento2-module",
-    "version": "1.2.20",
+    "version": "1.2.21",
     "authors" : [
         {
             "name" : "Matthieu BOUCHOT",

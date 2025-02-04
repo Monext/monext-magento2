@@ -56,7 +56,7 @@ class ManageWebWallet extends AbstractRequest
         $data['buyer']['lastName'] = $this->customer->getLastname();
         $data['buyer']['firstName'] = $this->customer->getFirstname();
 
-        $data['updatePersonalDetails'] = 1;
+        $data['updatePersonalDetails'] = 0;
 
         $data['returnURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwalletgateway');
         $data['cancelURL'] = $this->urlBuilder->getUrl('payline/webpayment/returnfromwalletgateway');
