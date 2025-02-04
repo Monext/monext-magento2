@@ -1,6 +1,6 @@
 # 1.2.20
 Released on 2025-02-04
-- Fix updatePersonalDetails to 0
+- Wallet: fix security and set updatePersonalDetails to 0
 
 # 1.2.20
 Released on 2024-11-14
