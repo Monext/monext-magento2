@@ -35,6 +35,11 @@
                         <config_path>payline/general/merchant_name</config_path>
                         <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
                     </field>
+                    <field id="smartdisplay_parameter" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Smartdisplay Parameter</label>
+                        <config_path>payline/general/smartdisplay_parameter</config_path>
+                        <comment>Added in doWebPayment privateData as display.rule.param</comment>
+                    </field>
                     <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
                         <label>Advanced</label>
                         <attribute type="expanded">0</attribute>

@@ -186,8 +186,8 @@ class Client
         }
         unset($data['order']['details']);
 
-        if($data['privateData']){
-            $this->addPrivateDataToPaylineSDK(array($data['privateData']));
+        if(!empty($data['privateData'])){
+            $this->addPrivateDataToPaylineSDK($data['privateData']);
         }
 
         $response->fromData(

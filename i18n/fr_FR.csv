@@ -252,3 +252,5 @@ Configure,Configurer
 "Category","Category"
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Catégorie par défaut si non définie dans l'attribut de catégorie Magento ""Mapping des catégories Payline"""
 "Payline Category Mapping","Mapping des catégories Payline"
+"Smartdisplay parameter","Paramètre Smartdisplay"
+"Added in doWebPayment privateData as display.rule.param","Ajouté dans le privateData du doWebPayment en tant que display.rule.param"
