@@ -47,30 +47,14 @@ You can also check [our documentation](https://docs.monext.fr/display/DT/Payment
 
 ### Installation process
 
-#### Using composer
+You can install our plugin through Composer
 
-#### Using archive
-
-Log in to the Magento server, go to your Magento install dir.
-
-You have to create a new directory to store the module zip package, payline-magento2-__x.y.z__.zip (__x.y.z__ is the version of the module).
- ```
-mkdir -p extra/composer/artifact/zip
+```
+composer require monext/magento2-module
+bin/magento module:enable Monext_Payline
+bin/magento setup:upgrade
 ```
 
-Save the zip package payline-magento2-__x.y.z__.zip in the directory extra/composer/artifact/zip
-
-Run composer to deploy module and dependencies (_monext/payline-sdk_)
-```
-composer config repositories.zip artifact extra/composer/artifact/zip
-composer require monext/module-payline:x.y.z
-```
-
-Run magento command to enable the module
-```
-php -f bin/magento module:enable Monext_Payline
-php -f bin/magento setup:upgrade
-```
 
 ## Configuration
 
