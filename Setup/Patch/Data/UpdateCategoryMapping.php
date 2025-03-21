@@ -52,8 +52,10 @@ class UpdateCategoryMapping implements DataPatchInterface
         $attribute = $this->customerAttributeFactory->create();
         $categoryMapping = $attribute->getIdByCode(\Magento\Catalog\Model\Category::ENTITY, 'payline_category_mapping');
 
-        if($categoryMapping) {
-            $connection->update('catalog_category_entity_int',
+        $tableName   = $this->moduleDataSetup->getTable('catalog_category_entity_int');
+
+        if($tableName && $categoryMapping) {
+            $connection->update($tableName,
                 ['value' => new \Zend_Db_Expr("CASE
                            WHEN substring(value, 1,2) = '10' THEN 1
                            WHEN substring(value, 1,2) = '20' THEN 2

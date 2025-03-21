@@ -69,4 +69,7 @@
     <type name="Magento\Sales\Model\ResourceModel\Order\Handler\State">
         <plugin name="set_payline_status_cycle_paiement_after_complete_order" type="Monext\Payline\Plugin\Model\ResourceModel\Order\Handler\StatePlugin"/>
     </type>
+    <type name="Monext\Payline\Controller\Customer\Wallet">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
 </config>

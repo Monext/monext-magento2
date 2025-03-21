@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \Monext\Payline\Block\Customer\Wallet $block
+ */
+?>
 <?php if($block->hasCustomerWallet()) : ?>
     <?php if($this->isManageWebWalletInError()) : ?>
     <div class="message error empty"><span><?php /* @escapeNotVerified */ echo __($this->getManageWebWalletErrorMessage()) ?></span></div>

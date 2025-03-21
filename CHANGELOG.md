@@ -1,3 +1,10 @@
+# 1.2.21
+Released on 2025-02-04
+- Add Floa payment compatibility
+- Wallet: fix security and set updatePersonalDetails to 0
+- Add display.rule.param in configuration to use in Smartdisplay
+- Fix Patch\Data\UpdateCategoryMapping on database using a prefix
+
 # 1.2.20
 Released on 2024-11-14
 - Add REC payment

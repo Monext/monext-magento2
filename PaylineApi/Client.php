@@ -182,12 +182,16 @@ class Client
 
         $data = $request->getData();
         foreach ($data['order']['details'] as $orderDetail) {
-            $this->paylineSDK->addOrderDetail($orderDetail);
+            $this->paylineSDK()->addOrderDetail($orderDetail);
         }
         unset($data['order']['details']);
 
+        if(!empty($data['privateData'])){
+            $this->addPrivateDataToPaylineSDK($data['privateData']);
+        }
+
         $response->fromData(
-            $this->paylineSDK->doWebPayment($data)
+            $this->paylineSDK()->doWebPayment($data)
         );
 
         $this->logApiCall($request, $response);
@@ -205,7 +209,7 @@ class Client
 
         $response = $this->responseDoCaptureFactory->create();
         $response->fromData(
-            $this->paylineSDK->doCapture($request->getData())
+            $this->paylineSDK()->doCapture($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -223,7 +227,7 @@ class Client
 
         $response = $this->responseDoVoidFactory->create();
         $response->fromData(
-            $this->paylineSDK->doReset($request->getData())
+            $this->paylineSDK()->doReset($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -241,7 +245,7 @@ class Client
 
         $response = $this->responseDoRefundFactory->create();
         $response->fromData(
-            $this->paylineSDK->doRefund($request->getData())
+            $this->paylineSDK()->doRefund($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -259,7 +263,7 @@ class Client
 
         $response = $this->responseGetMerchantSettingsFactory->create();
         $response->fromData(
-            $this->paylineSDK->getMerchantSettings($request->getData())
+            $this->paylineSDK()->getMerchantSettings($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -278,7 +282,7 @@ class Client
         /** @var ResponseGetWebPaymentDetails $response */
         $response = $this->responseGetWebPaymentDetailsFactory->create();
         $response->fromData(
-            $this->paylineSDK->getWebPaymentDetails($request->getData())
+            $this->paylineSDK()->getWebPaymentDetails($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -297,7 +301,7 @@ class Client
         /** @var ResponseGetPaymentRecord $response */
         $response = $this->responseGetPaymentRecordFactory->create();
         $response->fromData(
-            $this->paylineSDK->getPaymentRecord($request->getData())
+            $this->paylineSDK()->getPaymentRecord($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -315,7 +319,7 @@ class Client
 
         $response = $this->responseManageWebWalletFactory->create();
         $response->fromData(
-            $this->paylineSDK->manageWebWallet($request->getData())
+            $this->paylineSDK()->manageWebWallet($request->getData())
         );
 
         $this->logApiCall($request, $response);
@@ -387,6 +391,13 @@ class Client
         return $this;
     }
 
+    /**
+     * @return PaylineSDK
+     */
+    public function paylineSDK()
+    {
+        return $this->paylineSDK;
+    }
 
     /**
      * @param AbstractRequest $request
@@ -410,7 +421,7 @@ class Client
     protected function addPrivateDataToPaylineSDK(array $privateData)
     {
         foreach ($privateData as $privateDataItem) {
-            $this->paylineSDK->addPrivateData($privateDataItem);
+            $this->paylineSDK()->addPrivateData($privateDataItem);
         }
         return $this;
     }

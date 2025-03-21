@@ -183,6 +183,7 @@ class DoWebPayment extends AbstractRequest
             $this->prepareBuyerData($data);
             $this->prepareBillingAddressData($data);
             $this->prepareShippingAddressData($data);
+            $this->preparePrivateData($data);
 
             $data['languageCode'] = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_LANGUAGE,
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -425,6 +426,7 @@ class DoWebPayment extends AbstractRequest
         $billingPhone = $this->helperData->getNormalizedPhoneNumber($this->billingAddress->getTelephone());
         if ($billingPhone) {
             $data['billingAddress']['phone'] = $billingPhone;
+            $data['billingAddress']['phoneType'] = 1;
         }
 
         $streetData = $this->billingAddress->getStreet();
@@ -461,6 +463,7 @@ class DoWebPayment extends AbstractRequest
             $shippingPhone = $this->helperData->getNormalizedPhoneNumber($this->shippingAddress->getTelephone());
             if ($shippingPhone) {
                 $data['shippingAddress']['phone'] = $shippingPhone;
+                $data['shippingAddress']['phoneType'] = 1;
             }
 
             $streetData = $this->shippingAddress->getStreet();
@@ -477,6 +480,23 @@ class DoWebPayment extends AbstractRequest
             );
             $data['shippingAddress']['name'] = $this->cleanAndSubstr($name, 0, 100);
         }
+    }
+
+    /**
+     * @param $data
+     * @return void
+     */
+    protected function preparePrivateData(&$data)
+    {
+        $privateData[] = array('key' => 'OrderSaleChannel', 'value' => 'DESKTOP');
+
+        $smartDisplayParameter = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_SMARTDISPLAY_PARAM,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        if (!empty($smartDisplayParameter)) {
+            $privateData[] = array('key' => 'display.rule.param', 'value' => $smartDisplayParameter);
+        }
+
+        $data['privateData'] = $privateData;
     }
 
     /**
