@@ -66,6 +66,7 @@ class Constants
 
     const CONFIG_PATH_PAYLINE_CPT_CAPTURE_ON_TRIGGER = 'payment/'.self::WEB_PAYMENT_CPT.'/capture_payment_triggered_on';
     const PAYLINE_CPT_CAPTURE_ON_SHIPMENT = 'shipment';
+    const PAYLINE_CPT_CAPTURE_ON_INVOICE = 'invoice';
 
     //Raw path for system backend model
     const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';

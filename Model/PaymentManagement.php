@@ -1062,7 +1062,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
             $authorizationTransaction = $orderPayment->getAuthorizationTransaction();
 
             if ($authorizationTransaction && $this->helperData->isPaymentFromPayline($orderPayment)
-                && in_array($authorizationTransaction->getMethod(), HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE)
+                && $this->helperData->isPaymentMethodFromPayline($authorizationTransaction->getMethod())
                 && !$authorizationTransaction->getIsClosed()
             ) {
                 $orderPayment->capture();

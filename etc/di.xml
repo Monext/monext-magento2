@@ -78,4 +78,16 @@
     <type name="Monext\Payline\Controller\Customer\Wallet">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order">
+        <plugin name="capture_on_status_change" type="Monext\Payline\Plugin\Model\ResourceModel\OrderPlugin"/>
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Shipment">
+        <plugin name="capture_on_shipment_create" type="Monext\Payline\Plugin\Model\ResourceModel\OrderShipmentPlugin"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Invoice">
+        <plugin name="capture_on_invoice_create" type="Monext\Payline\Plugin\Model\Order\InvoicePlugin"/>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Invoice\Create\Items">
+        <plugin name="prevent_invoice_capture_dropdown" type="Monext\Payline\Plugin\Block\Adminhtml\Order\Invoice\Create\ItemsPlugins"/>
+    </type>
 </config>

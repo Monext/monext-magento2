@@ -16,6 +16,7 @@ use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Sales\Model\Order\Payment;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Store\Model\StoreManagerInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
@@ -185,9 +186,22 @@ class Data extends AbstractHelper
         return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
     }
 
+    /**
+     * @param Payment $payment
+     * @return bool
+     */
     public function isPaymentFromPayline(\Magento\Sales\Model\Order\Payment $payment)
     {
-        return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
+        return $this->isPaymentMethodFromPayline($payment->getMethod());
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @return bool
+     */
+    public function isPaymentMethodFromPayline(string $paymentMethod)
+    {
+        return in_array($paymentMethod,HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
     }
 
     public function getDeliverySetting() {
@@ -489,7 +503,7 @@ class Data extends AbstractHelper
     public function getCaptureCptOnTriggerOrderStatus()
     {
         $paymentAction = $this->getCaptureCptOnTrigger();
-        if ($paymentAction != HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT) {
+        if (!in_array($paymentAction, [HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT, HelperConstants::PAYLINE_CPT_CAPTURE_ON_INVOICE])) {
             return $paymentAction;
         }
         return false;
@@ -503,6 +517,16 @@ class Data extends AbstractHelper
         }
         return false;
     }
+
+    public function getCaptureCptOnTriggerInvoice()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if ($paymentAction == HelperConstants::PAYLINE_CPT_CAPTURE_ON_INVOICE) {
+            return $paymentAction;
+        }
+        return false;
+    }
+
 
     /**
      * @param string $moduleName

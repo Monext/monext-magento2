@@ -4,6 +4,7 @@ namespace Monext\Payline\Plugin\Model\ResourceModel;
 
 use Magento\Sales\Model\Order as OrderModel;
 use Magento\Sales\Model\ResourceModel\Order;
+use Monext\Payline\Helper\Constants as PaylineConstants;
 use Monext\Payline\Model\PaymentManagement;
 use Monext\Payline\Helper\Data as PaylineHelperData;
 
@@ -34,7 +35,8 @@ class OrderPlugin
     {
         $oldStatus = $object->getOrigData('status');
         $newStatus = $object->getData('status');
-        if ($newStatus && $oldStatus && $oldStatus == $newStatus){
+        if ($newStatus && $oldStatus && $oldStatus == $newStatus
+            || !$this->paylineHelper->isPaymentFromPayline($object->getPayment())){
             return $result;
         }
 
