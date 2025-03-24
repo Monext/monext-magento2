@@ -63,6 +63,9 @@ class Constants
     const CONFIG_PATH_PAYLINE_REC_SEND_WALLET_ID = 'payment/'.self::WEB_PAYMENT_REC.'/send_wallet_id';
     const CONFIG_PATH_PAYLINE_REC_AUTOMATE_INVOICE_CREATION = 'payment/'.self::WEB_PAYMENT_REC.'/automate_invoice_creation';
 
+    const CONFIG_PATH_PAYLINE_CPT_CAPTURE_ON_TRIGGER = 'payment/'.self::WEB_PAYMENT_CPT.'/capture_payment_triggered_on';
+    const PAYLINE_CPT_CAPTURE_ON_SHIPMENT = 'shipment';
+
     //Raw path for system backend model
     const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';
     const CONFIG_PATH_RAW_PAYLINE_CPT_ACTION        = 'groups/payline/groups/payline_solutions/groups/payline_cpt/fields/payment_action/value';

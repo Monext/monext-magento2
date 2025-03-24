@@ -190,6 +190,15 @@
                             <backend_model>Monext\Payline\Model\System\Config\Backend\Action</backend_model>
                         </field>
 
+                        <field id="capture_payment_triggered_on" translate="label,comment" type="select" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Capture payment on defined event</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\CaptureTrigger</source_model>
+                            <config_path>payment/payline_web_payment_cpt/capture_payment_triggered_on</config_path>
+                            <depends>
+                                <field id="payment_action">100</field>
+                            </depends>
+                        </field>
+
 
                         <field id="return_payment_refused" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Return options</label>

@@ -446,4 +446,31 @@ class Data extends AbstractHelper
             40 => array('unit' => 'month', 'multiplier' => 1),
         );
     }
+
+    public function getCaptureCptOnTrigger()
+    {
+        $paymentAction = $this->scopeConfig->getValue('payment/' . HelperConstants::WEB_PAYMENT_CPT . '/payment_action', ScopeInterface::SCOPE_STORE);
+        if ($paymentAction == PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION) {
+            return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_CPT_CAPTURE_ON_TRIGGER, ScopeInterface::SCOPE_STORE);
+        }
+        return false;
+    }
+
+    public function getCaptureCptOnTriggerOrderStatus()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if ($paymentAction != HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT) {
+            return $paymentAction;
+        }
+        return false;
+    }
+
+    public function getCaptureCptOnTriggerShipment()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if ($paymentAction == HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT) {
+            return $paymentAction;
+        }
+        return false;
+    }
 }
