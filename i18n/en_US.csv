@@ -252,8 +252,12 @@ Enabled,Enabled
 Category,Category
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Default category if not set on Magento catalog category attribute ""Payline Category Mapping"""
 "Payline Category Mapping","Payline Category Mapping"
+"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s"
+"When editing the URL, please be sure to check all the checkbox below the text input too.","When editing the URL, please be sure to check all the checkbox below the text input too."
 "Smartdisplay parameter","Smartdisplay parameter"
 "Added in doWebPayment privateData as display.rule.param","Added in doWebPayment privateData as display.rule.param"
+"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s"
+"When editing the URL, please be sure to check all the checkbox below the text input too.","When editing the URL, please be sure to check all the checkbox below the text input too."
 "Your payment has been refused","Your payment has been refused"
 "Your payment has been cancelled","Your payment has been cancelled"
 "Your payment is in error","Your payment is in error"

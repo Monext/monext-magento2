@@ -16,6 +16,7 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
      * @var \Magento\Config\Model\Config
      */
     protected $_backendConfig;
+    protected $urlBuilder;
 
     /**
      * @param \Magento\Backend\Block\Context $context
@@ -29,9 +30,11 @@ class Payment extends \Magento\Config\Block\System\Config\Form\Fieldset
         \Magento\Backend\Model\Auth\Session $authSession,
         \Magento\Framework\View\Helper\Js $jsHelper,
         \Magento\Config\Model\Config $backendConfig,
+        \Magento\Framework\Url $urlBuilder,
         array $data = []
     ) {
         $this->_backendConfig = $backendConfig;
+        $this->urlBuilder = $urlBuilder;
         parent::__construct($context, $authSession, $jsHelper, $data);
     }
 
