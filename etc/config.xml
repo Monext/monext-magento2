@@ -7,10 +7,9 @@
                 <environment>HOMO</environment>
                 <token_usage>1</token_usage>
                 <disable_failover>0</disable_failover>
-                <user_error_message_type1>Error with bank transaction process</user_error_message_type1>
-                <user_error_message_type2>Error with transaction process</user_error_message_type2>
-                <user_error_message_type3>Error with 3DSecure process</user_error_message_type3>
-                <user_error_message_type4>Error with payment validation rules</user_error_message_type4>
+                <user_error_message_refused>Your payment has been refused</user_error_message_refused>
+                <user_error_message_cancelled>Your payment has been cancelled</user_error_message_cancelled>
+                <user_error_message_error>Your payment is in error</user_error_message_error>
                 <user_error_message_default>Error when processing payment</user_error_message_default>
                 <debug>500</debug>
             </general>

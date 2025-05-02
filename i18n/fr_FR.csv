@@ -254,3 +254,6 @@ Configure,Configurer
 "Payline Category Mapping","Mapping des catégories Payline"
 "Smartdisplay parameter","Paramètre Smartdisplay"
 "Added in doWebPayment privateData as display.rule.param","Ajouté dans le privateData du doWebPayment en tant que display.rule.param"
+"Your payment has been refused","Votre paiement a été refusé"
+"Your payment has been cancelled","Votre paiement a été annulé"
+"Your payment is in error","Votre paiement est en erreur"

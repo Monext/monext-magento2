@@ -43,7 +43,7 @@ class Constants
     const CONFIG_PATH_PAYLINE_DEFAULT_CATEGORY = 'payline/common_default/category';
 
 
-    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
+    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_';
     const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
 
     //Const NX

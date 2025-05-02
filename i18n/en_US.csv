@@ -254,4 +254,6 @@ Category,Category
 "Payline Category Mapping","Payline Category Mapping"
 "Smartdisplay parameter","Smartdisplay parameter"
 "Added in doWebPayment privateData as display.rule.param","Added in doWebPayment privateData as display.rule.param"
-
+"Your payment has been refused","Your payment has been refused"
+"Your payment has been cancelled","Your payment has been cancelled"
+"Your payment is in error","Your payment is in error"

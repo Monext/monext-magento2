@@ -99,25 +99,17 @@
                         <label>User Error Messages</label>
                         <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
                         <attribute type="expanded">0</attribute>
-                        <field id="type1" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payline Back (01)</label>
-                            <config_path>payline/general/user_error_message_type1</config_path>
-                            <comment><![CDATA[Return codes linked to the return of the bank processing.]]></comment>
+                        <field id="refused" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Refused</label>
+                            <config_path>payline/general/user_error_message_refused</config_path>
                         </field>
-                        <field id="type2" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payline Front (02)</label>
-                            <config_path>payline/general/user_error_message_type2</config_path>
-                            <comment><![CDATA[Return codes linked to the return of Payline processing.]]></comment>
+                        <field id="cancelled" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Cancelled</label>
+                            <config_path>payline/general/user_error_message_cancelled</config_path>
                         </field>
-                        <field id="type3" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>3DSecure (03)</label>
-                            <config_path>payline/general/user_error_message_type3</config_path>
-                            <comment><![CDATA[The return codes of the 3DS module related to authentication and 3DSecure processing.]]></comment>
-                        </field>
-                        <field id="type4" translate="label,comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>LCLF (04)</label>
-                            <config_path>payline/general/user_error_message_type4</config_path>
-                            <comment><![CDATA[The return codes of the LCLF module related to Payline anti-fraud rules.]]></comment>
+                        <field id="error" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Error</label>
+                            <config_path>payline/general/user_error_message_error</config_path>
                         </field>
                         <field id="default" translate="label,comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Default message</label>

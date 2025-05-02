@@ -248,9 +248,9 @@ class Data extends AbstractHelper
      */
     public function getUserMessageForCode(ResponseGetWebPaymentDetails $response)
     {
-        $resultCode = $response->getResultCode();
+        $shortMessage = $response->getShortErrorMessage();
 
-        $configPath = HelperConstants::CONFIG_PATH_PAYLINE_ERROR_TYPE . substr($resultCode, 1,1);
+        $configPath = HelperConstants::CONFIG_PATH_PAYLINE_ERROR_TYPE . strtolower($shortMessage);
         $errorMessage = $this->scopeConfig->getValue($configPath, ScopeInterface::SCOPE_STORE);
         if(empty($errorMessage)) {
             $errorMessage = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_ERROR_DEFAULT, ScopeInterface::SCOPE_STORE);
