@@ -49,7 +49,7 @@ abstract class AbstractValue extends \Magento\Framework\App\Config\Value
         $action = $this->getActionValue();
         $contractIds = $this->getContractsValue();
 
-        if($forbiddenContracts = $this->contractManagement->getForbiddenContractsForAction($action)) {
+        if($contractIds && $forbiddenContracts = $this->contractManagement->getForbiddenContractsForAction($action)) {
             switch ($action) {
                 case PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION:
                     $actionLabel = __('Authorize');
