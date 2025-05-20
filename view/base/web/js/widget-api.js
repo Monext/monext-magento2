@@ -16,6 +16,11 @@ define(
 
         window.eventFinalstatehasbeenreached= function (state) {
             fullScreenLoader.startLoader();
+
+            if(state.state === "PAYMENT_SUCCESS") {
+                const btn = document.getElementById('pl-ticket-default-ticket_btn');
+                if (btn) btn.click();
+            }
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
         };
 
