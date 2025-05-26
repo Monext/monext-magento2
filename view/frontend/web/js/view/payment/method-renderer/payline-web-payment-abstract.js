@@ -158,7 +158,7 @@ define(
                 let self = this;
                 let config = {
                     "environment":self.getEnvironment(),
-                    "dataColumn":self.getMethodConfigData('widgetDisplay'),
+                    "widgetDisplay":self.getMethodConfigData('widgetDisplay'),
                     "widgetContainerId":self.widgetContainerId,
                     "dataEmbeddedredirectionallowed":self.getMethodConfigData('dataEmbeddedredirectionallowed')
                 }
