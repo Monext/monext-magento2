@@ -24,6 +24,7 @@ class Constants
 
     const CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT = 'payline/general/environment';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID = 'payline/general/merchant_id';
+    const CONFIG_PATH_PAYLINE_GENERAL_SOFT_DESCRIPTOR = 'payline/general/soft_descriptor';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME = 'payline/general/merchant_name';
     const CONFIG_PATH_PAYLINE_GENERAL_SMARTDISPLAY_PARAM = 'payline/general/smartdisplay_parameter';
     const CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY = 'payline/general/access_key';

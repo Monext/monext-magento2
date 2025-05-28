@@ -226,13 +226,18 @@ class DoWebPayment extends AbstractRequest
      */
     protected function addSoftDescriptor(&$data)
     {
+
+        $softDescriptorFormat = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_SOFT_DESCRIPTOR, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $merchantName = $this->helperData->getMerchantName();
 
-        $customer = $this->cart->getCustomer();
-        $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
+        if($softDescriptorFormat && $merchantName) {
+            $customer = $this->cart->getCustomer();
+            $cutomerIdKey = $customer->getId() ? $customer->getId() : '0000';
 
-        /** @see https://developer.paypal.com/docs/api/orders/v2/#orders_create : soft_descriptor */
-        $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . $this->cart->getReservedOrderId() . date('yymd'), 0, 22);
+            /** @see https://developer.paypal.com/docs/api/orders/v2/#orders_create : soft_descriptor */
+            $data['payment']['softDescriptor'] = $this->cleanAndSubstr($merchantName . $this->cart->getReservedOrderId() . date('yymd'), 0, 22);
+        }
+
     }
 
 

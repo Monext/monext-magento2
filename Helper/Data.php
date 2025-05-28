@@ -3,9 +3,13 @@
 namespace Monext\Payline\Helper;
 
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\Framework\App\Cache\Type\Config;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Component\ComponentRegistrar;
+use Magento\Framework\Component\ComponentRegistrarInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Filesystem\Directory\ReadFactory;
 use Magento\Framework\Math\Random as MathRandom;
 use Magento\Framework\Serialize\Serializer\Json as Serialize;
 use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
@@ -22,6 +26,8 @@ use Monext\Payline\Model\System\Config\Source\BillingCycles;
 
 class Data extends AbstractHelper
 {
+    const CACHE_PREFIX_ = 'MONEXT_MODULE_VERSION_';
+
     private $delivery = null;
 
     private $prefix = null;
@@ -45,7 +51,25 @@ class Data extends AbstractHelper
      */
     private  $billingCycles;
 
+    /**
+     * @var StoreManagerInterface
+     */
     protected  $storeManager;
+
+    /**
+     * @var Config
+     */
+    protected $cacheConfig;
+
+    /**
+     * @var ComponentRegistrarInterface
+     */
+    protected $componentRegistrar;
+
+    /**
+     * @var ReadFactory
+     */
+    protected $readFactory;
 
     /**
      * @param Context $context
@@ -59,7 +83,10 @@ class Data extends AbstractHelper
         Serialize $serialize,
         EmailAddressValidator $emailAddressValidator,
         StoreManagerInterface $storeManager,
-        BillingCycles $billingCycles
+        BillingCycles $billingCycles,
+        Config  $cacheConfig,
+        ComponentRegistrarInterface $componentRegistrar,
+        ReadFactory                 $readFactory,
     ) {
         parent::__construct($context);
 
@@ -68,6 +95,9 @@ class Data extends AbstractHelper
         $this->emailAddressValidator = $emailAddressValidator;
         $this->storeManager = $storeManager;
         $this->billingCycles = $billingCycles;
+        $this->cacheConfig = $cacheConfig;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->readFactory = $readFactory;
     }
 
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
@@ -472,5 +502,41 @@ class Data extends AbstractHelper
             return $paymentAction;
         }
         return false;
+    }
+
+    /**
+     * @param string $moduleName
+     * @return string
+     * @throws \Magento\Framework\Exception\FileSystemException
+     * @throws \Magento\Framework\Exception\ValidatorException
+     */
+    public function getMonextModuleVersion(string $moduleName = "Monext_Payline"): string
+    {
+        $version = '';
+        if(strpos($moduleName, 'Payline')===false) {
+            return $version;
+        }
+
+        $cacheKey = self::CACHE_PREFIX_ . strtoupper($moduleName);
+        if($version =  $this->cacheConfig->load($cacheKey)) {
+            return $version;
+        }
+
+        $path = $this->componentRegistrar->getPath(
+            ComponentRegistrar::MODULE,
+            $moduleName
+        );
+        $directoryRead = $this->readFactory->create($path);
+        $composerJsonData = '';
+        if ($directoryRead->isFile('composer.json')) {
+            $composerJsonData = $directoryRead->readFile('composer.json');
+        }
+        $data = json_decode($composerJsonData);
+
+        $version = !empty($data->version) ? $data->version : '';
+
+        $this->cacheConfig->save($version, $cacheKey);
+
+        return $version;
     }
 }

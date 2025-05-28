@@ -25,22 +25,30 @@
                         <source_model>Monext\Payline\Model\System\Config\Source\Environment</source_model>
                         <config_path>payline/general/environment</config_path>
                     </field>
-                    <field id="language" translate="label,comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="language" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Language</label>
                         <source_model>Monext\Payline\Model\System\Config\Source\Language</source_model>
                         <config_path>payline/general/language</config_path>
                     </field>
-                    <field id="merchant_name" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="soft_descriptor" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Soft descriptor</label>
+                        <config_path>payline/general/soft_descriptor</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="merchant_name" translate="label,comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Merchant Name</label>
                         <config_path>payline/general/merchant_name</config_path>
                         <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
+                        <depends>
+                            <field id="soft_descriptor">1</field>
+                        </depends>
                     </field>
-                    <field id="smartdisplay_parameter" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="smartdisplay_parameter" translate="label,comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Smartdisplay Parameter</label>
                         <config_path>payline/general/smartdisplay_parameter</config_path>
                         <comment>Added in doWebPayment privateData as display.rule.param</comment>
                     </field>
-                    <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                    <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
                         <label>Advanced</label>
                         <attribute type="expanded">0</attribute>
                         <field id="debug" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -95,7 +103,7 @@
                             </depends>
                         </field>
                     </group>
-                    <group id="user_error_message" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
+                    <group id="user_error_message" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
                         <label>User Error Messages</label>
                         <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
                         <attribute type="expanded">0</attribute>
