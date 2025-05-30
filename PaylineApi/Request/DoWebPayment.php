@@ -275,7 +275,7 @@ class DoWebPayment extends AbstractRequest
         foreach ($this->cart->getItems() as $item) {
             $tmpProduct = $this->productCollection->getItemById($item->getProductId());
             $orderDetail = [
-                'ref' => $item->getSku(),
+                'ref' => substr($item->getSku() , 0, 50),
                 'price' => $this->helperData->mapMagentoAmountToPaylineAmount($item->getPriceInclTax()),
                 'quantity' => $item->getQty(),
                 'brand' => $tmpProduct->getManufacturer(),
