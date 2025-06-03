@@ -14,15 +14,21 @@ define(
             }
         };
 
-        window.eventFinalstatehasbeenreached= function (state) {
+        window.eventFinalstatehasbeenreached = function (e) {
             fullScreenLoader.startLoader();
-
-            if(state.state === "PAYMENT_SUCCESS") {
-                const btn = document.getElementById('pl-ticket-default-ticket_btn');
-                if (btn) btn.click();
+            if ( e.state === "PAYMENT_SUCCESS" ) {
+                //--> Redirect to success page
+                //--> Ticket is hidden by CSS
+                //--> Wait for DOM update ti simulate a click on the ticket confirmation button
+                window.setTimeout(() => {
+                    const ticketConfirmationButton = document.getElementById("pl-ticket-default-ticket_btn");
+                    if ( ticketConfirmationButton ) {
+                        ticketConfirmationButton.click();
+                    }
+                }, 0);
             }
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
-        };
+        }
 
         return WidgetApi;
     }
