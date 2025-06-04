@@ -2,20 +2,19 @@ define(
     [
         'jquery',
         'underscore',
-        'Magento_Checkout/js/model/full-screen-loader',
         'Monext_Payline/js/widget-api-vanilla'
     ],
-    function ($, _, fullScreenLoader, WidgetApi) {
+    function ($, _, WidgetApi) {
         'use strict';
 
-        window.eventDidshowstate= function () {
-            if(arguments.state='PAYMENT_SUCCESS') {
-                fullScreenLoader.stopLoader();
+        window.eventDidshowstate= function (e) {
+            if(e.state === 'PAYMENT_METHODS_LIST') {
+                $(document.body).trigger('processStop');
             }
         };
 
         window.eventFinalstatehasbeenreached = function (e) {
-            fullScreenLoader.startLoader();
+            $(document.body).trigger('processStart');
             if ( e.state === "PAYMENT_SUCCESS" ) {
                 //--> Redirect to success page
                 //--> Ticket is hidden by CSS
