@@ -1,53 +1,59 @@
 "Transaction cancelled by user","La transaction a été annulée"
-"Error with bank transaction process", "Erreur dans le processus de transaction bancaire"
-"Error with transaction process", "Erreur dans le processus de transaction"
-"Error with 3DSecure process", "Erreur dans le processus 3DSecure"
-"Error with payment validation rules", "Erreur dans les règles de validation de paiement"
-"Error when processing payment", "Erreur lors du traitement du paiement"
+"Error with bank transaction process","Erreur dans le processus de transaction bancaire"
+"Error with transaction process","Erreur dans le processus de transaction"
+"Error with 3DSecure process","Erreur dans le processus 3DSecure"
+"Error with payment validation rules","Erreur dans les règles de validation de paiement"
+"Error when processing payment","Erreur lors du traitement du paiement"
 Configure,Configurer
-"Close","Fermer"
+Close,Fermer
+"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","Vous devez définir l'URL pour les notifications dans la configuration de votre point de vente. %s L'URL à spécifier est : %s %s %s"
+"When editing the URL, please be sure to check all the checkbox below the text input too.","Lors de la saisie de l'URL, veillez à cocher toutes les cases se trouvant à la suite."
 "Shipping method","Methode de livraison Magento"
 "Delivery time","Type de livraison"
 "Delivery mode","Mode de livraison"
 "Delivery expected delay","Delai de livraison (j)"
 "Add Configuration","Ajout Configuration"
 "Matched Expression","Regexp"
-"Value","Valeur"
+Value,Valeur
 "Add Exception","Ajouter une exception"
-"Prefix","Titre"
-"Title","Titre"
+Prefix,Prefix
+Title,Titre
+"Open Logs","Ouvrir les logs"
+"Load Logs","Charger les logs"
+"Download Logs","Telecharger les logs"
 "Select type not found","Type non trouvé"
 "Class not init with create","Class not init with create"
 "My Wallet","Mon portefeuille"
+"Payment Logs","Logs de paiement"
 "We can't add this item to your shopping cart right now.","Nous ne pouvons pas ajouter cet article à votre panier pour le moment."
 "Order #%1 not exist","La commande #%1 n'existe pas"
 "Computer (hardware and software)","Ordinateur (matériel et logiciel)"
 "Electronics - TV - Hifi","Electronique - TV - Hifi"
-"Phone","Téléphone"
+Phone,Phone
 "Home appliance","Appareil électroménager"
 "Habitat and garden","Habitat et jardin"
 "Fashion Clothing","Vêtements de mode"
 "Beauty product","Produit de beauté"
-"Jewelry","Bijoux"
-"Sport","Sport"
-"Hobbies","Loisirs"
+Jewelry,Jewelry
+Sport,Sport
+Hobbies,Hobbies
 "Automobiles / motorcycles","Automobiles / motos"
-"furnishing","ameublement"
-"children","enfants"
+furnishing,furnishing
+children,children
 "Video games","Jeux vidéo"
-"Toys","Jouets"
-"Animals","Animaux"
-"Food","Nourriture"
-"Gifts","Cadeaux"
-"Shows","Spectacles"
-"traveling","voyages"
-"Auction","Enchères"
+Toys,Toys
+Animals,Animals
+Food,Food
+Gifts,Gifts
+Shows,Shows
+traveling,Voyages
+Auction,Auction
 "Particular services","Services particuliers"
 "Professional Services","Services professionnels"
-"Music","Musique"
-"Book","Livre"
-"Photo","Photo"
-"name","nom"
+Music,Music
+Book,Book
+Photo,Photo
+name,Nom
 "Please select a category mapping...","Choisir une catégorie"
 "Invalid contract","Contrat de paiement non valide"
 "Payline card type logo url does not exists.","Le logo pour le type de paiement n'existe pas"
@@ -66,31 +72,33 @@ Configure,Configurer
 "Error code %1 => %2","Code d'erreur %1 => %2"
 "All payment cycle received","Tous les cycles de paiement reçus"
 ". ' : Payment method %1 not available in %2'",". ' : Le mode de paiement %1 n'est pas disponible dans %2'"
-"Authorize","Autoriser"
+Authorize,Autoriser
 "Authorize and Capture","Autoriser et capturer"
 "Cannot save configuration, payment action ""%1"" is not compatible with contract ""%2""","Sauvegarde impossible, l'action de paiement ""%1"" n'est pas compatible avec le paiement ""%2"""
 "Product ID","Id produit"
 "Product SKU","Référence produit"
 "Attribute Set","Famille produit"
-"Daily","Journalier"
-"Weekly","Hebdomadaire"
+Daily,Journalier
+Weekly,Hebdomadaire
 "Twice a month","Bi mensuel"
-"Monthly","Mensuel"
+Monthly,Mensuel
 "Empty cart","Panier vide"
 "Cart with items","Panier avec les articles"
 "Orders history","Historique des commandes"
+"When Shipment is created","Quand l'expedition est créée"
+"When order status is '%1'",Quand le statut de la command est '%1'
 "No contracts available.","Pas de contrats disponibles."
 "No costs","Pas de frais"
-"Fixed","Fixe"
-"Percentage","Pourcentage"
+Fixed,Fixe
+Percentage,Percentage
 "Please configure field customer/address/prefix_options","Veuillez configurer le champ customer/address/prefix_options"
-"Miss","Mademoiselle"
+Miss,Mlle
 "Mr. / Mister","Mr. / Madame"
-"Error","Erreur"
-"Warning","Attention"
-"Notice","Notice"
-"Info","Info"
-"Debug","Debug"
+Error,Erreur
+Warning,Attention
+Notice,Notice
+Info,Info
+Debug,Debug
 "Collect goods from the merchant","Récupérer les marchandises chez le commerçant"
 "Use a network of third-party pick-up points (such as Kiala, Alveol, etc.)","Utiliser un réseau de points de retrait tiers (tels que Kiala, Alveol, etc.)"
 "Collect from an airport, a train station or a travel agent","Récupérer dans un aéroport, une gare ou une agence de voyages"
@@ -101,27 +109,27 @@ Configure,Configurer
 "Ship to address that is different than the cardholder’s billing address","Expédier à une adresse différente de l'adresse de facturation du titulaire de la carte"
 "Travel and Event tickets, not shipped","Billets de voyage et d'événements, non expédiés"
 "Locker delivery (or other automated pick-up)","Livraison en casier (ou autre ramassage automatisé)"
-"Other","Autre"
-"Express","Express"
-"Standard","Standard"
+Other,Autre
+Express,Express
+Standard,Standard
 "Electronic Delivery","Livraison électronique"
 "Same day shipping","Expédition le jour même"
 "Overnight shipping","Expédition de nuit"
 "Two-day or more shipping","Expédition en deux jours ou plus"
-"payline_test","Test"
-"payline_production","Production"
-"payline_redirect","Redirection"
-"payline_widget","Inshop"
-"French","Français"
-"English","Anglais"
-"Spanish","Espagnol"
-"Portuguese","Portugais"
-"Italian","Italien"
-"German","Allemand"
-"Flemish","Flamand"
-"Finn","Finlandais"
+Homologation,Homologation
+Production,Production
+Redirection,Redirection
+Widget,Widget
+French,Francais
+English,Anglais
+Spanish,Espagnol
+Portuguese,Portugais
+Italian,Italien
+German,Allemand
+Flemish,Flamand
+Finn,Finlandais
 "When order status is ""%1""","Lorsque le statut de la commande est ""%1"""
-"No","Non"
+No,Non
 "Back to the shop","Retour à la boutique"
 "Due day","Date d'échéance"
 "After a period","Après une période"
@@ -157,20 +165,19 @@ Configure,Configurer
 "Retry call payment widget","Réessayer d'appeler le widget de paiement"
 "You must choose a card type.","Vous devez choisir un type de carte."
 "Payline Section","Section Payline"
+"Payline Logs","Logs Payline"
 "<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Access your <a href=""%1"">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>","<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Accéder à votre <a href=""%1"">Centre d'administration Monext</a> afin de gérer votre compte Payline, suivre les transactions ou vérifier les problèmes techniques.</div>"
 "Common settings","Paramètres communs"
-"payline_widget_display","Inshop Display"
-"payline_redirect","Redirection"
-"payline_widget","Inshop"
-"payline_test","Test"
-"payline_production","Production"
 "Merchant ID","Identifiant du marchand"
 "Access key","Clé d'accès"
-"Environment","Environnement"
-"Language","Langue"
+Environment,Environment
+Language,Language
+"Soft descriptor","Soft descriptor"
 "Merchant Name","Nom du commerçant"
 "Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS)","Définissez les mêmes données que dans le tableau de bord Payline. Utilisé pour des contrats spécifiques (ex: EQUENS)"
-"Advanced","Avancé"
+"Smartdisplay Parameter","Paramètre smartdisplay"
+"Added in doWebPayment privateData as display.rule.param","Ajouté dans le privateData du doWebPayment en tant que display.rule.param"
+Advanced,Avancé
 "Token usage","Utilisation des jetons"
 "Manage how to deal with token generation.","Gérer la génération de jetons."
 "Disable failover","Désactivation de la bascule à la source"
@@ -180,31 +187,27 @@ Configure,Configurer
 "Proxy Port","Port proxy"
 "Proxy Login","Login proxy"
 "Proxy Password","Mot de passe proxy"
-"User Error Messages","Messages d'erreur utilisateur"
+"User Error Messages","Messages d'erreurs utilisateur"
 "You can see all Payline API <a href=""https://docs.payline.com/pages/viewpage.action?pageId=747146993"" target=""_blank"">return codes</a>.","Vous pouvez voir tous les <a href=""https://docs.payline.com/pages/viewpage.action?pageId=747146993"" target=""_blank"">codes de retour</a> de l'API Payline."
-"Payline Back (01)","Payline Back (01)"
-"Return codes linked to the return of the bank processing.","Codes retour liés au retour de la banque."
-"Payline Front (02)","Payline Front (02)"
-"Return codes linked to the return of Payline processing.","Codes retour liés au retour de Payline."
-"3DSecure (03)","3DSecure (03)"
-"The return codes of the 3DS module related to authentication and 3DSecure processing.","Les codes retour du module 3DS liés à l'authentification et au traitement 3DSecure."
-"LCLF (04)","LCLF (04)"
-"The return codes of the LCLF module related to Payline anti-fraud rules.","Les codes retour du module LCLF liés aux règles anti-fraude Payline."
+"Type Refused","Type Refusé"
+"Type Cancelled","Type Annulé"
+"Type Error","Type Erreur"
 "Default message","Message par défaut"
 "This message can happen when Payline server cannot be reached.","Ce message peut arriver lorsque le serveur Payline n'est pas joignable."
 "Payline Contracts","Contrats Payline"
-"Contracts","Contrats"
+Contracts,Contrats
 "Payment solutions","Solutions de paiement"
 "Payline - Web Payment Cpt","Payline - Web Payment Cpt"
 "Select payments in your shopping cart. Payline will process your card payments through the Payline Gateway or the widget.","Sélectionnez les paiements dans votre panier. Payline traitera vos paiements par carte via la passerelle Payline ou le widget."
-"Enabled"," ""Actif"""
+Enabled,Activé
 "Integration type","Type d'intégration"
 "Template name","Nom du template"
 "ACS 3DS iframe integration","Intégration ACS 3DS en iframe"
 "For IFRAME integration, you need to make sure that the CSP is correctly configured and won't block assets from ACS sites.","Pour une intégration en IFRAME il faut s'assurer que la CSP est correctement configurée et ne bloquera pas les assets des sites d'ACS."
-"Custom payment page code","Custom payment page code"
-"ID of a style defined in Payline administration tool.","ID of a style defined in Payline administration tool."
+"Custom payment page code","Code custom de la page"
+"ID of a style defined in Payline administration tool.",ID d'un style defini dans le centre d'admin de Monext.
 "Payment Action","Action de paiement"
+"Capture payment on defined event","Capture du paiement sur événement"
 "Return options","Options de retours"
 "Page to return when payment is canceled, refused or in error","Page de retour quand le paiement est annulé, refusé ou en erreur"
 "Enable Wallet","Activer les portefeuilles"
@@ -218,7 +221,7 @@ Configure,Configurer
 "Default status fraud","Statut par défaut en fraude detectée"
 "Default status abandoned","Statut par défaut en abandonné"
 "Payline - Web Payment Nx","Payline - Web Payment Nx"
-"Customer will select card payments and schedule through the Payline Gateway."," ""Le client sélectionnera les paiements par carte et planifiera via la passerelle Payline."""
+"Customer will select card payments and schedule through the Payline Gateway.","Le client sélectionnera les paiements par carte et planifiera via la passerelle Payline."
 "Cost type","Type des frais de récurrence"
 "(hors frais de livraison)","(hors frais de livraison)"
 "Costs amount/percentage","Montant des frais"
@@ -233,6 +236,7 @@ Configure,Configurer
 "Payline - Web Payment Rec","Payline - Paiement Web Rec"
 "This payment method allows merchants to offer buyers payment for purchases in several installments.","Ce mode de paiement permet aux commerçants de proposer aux acheteurs le paiement de leurs achats en plusieurs fois."
 "The date of the first expiry","La date de la première expiration"
+"Day when the deadlines must be processed","Day when the deadlines must be processed"
 "Day when the deadlines must be processed. Choose 0 so that the debits are made on the same day as the first order.","Jour où les échéances doivent être traitées. Choisissez 0 pour que les débits soient effectués le jour même de la première commande."
 "Periodicity of payments","Périodicité des paiements"
 "Number of payments (allow calculate endDate)","Nombres de paiements"
@@ -241,6 +245,7 @@ Configure,Configurer
 "Add IDs separated by semicolon.","Ajoutez des IDs séparés par un point-virgule."
 "Allowed products SKUs","SKU des produits autorisés"
 "Add SKUs separated by semicolon.","Ajoutez les SKU séparés par un point-virgule."
+"Allowed attribute set","Allowed attribute set"
 "Status when credit card schedule is expired","Statut lorsque le calendrier de la carte de crédit est expiré"
 "Status when payline schedule alert","Statut lorsque Payline planifie une alerte"
 "Automate invoice creation","Automatiser la création de factures"
@@ -249,15 +254,7 @@ Configure,Configurer
 "Delivery configuration","Configuration livraison"
 "Prefix configuration","Configuration du titre"
 "Default values","Valeurs par défaut"
-"Category","Category"
+Category,Categorie
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Catégorie par défaut si non définie dans l'attribut de catégorie Magento ""Mapping des catégories Payline"""
+Logs,Logs
 "Payline Category Mapping","Mapping des catégories Payline"
-"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","Vous devez définir l'URL pour les notifications dans la configuration de votre point de vente. %s L'URL à spécifier est : %s %s %s"
-"When editing the URL, please be sure to check all the checkbox below the text input too.","Lors de la saisie de l'URL, veillez à cocher toutes les cases se trouvant à la suite."
-"Smartdisplay parameter","Paramètre Smartdisplay"
-"Added in doWebPayment privateData as display.rule.param","Ajouté dans le privateData du doWebPayment en tant que display.rule.param"
-"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","Vous devez définir l'URL pour les notifications dans la configuration de votre point de vente. %s L'URL à spécifier est : %s %s %s"
-"When editing the URL, please be sure to check all the checkbox below the text input too.","Lors de la saisie de l'URL, veillez à cocher toutes les cases se trouvant à la suite."
-"Your payment has been refused","Votre paiement a été refusé"
-"Your payment has been cancelled","Votre paiement a été annulé"
-"Your payment is in error","Votre paiement est en erreur"

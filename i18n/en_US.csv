@@ -6,6 +6,8 @@
 "Error when processing payment","Error when processing payment"
 Configure,Configure
 Close,Close
+"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s"
+"When editing the URL, please be sure to check all the checkbox below the text input too.","When editing the URL, please be sure to check all the checkbox below the text input too."
 "Shipping method","Shipping method"
 "Delivery time","Delivery time"
 "Delivery mode","Delivery mode"
@@ -16,9 +18,13 @@ Value,Value
 "Add Exception","Add Exception"
 Prefix,Prefix
 Title,Title
+"Open Logs","Open Logs"
+"Load Logs","Load Logs"
+"Download Logs","Download Logs"
 "Select type not found","Select type not found"
 "Class not init with create","Class not init with create"
 "My Wallet","My Wallet"
+"Payment Logs","Payment Logs"
 "We can't add this item to your shopping cart right now.","We can't add this item to your shopping cart right now."
 "Order #%1 not exist","Order #%1 not exist"
 "Computer (hardware and software)","Computer (hardware and software)"
@@ -79,6 +85,8 @@ Monthly,Monthly
 "Empty cart","Empty cart"
 "Cart with items","Cart with items"
 "Orders history","Orders history"
+"When Shipment is created","When Shipment is created"
+"When order status is '%1'","When order status is '%1'"
 "No contracts available.","No contracts available."
 "No costs","No costs"
 Fixed,Fixed
@@ -108,10 +116,10 @@ Standard,Standard
 "Same day shipping","Same day shipping"
 "Overnight shipping","Overnight shipping"
 "Two-day or more shipping","Two-day or more shipping"
-payline_test,payline_test
-payline_production,payline_production
-payline_redirect,payline_redirect
-payline_widget,payline_widget
+Homologation,Homologation
+Production,Production
+Redirection,Redirection
+Widget,Widget
 French,French
 English,English
 Spanish,Spanish
@@ -157,19 +165,18 @@ No,No
 "Retry call payment widget","Retry call payment widget"
 "You must choose a card type.","You must choose a card type."
 "Payline Section","Payline Section"
+"Payline Logs","Payline Logs"
 "<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Access your <a href=""%1"">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>","<div class=""monext-payment-logo""></div><div class=""monext-payment-byline"">Access your <a href=""%1"">Monext Administrative Center</a> in order to manage your Payline account, check follow transactions or check technical issues.</div>"
 "Common settings","Common settings"
-"payline_widget_display","Inshop Display"
-"payline_redirect","Redirection"
-"payline_widget","Inshop"
-"payline_test","Test"
-"payline_production","Production"
 "Merchant ID","Merchant ID"
 "Access key","Access key"
 Environment,Environment
 Language,Language
+"Soft descriptor","Soft descriptor"
 "Merchant Name","Merchant Name"
 "Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS)","Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS)"
+"Smartdisplay Parameter","Smartdisplay Parameter"
+"Added in doWebPayment privateData as display.rule.param","Added in doWebPayment privateData as display.rule.param"
 Advanced,Advanced
 "Token usage","Token usage"
 "Manage how to deal with token generation.","Manage how to deal with token generation."
@@ -182,14 +189,9 @@ Advanced,Advanced
 "Proxy Password","Proxy Password"
 "User Error Messages","User Error Messages"
 "You can see all Payline API <a href=""https://docs.payline.com/pages/viewpage.action?pageId=747146993"" target=""_blank"">return codes</a>.","You can see all Payline API <a href=""https://docs.payline.com/pages/viewpage.action?pageId=747146993"" target=""_blank"">return codes</a>."
-"Payline Back (01)","Payline Back (01)"
-"Return codes linked to the return of the bank processing.","Return codes linked to the return of the bank processing."
-"Payline Front (02)","Payline Front (02)"
-"Return codes linked to the return of Payline processing.","Return codes linked to the return of Payline processing."
-"3DSecure (03)","3DSecure (03)"
-"The return codes of the 3DS module related to authentication and 3DSecure processing.","The return codes of the 3DS module related to authentication and 3DSecure processing."
-"LCLF (04)","LCLF (04)"
-"The return codes of the LCLF module related to Payline anti-fraud rules.","The return codes of the LCLF module related to Payline anti-fraud rules."
+"Type Refused","Type Refused"
+"Type Cancelled","Type Cancelled"
+"Type Error","Type Error"
 "Default message","Default message"
 "This message can happen when Payline server cannot be reached.","This message can happen when Payline server cannot be reached."
 "Payline Contracts","Payline Contracts"
@@ -205,6 +207,7 @@ Enabled,Enabled
 "Custom payment page code","Custom payment page code"
 "ID of a style defined in Payline administration tool.","ID of a style defined in Payline administration tool."
 "Payment Action","Payment Action"
+"Capture payment on defined event","Capture payment on defined event"
 "Return options","Return options"
 "Page to return when payment is canceled, refused or in error","Page to return when payment is canceled, refused or in error"
 "Enable Wallet","Enable Wallet"
@@ -233,6 +236,7 @@ Enabled,Enabled
 "Payline - Web Payment Rec","Payline - Web Payment Rec"
 "This payment method allows merchants to offer buyers payment for purchases in several installments.","This payment method allows merchants to offer buyers payment for purchases in several installments."
 "The date of the first expiry","The date of the first expiry"
+"Day when the deadlines must be processed","Day when the deadlines must be processed"
 "Day when the deadlines must be processed. Choose 0 so that the debits are made on the same day as the first order.","Day when the deadlines must be processed. Choose 0 so that the debits are made on the same day as the first order."
 "Periodicity of payments","Periodicity of payments"
 "Number of payments (allow calculate endDate)","Number of payments (allow calculate endDate)"
@@ -241,6 +245,7 @@ Enabled,Enabled
 "Add IDs separated by semicolon.","Add IDs separated by semicolon."
 "Allowed products SKUs","Allowed products SKUs"
 "Add SKUs separated by semicolon.","Add SKUs separated by semicolon."
+"Allowed attribute set","Allowed attribute set"
 "Status when credit card schedule is expired","Status when credit card schedule is expired"
 "Status when payline schedule alert","Status when payline schedule alert"
 "Automate invoice creation","Automate invoice creation"
@@ -251,13 +256,5 @@ Enabled,Enabled
 "Default values","Default values"
 Category,Category
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Default category if not set on Magento catalog category attribute ""Payline Category Mapping"""
+Logs,Logs
 "Payline Category Mapping","Payline Category Mapping"
-"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s"
-"When editing the URL, please be sure to check all the checkbox below the text input too.","When editing the URL, please be sure to check all the checkbox below the text input too."
-"Smartdisplay parameter","Smartdisplay parameter"
-"Added in doWebPayment privateData as display.rule.param","Added in doWebPayment privateData as display.rule.param"
-"You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s"
-"When editing the URL, please be sure to check all the checkbox below the text input too.","When editing the URL, please be sure to check all the checkbox below the text input too."
-"Your payment has been refused","Your payment has been refused"
-"Your payment has been cancelled","Your payment has been cancelled"
-"Your payment is in error","Your payment is in error"

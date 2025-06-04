@@ -7,6 +7,12 @@ use Monext\Payline\Helper\Constants as HelperConstants;
 
 class CaptureTrigger extends OrderStatus
 {
+    protected $_stateStatuses = [
+        \Magento\Sales\Model\Order::STATE_NEW,
+        \Magento\Sales\Model\Order::STATE_PROCESSING,
+        \Magento\Sales\Model\Order::STATE_COMPLETE
+    ];
+
     /**
      * @return array
      */
@@ -14,7 +20,7 @@ class CaptureTrigger extends OrderStatus
     {
         $options[]  = array(
             'value' => HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT,
-            'label' => 'When Shipment is created'
+            'label' => __('When Shipment is created')
         );
 
         foreach(parent::toOptionArray() as $code => $label) {
@@ -24,7 +30,7 @@ class CaptureTrigger extends OrderStatus
 
             $options[]  = array(
                 'value' => $label['value'],
-                'label' => __("When order status is '%1'", $label['label'])
+                'label' => __('When order status is "%1"', $label['label'])
             );
         }
 
