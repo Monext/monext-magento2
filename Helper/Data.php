@@ -527,7 +527,6 @@ class Data extends AbstractHelper
         return false;
     }
 
-
     /**
      * @param string $moduleName
      * @return string

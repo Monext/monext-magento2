@@ -21,7 +21,7 @@ class CaptureTrigger extends OrderStatus
     {
         $options[]  = array(
             'value' => HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT,
-            'label' => __('When shipment is created')
+            'label' => __('When Shipment is created')
         );
 
         $options[]  = array(
@@ -29,13 +29,14 @@ class CaptureTrigger extends OrderStatus
             'label' => __('When invoice is created')
         );
 
-        $stateStatuses = array_diff($this->_stateStatuses, [Order::STATE_CANCELED]);
-        $statuses = $this->_orderConfig->getStateStatuses($stateStatuses);
+        foreach(parent::toOptionArray() as $code => $label) {
+            if($code == 0){
+                continue;
+            }
 
-        foreach($statuses as $code => $label) {
             $options[]  = array(
-                'value' => $code,
-                'label' => __('When order status is "%1"', __($label))
+                'value' => $label['value'],
+                'label' => __('When order status is "%1"', $label['label'])
             );
         }
 

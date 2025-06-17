@@ -1,9 +1,3 @@
-"Transaction cancelled by user","La transaction a été annulée"
-"Error with bank transaction process","Erreur dans le processus de transaction bancaire"
-"Error with transaction process","Erreur dans le processus de transaction"
-"Error with 3DSecure process","Erreur dans le processus 3DSecure"
-"Error with payment validation rules","Erreur dans les règles de validation de paiement"
-"Error when processing payment","Erreur lors du traitement du paiement"
 Configure,Configurer
 Close,Fermer
 "You must define the notification URL into your point of sale configuration. %s The notification URL is: %s %s %s","Vous devez définir l'URL pour les notifications dans la configuration de votre point de vente. %s L'URL à spécifier est : %s %s %s"
@@ -86,7 +80,8 @@ Monthly,Mensuel
 "Cart with items","Panier avec les articles"
 "Orders history","Historique des commandes"
 "When Shipment is created","Quand l'expedition est créée"
-"When order status is '%1'",Quand le statut de la command est '%1'
+"When invoice is created","Quand la facture est créée"
+"When order status is ""%1""",Quand le statut de la command est ""%1"""
 "No contracts available.","Pas de contrats disponibles."
 "No costs","Pas de frais"
 Fixed,Fixe
@@ -128,7 +123,6 @@ Italian,Italien
 German,Allemand
 Flemish,Flamand
 Finn,Finlandais
-"When order status is ""%1""","Lorsque le statut de la commande est ""%1"""
 No,Non
 "Back to the shop","Retour à la boutique"
 "Due day","Date d'échéance"

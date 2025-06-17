@@ -39,11 +39,8 @@ You can also check [our documentation](https://docs.monext.fr/display/DT/Payment
 
 ## Installation
 
-### Requirements
-
-* Magento 2.4 (current 2.4.7-p3)
-* Magento 2.3 (obsolete)
-
+### Environment (Development, QA validation)
+* Magento version: 2.4.7-p3, 2.4.6-p3
 
 ### Installation process
 
