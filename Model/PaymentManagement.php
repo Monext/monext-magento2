@@ -1047,4 +1047,29 @@ class PaymentManagement implements PaylinePaymentManagementInterface
 
         return $response->getPaymentData();
     }
+
+
+    /**
+     * @param Order $order
+     * @return void
+     */
+    public function captureOnTrigger(Order $order)
+    {
+        try {
+            /** @var OrderPayment $orderPayment */
+            $orderPayment = $order->getPayment();
+            /** @var Transaction $authorizationTransaction */
+            $authorizationTransaction = $orderPayment->getAuthorizationTransaction();
+
+            if ($authorizationTransaction && $this->helperData->isPaymentFromPayline($orderPayment)
+                && $this->helperData->isPaymentMethodFromPayline($authorizationTransaction->getMethod())
+                && !$authorizationTransaction->getIsClosed()
+            ) {
+                $orderPayment->capture();
+                $order->save();
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical(__METHOD__, ['order_id' => $order->getId(), 'exception' => ['message' => $e->getMessage(), 'code' => $e->getCode()]]);
+        }
+    }
 }

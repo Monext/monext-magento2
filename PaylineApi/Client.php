@@ -4,10 +4,10 @@ namespace Monext\Payline\PaylineApi;
 
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Module\ModuleListInterface;
 use Magento\Framework\App\ProductMetadata;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Monext\Payline\Helper\Constants as HelperConstants;
+use Monext\Payline\Helper\Data as PaylineHelper;
 use Monext\Payline\PaylineApi\PaylineSDKFactory;
 use Monext\Payline\PaylineApi\Request\DoCapture as RequestDoCapture;
 use Monext\Payline\PaylineApi\Request\DoVoid as RequestDoVoid;
@@ -98,28 +98,21 @@ class Client
     protected $encryptor;
 
     /**
-     * @var ModuleListInterface
-     */
-    protected $moduleList;
-
-    /**
      * @var ResponseGetPaymentRecordFactory
      */
     protected $responseGetPaymentRecordFactory;
-
-    /**
-     * @var ProductMetadata
-     */
-    protected $productMetadata;
 
     /**
      * @var DirectoryList
      */
     protected $directoryList;
 
+    protected $paylineHelper;
+
+    protected $productMetadata;
+
 
     /**
-     * Client constructor.
      * @param \Monext\Payline\PaylineApi\PaylineSDKFactory $paylineSDKFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param ResponseDoWebPaymentFactory $responseDoWebPaymentFactory
@@ -132,9 +125,9 @@ class Client
      * @param ResponseGetPaymentRecordFactory $responseGetPaymentRecordFactory
      * @param Logger $logger
      * @param EncryptorInterface $encryptor
-     * @param ModuleListInterface $moduleList
      * @param ProductMetadata $productMetadata
      * @param DirectoryList $directoryList
+     * @param PaylineHelper $paylineHelper
      */
     public function __construct(
         PaylineSDKFactory $paylineSDKFactory,
@@ -149,9 +142,9 @@ class Client
         ResponseGetPaymentRecordFactory $responseGetPaymentRecordFactory,
         Logger $logger,
         EncryptorInterface $encryptor,
-        ModuleListInterface $moduleList,
         ProductMetadata $productMetadata,
-        DirectoryList $directoryList
+        DirectoryList $directoryList,
+        PaylineHelper $paylineHelper
     ) {
         $this->paylineSDKFactory = $paylineSDKFactory;
         $this->scopeConfig = $scopeConfig;
@@ -164,10 +157,10 @@ class Client
         $this->responseManageWebWalletFactory = $responseManageWebWalletFactory;
         $this->logger = $logger;
         $this->encryptor = $encryptor;
-        $this->moduleList = $moduleList;
-        $this->productMetadata = $productMetadata;
         $this->responseGetPaymentRecordFactory = $responseGetPaymentRecordFactory;
         $this->directoryList = $directoryList;
+        $this->paylineHelper = $paylineHelper;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -375,10 +368,9 @@ class Client
         $this->logger->log(LoggerConstants::DEBUG, 'create paylineSDKFactory', $this->arrayClearSdkDataToLog($paylineSdkParams));
 
         $this->paylineSDK = $this->paylineSDKFactory->create($paylineSdkParams);
-        $currentModule = $this->moduleList->getOne(HelperConstants::MODULE_NAME);
         $this->paylineSDK->usedBy(      HelperConstants::PAYLINE_API_USED_BY_PREFIX . ' ' .
             $this->productMetadata->getVersion() . ' - '
-            .' v'.$currentModule['setup_version']);
+            .' v'.$this->paylineHelper->getMonextModuleVersion());
 
         if(method_exists($this->paylineSDK, 'setFailoverOptions')) {
             if($this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_GENERAL_DISABLE_FAILOVER,

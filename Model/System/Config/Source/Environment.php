@@ -19,11 +19,11 @@ class Environment implements OptionSourceInterface
             ],*/
             [
                 'value' => PaylineSDK::ENV_HOMO,
-                'label' => __('payline_test'),
+                'label' => __('Homologation'),
             ],
             [
                 'value' => PaylineSDK::ENV_PROD,
-                'label' => __('payline_production'),
+                'label' => __('Production'),
             ]
         ];
     }

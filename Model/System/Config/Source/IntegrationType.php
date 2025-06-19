@@ -15,11 +15,11 @@ class IntegrationType implements OptionSourceInterface
         return [
             [
                 'value' => PaylineApiConstants::INTEGRATION_TYPE_REDIRECT,
-                'label' => __('payline_redirect'),
+                'label' => __('Redirection'),
             ],
             [
                 'value' => PaylineApiConstants::INTEGRATION_TYPE_WIDGET,
-                'label' => __('payline_widget'),
+                'label' => __('Widget'),
             ],
         ];
     }

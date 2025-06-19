@@ -24,6 +24,7 @@ class Constants
 
     const CONFIG_PATH_PAYLINE_GENERAL_ENVIRONMENT = 'payline/general/environment';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_ID = 'payline/general/merchant_id';
+    const CONFIG_PATH_PAYLINE_GENERAL_SOFT_DESCRIPTOR = 'payline/general/soft_descriptor';
     const CONFIG_PATH_PAYLINE_GENERAL_MERCHANT_NAME = 'payline/general/merchant_name';
     const CONFIG_PATH_PAYLINE_GENERAL_SMARTDISPLAY_PARAM = 'payline/general/smartdisplay_parameter';
     const CONFIG_PATH_PAYLINE_GENERAL_ACCESS_KEY = 'payline/general/access_key';
@@ -43,7 +44,7 @@ class Constants
     const CONFIG_PATH_PAYLINE_DEFAULT_CATEGORY = 'payline/common_default/category';
 
 
-    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_type';
+    const CONFIG_PATH_PAYLINE_ERROR_TYPE   = 'payline/general/user_error_message_';
     const CONFIG_PATH_PAYLINE_ERROR_DEFAULT = 'payline/general/user_error_message_default';
 
     //Const NX
@@ -62,6 +63,10 @@ class Constants
     const CONFIG_PATH_PAYLINE_REC_STATUS_SCHEDULE_ALERT = 'payment/'.self::WEB_PAYMENT_REC.'/status_when_payline_schedule_alert';
     const CONFIG_PATH_PAYLINE_REC_SEND_WALLET_ID = 'payment/'.self::WEB_PAYMENT_REC.'/send_wallet_id';
     const CONFIG_PATH_PAYLINE_REC_AUTOMATE_INVOICE_CREATION = 'payment/'.self::WEB_PAYMENT_REC.'/automate_invoice_creation';
+
+    const CONFIG_PATH_PAYLINE_CPT_CAPTURE_ON_TRIGGER = 'payment/'.self::WEB_PAYMENT_CPT.'/capture_payment_triggered_on';
+    const PAYLINE_CPT_CAPTURE_ON_SHIPMENT = 'shipment';
+    const PAYLINE_CPT_CAPTURE_ON_INVOICE = 'invoice';
 
     //Raw path for system backend model
     const CONFIG_PATH_RAW_PAYLINE_GENERAL_CONTRACTS = 'groups/payline/groups/payline_contracts/fields/contracts/value';

@@ -59,6 +59,7 @@
                 <value id="payline-homologation2" type="host">homologation-payment-2.payline.com</value>
                 <value id="payment.cdn.payline.com" type="host">payment.cdn.payline.com</value>
                 <value id="homologation-payment.cdn.payline.com" type="host">homologation-payment.cdn.payline.com</value>
+                <value id="payline-maxcdn.bootstrapcdn.com" type="host">maxcdn.bootstrapcdn.com</value>
             </values>
         </policy>
     </policies>

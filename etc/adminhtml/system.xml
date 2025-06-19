@@ -25,22 +25,30 @@
                         <source_model>Monext\Payline\Model\System\Config\Source\Environment</source_model>
                         <config_path>payline/general/environment</config_path>
                     </field>
-                    <field id="language" translate="label,comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="language" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Language</label>
                         <source_model>Monext\Payline\Model\System\Config\Source\Language</source_model>
                         <config_path>payline/general/language</config_path>
                     </field>
-                    <field id="merchant_name" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="soft_descriptor" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Soft descriptor</label>
+                        <config_path>payline/general/soft_descriptor</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="merchant_name" translate="label,comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Merchant Name</label>
                         <config_path>payline/general/merchant_name</config_path>
                         <comment>Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS) </comment>
+                        <depends>
+                            <field id="soft_descriptor">1</field>
+                        </depends>
                     </field>
-                    <field id="smartdisplay_parameter" translate="label,comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="smartdisplay_parameter" translate="label,comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Smartdisplay Parameter</label>
                         <config_path>payline/general/smartdisplay_parameter</config_path>
                         <comment>Added in doWebPayment privateData as display.rule.param</comment>
                     </field>
-                    <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50">
+                    <group id="advanced_common" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
                         <label>Advanced</label>
                         <attribute type="expanded">0</attribute>
                         <field id="debug" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -95,29 +103,21 @@
                             </depends>
                         </field>
                     </group>
-                    <group id="user_error_message" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="150">
+                    <group id="user_error_message" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="200">
                         <label>User Error Messages</label>
                         <comment><![CDATA[You can see all Payline API <a href="https://docs.payline.com/pages/viewpage.action?pageId=747146993" target="_blank">return codes</a>.]]></comment>
                         <attribute type="expanded">0</attribute>
-                        <field id="type1" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payline Back (01)</label>
-                            <config_path>payline/general/user_error_message_type1</config_path>
-                            <comment><![CDATA[Return codes linked to the return of the bank processing.]]></comment>
+                        <field id="refused" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Refused</label>
+                            <config_path>payline/general/user_error_message_refused</config_path>
                         </field>
-                        <field id="type2" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>Payline Front (02)</label>
-                            <config_path>payline/general/user_error_message_type2</config_path>
-                            <comment><![CDATA[Return codes linked to the return of Payline processing.]]></comment>
+                        <field id="cancelled" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Cancelled</label>
+                            <config_path>payline/general/user_error_message_cancelled</config_path>
                         </field>
-                        <field id="type3" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>3DSecure (03)</label>
-                            <config_path>payline/general/user_error_message_type3</config_path>
-                            <comment><![CDATA[The return codes of the 3DS module related to authentication and 3DSecure processing.]]></comment>
-                        </field>
-                        <field id="type4" translate="label,comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                            <label>LCLF (04)</label>
-                            <config_path>payline/general/user_error_message_type4</config_path>
-                            <comment><![CDATA[The return codes of the LCLF module related to Payline anti-fraud rules.]]></comment>
+                        <field id="error" translate="label,comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Type Error</label>
+                            <config_path>payline/general/user_error_message_error</config_path>
                         </field>
                         <field id="default" translate="label,comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                             <label>Default message</label>
@@ -190,6 +190,15 @@
                             <backend_model>Monext\Payline\Model\System\Config\Backend\Action</backend_model>
                         </field>
 
+                        <field id="capture_payment_triggered_on" translate="label,comment" type="select" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Capture payment on defined event</label>
+                            <source_model>Monext\Payline\Model\System\Config\Source\CaptureTrigger</source_model>
+                            <config_path>payment/payline_web_payment_cpt/capture_payment_triggered_on</config_path>
+                            <depends>
+                                <field id="payment_action">100</field>
+                            </depends>
+                        </field>
+
 
                         <field id="return_payment_refused" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Return options</label>
@@ -253,6 +262,7 @@
                         <label>Payline - Web Payment Nx</label>
                         <comment><![CDATA[Customer will select card payments and schedule through the Payline Gateway.]]></comment>
                         <attribute type="expanded">0</attribute>
+                        <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Fieldset\UrlNotification</frontend_model>
                         <field id="active" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enabled</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -361,6 +371,7 @@
                         <label>Payline - Web Payment Rec</label>
                         <comment><![CDATA[This payment method allows merchants to offer buyers payment for purchases in several installments.]]></comment>
                         <attribute type="expanded">0</attribute>
+                        <frontend_model>Monext\Payline\Block\Adminhtml\System\Config\Fieldset\UrlNotification</frontend_model>
                         <field id="active" translate="label,comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                             <label>Enabled</label>
                             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

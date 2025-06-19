@@ -3,15 +3,20 @@
 namespace Monext\Payline\Helper;
 
 use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\Framework\App\Cache\Type\Config;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Component\ComponentRegistrar;
+use Magento\Framework\Component\ComponentRegistrarInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Filesystem\Directory\ReadFactory;
 use Magento\Framework\Math\Random as MathRandom;
 use Magento\Framework\Serialize\Serializer\Json as Serialize;
 use Magento\Framework\Validator\EmailAddress as EmailAddressValidator;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Sales\Model\Order\Payment;
 use Magento\Sales\Model\Order\Payment\Transaction;
 use Magento\Store\Model\StoreManagerInterface;
 use Monext\Payline\Helper\Constants as HelperConstants;
@@ -22,6 +27,8 @@ use Monext\Payline\Model\System\Config\Source\BillingCycles;
 
 class Data extends AbstractHelper
 {
+    const CACHE_PREFIX_ = 'MONEXT_MODULE_VERSION_';
+
     private $delivery = null;
 
     private $prefix = null;
@@ -45,7 +52,25 @@ class Data extends AbstractHelper
      */
     private  $billingCycles;
 
+    /**
+     * @var StoreManagerInterface
+     */
     protected  $storeManager;
+
+    /**
+     * @var Config
+     */
+    protected $cacheConfig;
+
+    /**
+     * @var ComponentRegistrarInterface
+     */
+    protected $componentRegistrar;
+
+    /**
+     * @var ReadFactory
+     */
+    protected $readFactory;
 
     /**
      * @param Context $context
@@ -59,7 +84,10 @@ class Data extends AbstractHelper
         Serialize $serialize,
         EmailAddressValidator $emailAddressValidator,
         StoreManagerInterface $storeManager,
-        BillingCycles $billingCycles
+        BillingCycles $billingCycles,
+        Config  $cacheConfig,
+        ComponentRegistrarInterface $componentRegistrar,
+        ReadFactory                 $readFactory,
     ) {
         parent::__construct($context);
 
@@ -68,6 +96,9 @@ class Data extends AbstractHelper
         $this->emailAddressValidator = $emailAddressValidator;
         $this->storeManager = $storeManager;
         $this->billingCycles = $billingCycles;
+        $this->cacheConfig = $cacheConfig;
+        $this->componentRegistrar = $componentRegistrar;
+        $this->readFactory = $readFactory;
     }
 
     public function getNormalizedPhoneNumber($phoneNumberCandidate)
@@ -155,9 +186,22 @@ class Data extends AbstractHelper
         return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
     }
 
+    /**
+     * @param Payment $payment
+     * @return bool
+     */
     public function isPaymentFromPayline(\Magento\Sales\Model\Order\Payment $payment)
     {
-        return in_array($payment->getMethod(),HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
+        return $this->isPaymentMethodFromPayline($payment->getMethod());
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @return bool
+     */
+    public function isPaymentMethodFromPayline(string $paymentMethod)
+    {
+        return in_array($paymentMethod,HelperConstants::AVAILABLE_WEB_PAYMENT_PAYLINE);
     }
 
     public function getDeliverySetting() {
@@ -248,9 +292,9 @@ class Data extends AbstractHelper
      */
     public function getUserMessageForCode(ResponseGetWebPaymentDetails $response)
     {
-        $resultCode = $response->getResultCode();
+        $shortMessage = $response->getShortErrorMessage();
 
-        $configPath = HelperConstants::CONFIG_PATH_PAYLINE_ERROR_TYPE . substr($resultCode, 1,1);
+        $configPath = HelperConstants::CONFIG_PATH_PAYLINE_ERROR_TYPE . strtolower($shortMessage);
         $errorMessage = $this->scopeConfig->getValue($configPath, ScopeInterface::SCOPE_STORE);
         if(empty($errorMessage)) {
             $errorMessage = $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_ERROR_DEFAULT, ScopeInterface::SCOPE_STORE);
@@ -445,5 +489,77 @@ class Data extends AbstractHelper
             30 => array('unit' => 'week', 'multiplier' =>  2),
             40 => array('unit' => 'month', 'multiplier' => 1),
         );
+    }
+
+    public function getCaptureCptOnTrigger()
+    {
+        $paymentAction = $this->scopeConfig->getValue('payment/' . HelperConstants::WEB_PAYMENT_CPT . '/payment_action', ScopeInterface::SCOPE_STORE);
+        if ($paymentAction == PaylineApiConstants::PAYMENT_ACTION_AUTHORIZATION) {
+            return $this->scopeConfig->getValue(HelperConstants::CONFIG_PATH_PAYLINE_CPT_CAPTURE_ON_TRIGGER, ScopeInterface::SCOPE_STORE);
+        }
+        return false;
+    }
+
+    public function getCaptureCptOnTriggerOrderStatus()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if (!in_array($paymentAction, [HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT, HelperConstants::PAYLINE_CPT_CAPTURE_ON_INVOICE])) {
+            return $paymentAction;
+        }
+        return false;
+    }
+
+    public function getCaptureCptOnTriggerShipment()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if ($paymentAction == HelperConstants::PAYLINE_CPT_CAPTURE_ON_SHIPMENT) {
+            return $paymentAction;
+        }
+        return false;
+    }
+
+    public function getCaptureCptOnTriggerInvoice()
+    {
+        $paymentAction = $this->getCaptureCptOnTrigger();
+        if ($paymentAction == HelperConstants::PAYLINE_CPT_CAPTURE_ON_INVOICE) {
+            return $paymentAction;
+        }
+        return false;
+    }
+
+    /**
+     * @param string $moduleName
+     * @return string
+     * @throws \Magento\Framework\Exception\FileSystemException
+     * @throws \Magento\Framework\Exception\ValidatorException
+     */
+    public function getMonextModuleVersion(string $moduleName = "Monext_Payline"): string
+    {
+        $version = '';
+        if(strpos($moduleName, 'Payline')===false) {
+            return $version;
+        }
+
+        $cacheKey = self::CACHE_PREFIX_ . strtoupper($moduleName);
+        if($version =  $this->cacheConfig->load($cacheKey)) {
+            return $version;
+        }
+
+        $path = $this->componentRegistrar->getPath(
+            ComponentRegistrar::MODULE,
+            $moduleName
+        );
+        $directoryRead = $this->readFactory->create($path);
+        $composerJsonData = '';
+        if ($directoryRead->isFile('composer.json')) {
+            $composerJsonData = $directoryRead->readFile('composer.json');
+        }
+        $data = json_decode($composerJsonData);
+
+        $version = !empty($data->version) ? $data->version : '';
+
+        $this->cacheConfig->save($version, $cacheKey);
+
+        return $version;
     }
 }
