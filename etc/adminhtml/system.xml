@@ -296,19 +296,10 @@
                                 </depends>
                             </field>
 
-                            <field id="cta_bg_color_hover_darker" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                                <label>CTA hover darker color</label>
+                            <field id="cta_bg_color_hover" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA hover color</label>
                                 <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\ChangeColorValue</source_model>
-                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hover_darker</config_path>
-                                <depends>
-                                    <field id="widget_custom_enabled">1</field>
-                                </depends>
-                            </field>
-
-                            <field id="cta_bg_color_hover_lighter" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                                <label>CTA hover lighter color</label>
-                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\ChangeColorValue</source_model>
-                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hover_lighter</config_path>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hover</config_path>
                                 <depends>
                                     <field id="widget_custom_enabled">1</field>
                                 </depends>

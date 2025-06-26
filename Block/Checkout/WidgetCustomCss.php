@@ -69,15 +69,12 @@ class WidgetCustomCss extends Template
         //--> Cta hover darker
         $ctaBgColorHover = '';
 
-        $ctaHoverDarker = $this->scopeConfig->getValue(PaylineConstants::CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR_HOVER_DARKER, ScopeInterface::SCOPE_STORE);
-        $ctaHoverLighter = $this->scopeConfig->getValue(PaylineConstants::CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR_HOVER_LIGHTER, ScopeInterface::SCOPE_STORE);
+        $ctaHover = $this->scopeConfig->getValue(PaylineConstants::CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR_HOVER, ScopeInterface::SCOPE_STORE);
 
-        if ($ctaBgColor && $ctaHoverDarker) {
-            $ctaBgColorHover = $this->changeColor($ctaBgColor, $ctaHoverDarker, false);
-        }
-
-        if ($ctaBgColor && $ctaHoverLighter) {
-            $ctaBgColorHover = $this->changeColor($ctaBgColor, $ctaHoverLighter, true);
+        if ($ctaBgColor && $ctaHover) {
+            $isLight = ((int)$ctaHover) > 0;
+            $amount = abs((int)$ctaHover);
+            $ctaBgColorHover = $this->changeColor($ctaBgColor, $amount, $isLight);
         }
 
         if ($ctaBgColorHover) {
@@ -166,7 +163,7 @@ class WidgetCustomCss extends Template
     }
 
 
-    protected function changeColor($hex, $strenght, $lighter)
+    protected function changeColor($hex, $strength, $lighter)
     {
         $hex = ltrim($hex, '#');
 
@@ -178,11 +175,17 @@ class WidgetCustomCss extends Template
         $g = hexdec(substr($hex, 2, 2));
         $b = hexdec(substr($hex, 4, 2));
 
-        $factor = $lighter ? 1 + ($strenght / 100) : 1 - ($strenght / 100);
+        $strength = max(0, min(100, (int)$strength)) / 100;
 
-        $r = max(0, min(255, intval($r * $factor)));
-        $g = max(0, min(255, intval($g * $factor)));
-        $b = max(0, min(255, intval($b * $factor)));
+        if ($lighter) {
+            $r = intval($r + (255 - $r) * $strength);
+            $g = intval($g + (255 - $g) * $strength);
+            $b = intval($b + (255 - $b) * $strength);
+        } else {
+            $r = intval($r * (1 - $strength));
+            $g = intval($g * (1 - $strength));
+            $b = intval($b * (1 - $strength));
+        }
 
         $newHex = sprintf("#%02x%02x%02x", $r, $g, $b);
 

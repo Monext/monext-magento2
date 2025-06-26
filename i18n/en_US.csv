@@ -193,11 +193,15 @@ Aucun,Aucun
 Small,Small
 Average,Average
 Big,Big
+"%1 darker","%1 darker"
+"No change","No change"
+"%1 lighter","%1 lighter"
 Black,Black
 Red,Red
 Green,Green
 "Dark gray","Dark gray"
 Yellow,Yellow
+Hexadecimal,Hexadecimal
 Dark,Dark
 Light,Light
 Lighter,Lighter
@@ -286,8 +290,9 @@ Enabled,Enabled
 "CTA Label","CTA Label"
 "For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>","For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>"
 "CTA color","CTA color"
-"CTA hover darker color","CTA hover darker color"
-"CTA hover lighter color","CTA hover lighter color"
+"Hexadecimal color","Hexadecimal color"
+"For example : #cccccc","For example : #cccccc"
+"CTA hover color","CTA hover color"
 "CTA text color","CTA text color"
 "CTA font size","CTA font size"
 "CTA border radius","CTA border radius"

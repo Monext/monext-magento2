@@ -193,6 +193,9 @@ Aucun,Aucun
 Small,Petit
 Average,Moyen
 Big,Grand
+"%1 darker","%1 plus foncé"
+"No change","No change"
+"%1 lighter","%1 plus clair"
 Black,Noire
 Red,Rouge
 Green,Vert
@@ -231,8 +234,8 @@ Darker,Très sombre
 "Common settings","Paramètres communs"
 "Merchant ID","Identifiant du marchand"
 "Access key","Clé d'accès"
-Environment,Environment
-Language,Language
+Environment,Environnement
+Language,Langue
 "Soft descriptor","Soft descriptor"
 "Merchant Name","Nom du commerçant"
 "Set the same data than in the Payline dashboard. Used for specific contract (ie: EQUENS)","Définissez les mêmes données que dans le tableau de bord Payline. Utilisé pour des contrats spécifiques (ex: EQUENS)"
@@ -286,8 +289,9 @@ Enabled,Activé
 "CTA Label","CTA Label"
 "For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>","Ex : ""Valider et payer {{amount}}"" affichera Valider et payer 142.56 EUR -- {{amount}} est optionnel <br /><strong>pas de tags HTML</strong>"
 "CTA color","CTA couleur"
-"CTA hover darker color","CTA survol couleur plus foncé"
-"CTA hover lighter color","CTA hover couleur plus claire"
+"Hexadecimal color","Couleur hexadécimale"
+"For example : #cccccc","Par exemple : #cccccc"
+"CTA hover color","CTA couleur survol"
 "CTA text color","CTA couleur du texte"
 "CTA font size","CTA taille de la police"
 "CTA border radius","CTA arrondi des bords"
@@ -332,5 +336,3 @@ Category,Categorie
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Catégorie par défaut si non définie dans l'attribut de catégorie Magento ""Mapping des catégories Payline"""
 Logs,Logs
 "Payline Category Mapping","Mapping des catégories Payline"
-"Hexadecimal color","Couleur hexadécimale"
-"For example : #cccccc","Par exemple : #cccccc"
