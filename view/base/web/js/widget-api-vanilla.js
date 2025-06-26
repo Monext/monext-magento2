@@ -9,6 +9,10 @@ const WidgetApi = {
         this.widgetContext.widgetDisplay = config['widgetDisplay'] ?? 'tab';
         this.widgetContext.containerId = config['containerId'] ?? 'payline-widget-container';
         this.widgetContext.dataEmbeddedredirectionallowed = config['dataEmbeddedredirectionallowed'] ?? 'true';
+        if(config['widgetCustomization']) {
+            this.widgetContext.ctaLabel = config['widgetCustomization']['widget_cta_label'] ?? false;
+            this.widgetContext.ctaTextUnder = config['widgetCustomization']['widget_cta_text_under'] ?? false;
+        }
     },
 
     getContext: function (key) {
@@ -45,10 +49,6 @@ const WidgetApi = {
         if (nodeToDelete && nodeToDelete.parentNode) {
             nodeToDelete.parentNode.removeChild(nodeToDelete);
         }
-    },
-
-    finalStateReached: function(state) {
-        console.log(state)
     },
 
 
@@ -97,6 +97,30 @@ const WidgetApi = {
         if (widgetContainerElement) {
             widgetContainerElement.innerHTML = '';
         }
+    },
+
+    resetWidget: function (dataToken) {
+        Payline.Api.reset(dataToken)
+    },
+
+    customizeWidget: function () {
+
+        const ctaLabel = this.getContext('ctaLabel');
+        const ctaTextUnder = this.getContext('ctaTextUnder');
+        if (ctaLabel) {
+            document.querySelectorAll('.PaylineWidget .pl-pay-btn, .PaylineWidget .pl-btn').forEach(paylineCTA => {
+                paylineCTA.innerText = ctaLabel.replace("{{amount}}", Payline.Api.getContextInfo("PaylineFormattedAmount"));
+            });
+        }
+
+        if (ctaTextUnder) {
+            document.querySelectorAll('.PaylineWidget .pl-pay-btn, .PaylineWidget .pl-btn').forEach(function(btn) {
+                const p = document.createElement('p');
+                p.innerHTML = ctaTextUnder;
+                p.classList.add('pl-text-under-cta');
+                btn.parentNode.insertBefore(p, btn.nextSibling);
+            });
+        }
     }
 };
 
@@ -105,7 +129,6 @@ if (typeof define === "function") {
         [],
         function () {
             'use strict';
-            console.log('MY WIDGET');
             return WidgetApi;
         }
     );

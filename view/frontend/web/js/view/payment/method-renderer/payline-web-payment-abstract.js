@@ -160,7 +160,8 @@ define(
                     "environment":self.getEnvironment(),
                     "widgetDisplay":self.getMethodConfigData('widgetDisplay'),
                     "widgetContainerId":self.widgetContainerId,
-                    "dataEmbeddedredirectionallowed":self.getMethodConfigData('dataEmbeddedredirectionallowed')
+                    "dataEmbeddedredirectionallowed":self.getMethodConfigData('dataEmbeddedredirectionallowed'),
+                    "widgetCustomization":self.getMethodConfigData('widgetCustomization')
                 }
 
                 WidgetApi.showWidget(

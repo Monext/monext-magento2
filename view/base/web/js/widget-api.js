@@ -10,6 +10,7 @@ define(
         window.eventDidshowstate= function (e) {
             if(e.state === 'PAYMENT_METHODS_LIST') {
                 $(document.body).trigger('processStop');
+                WidgetApi.customizeWidget();
             }
         };
 

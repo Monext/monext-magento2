@@ -3,6 +3,7 @@
     <body>
         <referenceContainer name="content">
             <block class="Monext\Payline\Block\Checkout\Agreements" name="payline.agreements.binder" template="Monext_Payline::agreements/binder.phtml" cacheable="false"></block>
+            <block class="Monext\Payline\Block\Checkout\WidgetCustomCss" name="payline.widget.css"  ifconfig="payment/payline_web_payment_cpt/widget_custom_enabled"/>
         </referenceContainer>
         <referenceBlock name="checkout.root">
             <arguments>
