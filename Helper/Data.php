@@ -368,7 +368,7 @@ class Data extends AbstractHelper
         DataObject $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
-        AddressInterface $shippingAddress = null
+        ?AddressInterface $shippingAddress = null
     ) {
 
         if(!$cart->getReservedOrderId()) {

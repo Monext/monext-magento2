@@ -26,7 +26,7 @@ class Nx extends AbstractMethod
 
     protected $_canRefundInvoicePartial = true;
 
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         $parentResult = parent::isAvailable($quote);
         $displayMinimumAmount = $this->helperData->getNxMinimumAmountCart();

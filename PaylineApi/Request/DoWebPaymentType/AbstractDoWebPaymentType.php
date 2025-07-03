@@ -58,7 +58,7 @@ abstract class AbstractDoWebPaymentType
         ScopeConfigInterface $scopeConfig,
         ContractManagement $contractManagement,
         PaylineHelper $paylineHelper,
-        PaymentInterface $payment = null
+        ?PaymentInterface $payment = null
     )
     {
         $this->urlBuilder = $urlBuilder;

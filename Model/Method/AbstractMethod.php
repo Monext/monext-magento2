@@ -57,8 +57,8 @@ class AbstractMethod extends BaseAbstractMethod
         ContractManagement $contractManagement,
         HelperData $helperData,
         UrlInterface $urlBuilder,
-        AbstractResource $resource = null,
-        CollectionAbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?CollectionAbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
@@ -79,7 +79,7 @@ class AbstractMethod extends BaseAbstractMethod
         $this->urlBuilder = $urlBuilder;
     }
 
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         $parentResult = parent::isAvailable($quote);
         $currentResult = count($this->contractManagement->getUsedContracts()) > 0;

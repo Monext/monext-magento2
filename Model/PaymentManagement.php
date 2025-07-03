@@ -288,7 +288,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
     public function saveCheckoutPaymentInformationFacade(
         $cartId,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     )
     {
         $this->checkoutPaymentInformationManagement->savePaymentInformation($cartId, $paymentMethod, $billingAddress);
@@ -359,7 +359,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         ProductCollection $productCollection,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
-        AddressInterface $shippingAddress = null
+        ?AddressInterface $shippingAddress = null
     )
     {
         $totals = $this->getTotalsForCartId($cart->getId());
@@ -419,7 +419,7 @@ class PaymentManagement implements PaylinePaymentManagementInterface
         DataObject $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
-        AddressInterface $shippingAddress = null
+        ?AddressInterface $shippingAddress = null
     )
     {
         /** @var \Monext\Payline\PaylineApi\Request\DoWebPayment $request */

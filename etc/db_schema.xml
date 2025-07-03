@@ -1,4 +1,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="customer_entity" resource="default" engine="innodb" comment="Customer Entity">
+        <column xsi:type="text" name="wallet_id" nullable="false" comment="Monext wallet id"/>
+    </table>
 
     <table name="payline_contract" resource="default" engine="innodb" comment="Payline Contract">
         <column name="id" xsi:type="int" nullable="false" unsigned="true"  identity="true"  comment="Id"/>

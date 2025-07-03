@@ -143,7 +143,7 @@ class DoWebPayment extends AbstractRequest
      * @param AddressInterface|null $shippingAddress
      * @return $this
      */
-    public function setShippingAddress(AddressInterface $shippingAddress = null)
+    public function setShippingAddress(?AddressInterface $shippingAddress = null)
     {
         $this->shippingAddress = $shippingAddress;
         return $this;
@@ -406,7 +406,7 @@ class DoWebPayment extends AbstractRequest
         }
 
         if ($this->helperData->isWalletEnabled($paymentMethod)) {
-            if ($customer->getId() && $customer->getCustomAttribute('wallet_id')->getValue()) {
+            if ($customer->getId() && $customer->getCustomAttribute('wallet_id') && $customer->getCustomAttribute('wallet_id')->getValue()) {
                 $data['buyer']['walletId'] = $customer->getCustomAttribute('wallet_id')->getValue();
             } else {
                 $data['buyer']['walletId'] = $this->helperData->generateRandomWalletId();
@@ -531,7 +531,7 @@ class DoWebPayment extends AbstractRequest
      */
     protected function cleanAndSubstr($string , $offset , $length = null)
     {
-        $cleanString = str_replace(array("\r", "\n", "\t"), array('', '', ''), $string);
+        $cleanString = $string ? str_replace(array("\r", "\n", "\t"), array('', '', ''), $string) : '';
         if (function_exists('mb_substr')) {
             $cleanString = mb_substr($cleanString, $offset, $length, 'UTF-8');
         } else {

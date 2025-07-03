@@ -23,6 +23,6 @@ interface GuestPaymentManagementInterface
         $cartId,
         $email,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     );
 }
