@@ -9,6 +9,7 @@ const WidgetApi = {
         this.widgetContext.widgetDisplay = config['widgetDisplay'] ?? 'tab';
         this.widgetContext.containerId = config['containerId'] ?? 'payline-widget-container';
         this.widgetContext.dataEmbeddedredirectionallowed = config['dataEmbeddedredirectionallowed'] ?? 'true';
+        this.widgetContext.nonce = config['nonce'] ?? false;
         if(config['widgetCustomization']) {
             this.widgetContext.ctaLabel = config['widgetCustomization']['widget_cta_label'] ?? false;
             this.widgetContext.ctaTextUnder = config['widgetCustomization']['widget_cta_text_under'] ?? false;
@@ -59,7 +60,9 @@ const WidgetApi = {
         widgetDivAttributes.push('data-token="' + dataToken + '"');
         widgetDivAttributes.push('data-template="' + this.getContext('widgetDisplay') + '"');
         widgetDivAttributes.push('data-embeddedredirectionallowed="' + this.getContext('dataEmbeddedredirectionallowed') + '"');
-
+        if( this.getContext('nonce')) {
+            widgetDivAttributes.push('data-cspnonce="' + this.getContext('nonce') + '"');
+        }
 
         let callbacks = [
             // 'event-willinit',

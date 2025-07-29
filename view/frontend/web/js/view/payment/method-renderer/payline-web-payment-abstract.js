@@ -161,6 +161,7 @@ define(
                     "widgetDisplay":self.getMethodConfigData('widgetDisplay'),
                     "widgetContainerId":self.widgetContainerId,
                     "dataEmbeddedredirectionallowed":self.getMethodConfigData('dataEmbeddedredirectionallowed'),
+                    "nonce":self.getMethodConfigData('nonce'),
                     "widgetCustomization":self.getMethodConfigData('widgetCustomization')
                 }
 
