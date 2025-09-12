@@ -122,6 +122,9 @@ class Data extends AbstractHelper
 
     public function isEmailValid($emailCandidate)
     {
+        if(empty($emailCandidate)) {
+            return false;
+        }
         $pattern = '/\+/i';
 
         $charPlusExist = preg_match($pattern, $emailCandidate);
