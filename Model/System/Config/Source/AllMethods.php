@@ -22,7 +22,10 @@ class AllMethods extends \Magento\Shipping\Model\Config\Source\Allmethods
             $_title = ($_title)?:$carrierCode;
             $methods[$carrierCode] = ['label' => $_title, 'value' => []];
             foreach ($carrierMethods as $methodCode => $methodTitle) {
-                $methodTitle = ($methodTitle)?:$methodCode;
+                if(is_string($methodTitle)) {
+                    $methodTitle = __($methodTitle);
+                }
+                $methodTitle = ($methodTitle && $methodTitle instanceof (\Magento\Framework\Phrase::class)) ? $methodTitle : $methodCode;
                 $methods[$carrierCode]['value'][] = [
                     'value' => $carrierCode . '_' . $methodCode,
                     'label' => '[' . $carrierCode . '] ' . $methodTitle,
