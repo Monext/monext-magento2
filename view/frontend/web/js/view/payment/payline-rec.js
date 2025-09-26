@@ -10,8 +10,6 @@ define(
         rendererList
     ) {
         'use strict';
-
-        console.log('payline-rec.js');
         rendererList.push(
             {
                 type: 'payline_web_payment_rec',
