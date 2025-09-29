@@ -122,6 +122,9 @@ class Data extends AbstractHelper
 
     public function isEmailValid($emailCandidate)
     {
+        if(empty($emailCandidate)) {
+            return false;
+        }
         $pattern = '/\+/i';
 
         $charPlusExist = preg_match($pattern, $emailCandidate);
@@ -368,7 +371,7 @@ class Data extends AbstractHelper
         DataObject $totals,
         PaymentInterface $payment,
         AddressInterface $billingAddress,
-        AddressInterface $shippingAddress = null
+        ?AddressInterface $shippingAddress = null
     ) {
 
         if(!$cart->getReservedOrderId()) {

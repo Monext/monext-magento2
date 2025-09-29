@@ -25,7 +25,7 @@ class Rec extends AbstractMethod
 
     protected $_canRefundInvoicePartial = true;
 
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         return parent::isAvailable($quote) && $this->areQuoteItemsAllowed($quote);
     }
@@ -61,7 +61,7 @@ class Rec extends AbstractMethod
         return $this->urlBuilder->getUrl('payline/index/rec');
     }
 
-    protected function areQuoteItemsAllowed(CartInterface $quote = null)
+    protected function areQuoteItemsAllowed(?CartInterface $quote = null)
     {
         $allowedType = $this->helperData->getRecAllowedType();
         $allowedProductByType = $this->helperData->getRecAllowedProductByType($allowedType);

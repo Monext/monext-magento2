@@ -9,6 +9,11 @@ const WidgetApi = {
         this.widgetContext.widgetDisplay = config['widgetDisplay'] ?? 'tab';
         this.widgetContext.containerId = config['containerId'] ?? 'payline-widget-container';
         this.widgetContext.dataEmbeddedredirectionallowed = config['dataEmbeddedredirectionallowed'] ?? 'true';
+        this.widgetContext.nonce = config['nonce'] ?? false;
+        if(config['widgetCustomization']) {
+            this.widgetContext.ctaLabel = config['widgetCustomization']['widget_cta_label'] ?? false;
+            this.widgetContext.ctaTextUnder = config['widgetCustomization']['widget_cta_text_under'] ?? false;
+        }
     },
 
     getContext: function (key) {
@@ -47,10 +52,6 @@ const WidgetApi = {
         }
     },
 
-    finalStateReached: function(state) {
-        console.log(state)
-    },
-
 
     showWidget: function (context, dataToken) {
         this.setContext(context);
@@ -59,7 +60,9 @@ const WidgetApi = {
         widgetDivAttributes.push('data-token="' + dataToken + '"');
         widgetDivAttributes.push('data-template="' + this.getContext('widgetDisplay') + '"');
         widgetDivAttributes.push('data-embeddedredirectionallowed="' + this.getContext('dataEmbeddedredirectionallowed') + '"');
-
+        if( this.getContext('nonce')) {
+            widgetDivAttributes.push('data-cspnonce="' + this.getContext('nonce') + '"');
+        }
 
         let callbacks = [
             // 'event-willinit',
@@ -97,6 +100,30 @@ const WidgetApi = {
         if (widgetContainerElement) {
             widgetContainerElement.innerHTML = '';
         }
+    },
+
+    resetWidget: function (dataToken) {
+        Payline.Api.reset(dataToken)
+    },
+
+    customizeWidget: function () {
+
+        const ctaLabel = this.getContext('ctaLabel');
+        const ctaTextUnder = this.getContext('ctaTextUnder');
+        if (ctaLabel) {
+            document.querySelectorAll('.PaylineWidget .pl-pay-btn, .PaylineWidget .pl-btn').forEach(paylineCTA => {
+                paylineCTA.innerText = ctaLabel.replace("{{amount}}", Payline.Api.getContextInfo("PaylineFormattedAmount"));
+            });
+        }
+
+        if (ctaTextUnder) {
+            document.querySelectorAll('.PaylineWidget .pl-pay-btn, .PaylineWidget .pl-btn').forEach(function(btn) {
+                const p = document.createElement('p');
+                p.innerHTML = ctaTextUnder;
+                p.classList.add('pl-text-under-cta');
+                btn.parentNode.insertBefore(p, btn.nextSibling);
+            });
+        }
     }
 };
 
@@ -105,7 +132,6 @@ if (typeof define === "function") {
         [],
         function () {
             'use strict';
-            console.log('MY WIDGET');
             return WidgetApi;
         }
     );

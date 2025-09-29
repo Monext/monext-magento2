@@ -27,8 +27,6 @@ define(
     ) {
         'use strict';
 
-        console.log('payline-web-payment-rec.js');
-
         return Component.extend({
             redirectAfterPlaceOrder: false,
             logo: require.toUrl('Monext_Payline/images/monext/payline-logo.png'),

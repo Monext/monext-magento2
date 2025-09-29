@@ -257,6 +257,108 @@
                                 <config_path>payment/payline_web_payment_cpt/order_status_payline_abandoned</config_path>
                             </field>
                         </group>
+
+                        <group id="payline_cpt_widget_customization" translate="label,comment" showInDefault="1" showInWebsite="1" sortOrder="100">
+                            <label>Widget customization</label>
+                            <attribute type="expanded">0</attribute>
+
+                            <field id="widget_custom_enabled" translate="label,comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Enable customization</label>
+                                <config_path>payment/payline_web_payment_cpt/widget_custom_enabled</config_path>
+                                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            </field>
+
+                            <field id="cta_label" translate="label,comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA Label</label>
+                                <config_path>payment/payline_web_payment_cpt/widget_cta_label</config_path>
+                                <comment><![CDATA[For example : "Confirm and pay {{amount}}" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>]]></comment>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_bg_color" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA color</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\CtaBackgroundColors</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_bg_color_hexadecimal" translate="label,comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Hexadecimal color</label>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hexadecimal</config_path>
+                                <comment><![CDATA[For example : #cccccc]]></comment>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                    <field id="cta_bg_color">hexadecimal</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_bg_color_hover_darker" translate="label,comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA hover darker color</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\ChangeColorValue</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hover_darker</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_bg_color_hover_lighter" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA hover lighter color</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\ChangeColorValue</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_bg_color_hover_lighter</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_color" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA text color</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\CtaTextColor</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_color</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_font_size" translate="label,comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA font size</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\CtaFontSize</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_font_size</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_border_radius" translate="label,comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>CTA border radius</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\BorderRadius</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_cta_border_radius</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="widget_bg_color" translate="label,comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Widget background color</label>
+                                <source_model>Monext\Payline\Model\System\Config\Source\WidgetCustomization\WidgetBackgroundColor</source_model>
+                                <config_path>payment/payline_web_payment_cpt/widget_css_widget_bg_color</config_path>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+
+                            <field id="cta_text_under" translate="label,comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                                <label>Text under CTA</label>
+                                <config_path>payment/payline_web_payment_cpt/widget_cta_text_under</config_path>
+                                <comment><![CDATA[For example : "By clicking on the button you accept the T&Cs" <br /><strong>No html tags allowed</strong>]]></comment>
+                                <depends>
+                                    <field id="widget_custom_enabled">1</field>
+                                </depends>
+                            </field>
+                        </group>
                     </group>
                     <group id="payline_nx" translate="label,comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20">
                         <label>Payline - Web Payment Nx</label>

@@ -135,6 +135,20 @@ No,Non
 "Renew token","Renouveler le jeton"
 "Renew token and keep history (beta)","Renouveler le jeton et conserver l'historique (bêta)"
 "Recycle existing token (beta)","Recycler le jeton existant (bêta)"
+"Payline default","Payline default"
+Aucun,Aucun
+Small,Petit
+Average,Moyen
+Big,Grand
+Black,Noire
+Red,Rouge
+Green,Vert
+"Dark gray","Gris foncé"
+Yellow,Jaune
+Dark,Foncé
+Light,Clair
+Lighter,Très clair
+Darker,Très sombre
 "Payment not set","Paiement non réglé"
 "Config error : Billing occurrences can not be zero","Erreur de configuration : les occurrences de facturation ne peuvent pas être nulles"
 "Payment method %1 not available in %2","Le mode de paiement %1 n'est pas disponible dans %2"
@@ -214,6 +228,19 @@ Enabled,Activé
 "Default status refused","Statut par défaut en refusé"
 "Default status fraud","Statut par défaut en fraude detectée"
 "Default status abandoned","Statut par défaut en abandonné"
+"Widget customization","Widget customisation"
+"Enable customization","Activer la customisation"
+"CTA Label","CTA Label"
+"For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>","Ex : ""Valider et payer {{amount}}"" affichera Valider et payer 142.56 EUR -- {{amount}} est optionnel <br /><strong>pas de tags HTML</strong>"
+"CTA color","CTA couleur"
+"CTA hover darker color","CTA survol couleur plus foncé"
+"CTA hover lighter color","CTA hover couleur plus claire"
+"CTA text color","CTA couleur du texte"
+"CTA font size","CTA taille de la police"
+"CTA border radius","CTA arrondi des bords"
+"Widget background color","Couleur de fond du widget"
+"Text under CTA","Texte sous le CTA"
+"For example : ""By clicking on the button you accept the T&Cs"" <br /><strong>No html tags allowed</strong>","Ex : ""En cliquant sur le bouton vous accéptez les CGV"" <br /><strong>pas de tags HTML</strong>"
 "Payline - Web Payment Nx","Payline - Web Payment Nx"
 "Customer will select card payments and schedule through the Payline Gateway.","Le client sélectionnera les paiements par carte et planifiera via la passerelle Payline."
 "Cost type","Type des frais de récurrence"
@@ -252,3 +279,5 @@ Category,Categorie
 "Default category if not set on Magento catalog category attribute ""Payline Category Mapping""","Catégorie par défaut si non définie dans l'attribut de catégorie Magento ""Mapping des catégories Payline"""
 Logs,Logs
 "Payline Category Mapping","Mapping des catégories Payline"
+"Hexadecimal color","Couleur hexadécimale"
+"For example : #cccccc","Par exemple : #cccccc"

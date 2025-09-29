@@ -10,6 +10,7 @@ define(
         window.eventDidshowstate= function (e) {
             if(e.state === 'PAYMENT_METHODS_LIST') {
                 $(document.body).trigger('processStop');
+                WidgetApi.customizeWidget();
             }
         };
 
@@ -25,6 +26,10 @@ define(
                         ticketConfirmationButton.click();
                     }
                 }, 0);
+            } else if (["PAYMENT_CANCELED", "PAYMENT_FAILURE", "TOKEN_EXPIRED"].includes(e.state)) {
+                window.location.href = Payline.Api.getCancelAndReturnUrls().cancelUrl;
+            } else {
+                $(document.body).trigger('processStop');
             }
             require('Magento_Customer/js/customer-data').invalidate(['cart']);
         }

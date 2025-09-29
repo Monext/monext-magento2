@@ -56,7 +56,7 @@ class GuestPaymentManagement implements PaylineGuestPaymentManagementInterface
         $cartId,
         $email,
         PaymentInterface $paymentMethod,
-        AddressInterface $billingAddress = null
+        ?AddressInterface $billingAddress = null
     ) {
         $this->checkoutGuestPaymentInformationManagement->savePaymentInformation($cartId, $email, $paymentMethod, $billingAddress);
         $quoteIdMask = $this->quoteIdMaskFactory->create()->load($cartId, 'masked_id');

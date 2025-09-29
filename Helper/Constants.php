@@ -96,4 +96,16 @@ class Constants
 
     const PAYLINE_LOG_FILENAME = 'payline.log';
 
+    // Widget customzation
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_ENABLED = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_custom_enabled';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_LABEL = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_cta_label';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_BG_COLOR = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_bg_color';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_BG_COLOR_HEXADECIMAL = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_bg_color_hexadecimal';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR_HOVER_DARKER = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_bg_color_hover_darker';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR_HOVER_LIGHTER = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_bg_color_hover_lighter';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_COLOR = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_color';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_FONT_SIZE = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_font_size';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_BORDER_RADIUS = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_cta_border_radius';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_WIDGET_BG_COLOR = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_css_widget_bg_color';
+    const CONFIG_PATH_PAYLINE_WIDGET_CUSTOMIZATION_CTA_TEXT_UNDER = 'payment/'.self::WEB_PAYMENT_CPT.'/widget_cta_text_under';
 }

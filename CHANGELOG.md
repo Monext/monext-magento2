@@ -1,5 +1,13 @@
 ## Changelog
 
+### 1.2.23 - 2025-09-26
+
+
+#### Environment (Development, QA validation)
+Magento version: 2.4.7-p3, 2.4.8
+
+
+
 ### 1.2.22 - 2025-06-17
 * Update API version from 21 to 34
 * Capture triggered on event

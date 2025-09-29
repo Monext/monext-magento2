@@ -135,6 +135,20 @@ No,No
 "Renew token","Renew token"
 "Renew token and keep history (beta)","Renew token and keep history (beta)"
 "Recycle existing token (beta)","Recycle existing token (beta)"
+"Payline default","Payline default"
+Aucun,Aucun
+Small,Small
+Average,Average
+Big,Big
+Black,Black
+Red,Red
+Green,Green
+"Dark gray","Dark gray"
+Yellow,Yellow
+Dark,Dark
+Light,Light
+Lighter,Lighter
+Darker,Darker
 "Payment not set","Payment not set"
 "Config error : Billing occurrences can not be zero","Config error : Billing occurrences can not be zero"
 "Payment method %1 not available in %2","Payment method %1 not available in %2"
@@ -214,6 +228,19 @@ Enabled,Enabled
 "Default status refused","Default status refused"
 "Default status fraud","Default status fraud"
 "Default status abandoned","Default status abandoned"
+"Widget customization","Widget customization"
+"Enable customization","Enable customization"
+"CTA Label","CTA Label"
+"For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>","For example : ""Confirm and pay {{amount}}"" will display Confirm and pay 142.56 EUR -- {{amount}} is optional <br /><strong>No html tags allowed</strong>"
+"CTA color","CTA color"
+"CTA hover darker color","CTA hover darker color"
+"CTA hover lighter color","CTA hover lighter color"
+"CTA text color","CTA text color"
+"CTA font size","CTA font size"
+"CTA border radius","CTA border radius"
+"Widget background color","Widget background color"
+"Text under CTA","Text under CTA"
+"For example : ""By clicking on the button you accept the T&Cs"" <br /><strong>No html tags allowed</strong>","For example : ""By clicking on the button you accept the T&Cs"" <br /><strong>No html tags allowed</strong>"
 "Payline - Web Payment Nx","Payline - Web Payment Nx"
 "Customer will select card payments and schedule through the Payline Gateway.","Customer will select card payments and schedule through the Payline Gateway."
 "Cost type","Cost type"

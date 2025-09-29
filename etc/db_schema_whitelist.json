@@ -1,4 +1,9 @@
 {
+    "customer_entity": {
+        "column": {
+            "wallet_id": true
+        }
+    },
     "payline_contract": {
         "column": {
             "id": true,
