@@ -1,12 +1,15 @@
 ## Changelog
 
 ### 1.2.23 - 2025-09-26
-
+* Manage return url without valid transaction
+* Bug Array to string conversion AllMethods, fix #5
+* Hyva evolution for widget checkout onepage integration
+* Monext rebranding with new logo
+* Transmit CSP Nonce to widget (google pay, apple pay, samsung pay)
+* Compatibility 2.4.8 and PHP 8.4
 
 #### Environment (Development, QA validation)
 Magento version: 2.4.7-p3, 2.4.8
-
-
 
 ### 1.2.22 - 2025-06-17
 * Update API version from 21 to 34
