@@ -44,5 +44,13 @@
         "Payment",
         "Wallet",
         "Widget"
-    ]
+    ],
+    "require-dev": {
+        "cyclonedx/cyclonedx-php-composer": "^3.11"
+    },
+    "config": {
+        "allow-plugins": {
+            "cyclonedx/cyclonedx-php-composer": true
+        }
+    }
 }
