@@ -22,22 +22,72 @@ Title,Title
 "We can't add this item to your shopping cart right now.","We can't add this item to your shopping cart right now."
 "Order #%1 not exist","Order #%1 not exist"
 "Computer (hardware and software)","Computer (hardware and software)"
+Computer,Computer
+Printer,Printer
+"To scan","To scan"
 "Electronics - TV - Hifi","Electronics - TV - Hifi"
+Video,Video
+Camcorder,Camcorder
+"Video recorder","Video recorder"
+TV,TV
+"LCD screen","LCD screen"
+"Plasma screen","Plasma screen"
+"Home cinema","Home cinema"
+HIFI,HIFI
 Phone,Phone
 "Home appliance","Home appliance"
+Cold,Cold
+Fridge,Fridge
+Freezer,Freezer
+Washing,Washing
+Dishwasher,Dishwasher
+"Washing machine","Washing machine"
+"Tumble drier","Tumble drier"
+baking,baking
+cooker,cooker
+Cooktop,Cooktop
 "Habitat and garden","Habitat and garden"
+Heating,Heating
+Radiator,Radiator
+sanitary,sanitary
+"window frame","window frame"
+Shutter,Shutter
+"Garden tool","Garden tool"
+Mower,Mower
+tiller,tiller
+"Chain saw","Chain saw"
+Hedge,Hedge
+"Kitchen delivered without laying","Kitchen delivered without laying"
+"Kitchen delivered","Kitchen delivered"
 "Fashion Clothing","Fashion Clothing"
 "Beauty product","Beauty product"
 Jewelry,Jewelry
 Sport,Sport
 Hobbies,Hobbies
 "Automobiles / motorcycles","Automobiles / motorcycles"
+Quad,Quad
 furnishing,furnishing
+"Living room furniture","Living room furniture"
+Sofa,Sofa
+Armchair,Armchair
+cabinet,cabinet
+Library,Library
+"Dining room furniture","Dining room furniture"
+Bedroom,Bedroom
+Bedding,Bedding
+"Office furniture","Office furniture"
+"Upholstery fabric","Upholstery fabric"
+"Kitchen furniture","Kitchen furniture"
+"Bathroom furniture","Bathroom furniture"
+"Garden furniture","Garden furniture"
+Barbecue,Barbecue
 children,children
 "Video games","Video games"
 Toys,Toys
 Animals,Animals
 Food,Food
+"Food (meal vouchers eligible products)","Food (meal vouchers eligible products)"
+"Food (meal vouchers not eligible products)","Food (meal vouchers not eligible products)"
 Gifts,Gifts
 Shows,Shows
 traveling,traveling
@@ -45,6 +95,9 @@ Auction,Auction
 "Particular services","Particular services"
 "Professional Services","Professional Services"
 Music,Music
+"Music instrument","Music instrument"
+Piano,Piano
+Organ,Organ
 Book,Book
 Photo,Photo
 name,name

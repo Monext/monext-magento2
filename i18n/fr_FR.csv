@@ -22,30 +22,83 @@ Title,Titre
 "We can't add this item to your shopping cart right now.","Nous ne pouvons pas ajouter cet article à votre panier pour le moment."
 "Order #%1 not exist","La commande #%1 n'existe pas"
 "Computer (hardware and software)","Ordinateur (matériel et logiciel)"
+"Computer","Ordinateur"
+"Printer","Imprimante"
+"To scan","Scanner"
 "Electronics - TV - Hifi","Electronique - TV - Hifi"
-Phone,Phone
+"Video","Vidéo"
+"Camcorder","Caméscope"
+"Video recorder","Magnétoscope"
+"TV","TV"
+"LCD screen","Écran LCD"
+"Plasma screen","Écran Plasma"
+"Home cinema","Home cinema"
+"HIFI","HIFI"
+Phone,Téléphone
 "Home appliance","Appareil électroménager"
+"Cold","Froid"
+"Fridge","Réfrigérateur"
+"Freezer","Congélateur"
+"Washing","Lavage"
+"Dishwasher","Lave-vaisselle"
+"Washing machine","Lave-linge"
+"Tumble drier","Sèche-linge"
+"baking","Cuisson"
+"cooker","Cuisinière"
+"Cooktop","Table de cuisson"
 "Habitat and garden","Habitat et jardin"
+"Heating","Chauffage"
+"Radiator","Radiateur"
+"sanitary","Sanitaires"
+"window frame","Huisserie"
+"Shutter","Volet"
+"Garden tool","Outil de jardin"
+"Mower","Tondeuse"
+"tiller","Motoculteur"
+"Chain saw","Tronçonneuse"
+"Hedge","Débroussailleuse"
+"Kitchen delivered without laying","Cuisine livrée sans pose"
+"Kitchen delivered","Cuisine livrée posée"
 "Fashion Clothing","Vêtements de mode"
 "Beauty product","Produit de beauté"
-Jewelry,Jewelry
+Jewelry,Bijouterie
 Sport,Sport
-Hobbies,Hobbies
+Hobbies,Loisirs
 "Automobiles / motorcycles","Automobiles / motos"
-furnishing,furnishing
-children,children
+"Quad","Quad"
+furnishing,Ameublement
+"Living room furniture","Mobilier de salon"
+"Sofa","Canapé"
+"Armchair","Fauteuil"
+"cabinet","Armoire"
+"Library","Bibliothèque"
+"Dining room furniture","Mobilier salle à manger"
+"Bedroom","Chambre"
+"Bedding","Literie"
+"Office furniture","Mobilier de bureau"
+"Upholstery fabric","Tissu ameublement"
+"Kitchen furniture","Mobilier de cuisine"
+"Bathroom furniture","Mobilier de salle de bain"
+"Garden furniture","Meuble de jardin"
+"Barbecue","Barbecue"
+children,Enfants
 "Video games","Jeux vidéo"
-Toys,Toys
-Animals,Animals
-Food,Food
-Gifts,Gifts
-Shows,Shows
+Toys,Jouets
+Animals,Animaux
+Food,Alimentation
+"Food (meal vouchers eligible products)","Alimentation produits éligibles TRD"
+"Food (meal vouchers not eligible products)","Alimentation produits non éligibles TRD"
+Gifts,Cadeaux
+Shows,Spectacles
 traveling,Voyages
-Auction,Auction
-"Particular services","Services particuliers"
-"Professional Services","Services professionnels"
-Music,Music
-Book,Book
+Auction,Enchères
+"Particular services","Services aux particuliers"
+"Professional Services","Services aux professionnels"
+Music,Musique
+"Music instrument","Instrument de musique"
+Piano,Piano
+Organ,Orgue
+Book,Livre
 Photo,Photo
 name,Nom
 "Please select a category mapping...","Choisir une catégorie"
