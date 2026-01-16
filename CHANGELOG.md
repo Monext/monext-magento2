@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.2.24 - 2026-01-16
+* Add all sub categories in Monext mapping
+* Change personalization configuration for CTA hover
+
+#### Environment (Development, QA validation)
+Magento version: 2.4.8-p3
+
 ### 1.2.23 - 2025-09-26
 * Manage return url without valid transaction
 * Bug Array to string conversion AllMethods, fix #5
