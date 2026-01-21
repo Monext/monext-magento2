@@ -5,7 +5,7 @@
             "monext/monext-php": "*"
     },
     "type": "magento2-module",
-    "version": "1.2.23",
+    "version": "1.2.24",
     "authors" : [
         {
             "name" : "Matthieu BOUCHOT",
@@ -44,5 +44,13 @@
         "Payment",
         "Wallet",
         "Widget"
-    ]
+    ],
+    "require-dev": {
+        "cyclonedx/cyclonedx-php-composer": "^3.11"
+    },
+    "config": {
+        "allow-plugins": {
+            "cyclonedx/cyclonedx-php-composer": true
+        }
+    }
 }

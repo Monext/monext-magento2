@@ -33,4 +33,8 @@
             <column name="token"/>
         </constraint>
     </table>
+
+    <table name="customer_entity">
+        <column xsi:type="text" name="wallet_id" nullable="true" comment="Wallet Id"/>
+    </table>
 </schema>
