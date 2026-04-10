@@ -618,4 +618,21 @@ class Data extends AbstractHelper
 
         return $version;
     }
-}
+
+    /**
+     * @param string $key
+     * @return string
+     */
+    public function maskAccessKey(string $key)
+    {
+        if (empty($key)) {
+            return '';
+        }
+        $length = strlen($key);
+        if ($length <= 3) {
+            return $key;
+        }
+        $visible = substr($key, -3);
+        $masked = str_repeat('*', $length - 3);
+        return $masked . $visible;
+    }}

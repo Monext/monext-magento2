@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.2.25 - 2026-05-09
+* Obfuscation of the secret_key field in the configuration.
+* Fix db_schema.xml error on duplicate wallet_id declaration
+
+#### Environment (Development, QA validation)
+Magento version: 2.4.8-p3
+
 ### 1.2.24 - 2026-01-16
 * Add all sub categories in Monext mapping
 * Change personalization configuration for CTA hover

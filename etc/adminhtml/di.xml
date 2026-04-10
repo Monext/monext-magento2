@@ -51,4 +51,10 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Data\Form\Element\Obscure">
+        <plugin name="payline-obscure-plugin" type="Monext\Payline\Plugin\Data\Form\Element\ObscurePlugin"/>
+    </type>
+    <type name="Magento\Config\Model\Config\Backend\Encrypted">
+        <plugin name="payline-encrypted-compat" type="Monext\Payline\Plugin\Model\Config\Backend\EncryptedPlugin"/>
+    </type>
 </config>
